@@ -1,0 +1,7 @@
+<?php
+error_reporting(E_ALL);
+define("BASE_DIR",__DIR__);
+ini_set('display_errors', 1);
+ini_set('display_startup_errors', 1);
+include "systems/library/cacheController.php";
+cacheController::clearCache();
