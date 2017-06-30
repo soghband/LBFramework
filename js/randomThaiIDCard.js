@@ -13,6 +13,7 @@ function randomThaiIdCard(time) {
         var d11 = Math.floor(Math.random() * 10);
         var d12 = Math.floor(Math.random() * 10);
         var n13 = 11 - (((d1 * 13) +""+ (d2 * 12) + (d3 * 11) + (d4 * 10) + (d5 * 9) + (d6 * 8) + (d7 * 7) + (d8 * 6) + (d9 * 5) + (d10 * 4) + (d11 * 3) + (d12 * 2)) % 11);
+
         if (n13 == 10) {
             var d13 = 0;
         } else if (n13 == 11) {
