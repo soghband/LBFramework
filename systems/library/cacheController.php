@@ -83,7 +83,8 @@ class cacheController {
             foreach($files as $file){ // iterate files
                 if(is_file($file)) {
                     if (unlink($file)) {
-                        $file_name = array_pop(explode("/",$file));
+                        $file_name_array = explode("/",$file);
+                        $file_name = array_pop($file_name_array);
                         echo "<div>Cache file deleted ".$file_name."</div>";
                     } else {
                         echo "<div>Cache file can't delete ".$file_name."</div>";

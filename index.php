@@ -19,7 +19,7 @@ $route = routeController::getRoute($_SERVER["REQUEST_URI"]);
 timeController::phase("Route Calculate");
 var_dump($route);
 
-routeController::show_index();
+//routeController::show_index();
 cacheController::saveShare();
 timeController::phase("Stop");
 //var_dump($_SERVER);
