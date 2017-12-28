@@ -4,11 +4,11 @@ class autoloadController {
     static function register() {
         $list = cacheController::getShareCache("autoload");
         if ($list == "") {
-            echo "no cache";
+            echo "autoloadController no cache";
             include_once BASE_DIR."/systems/autoload.php";
             cacheController::setShareCache("autoload",$list);
         } else {
-            echo "cache";
+            echo "autoloadController cache";
         }
         self::$_list = $list;
         foreach (self::$_list as $key => $val) {

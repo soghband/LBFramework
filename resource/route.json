@@ -1,0 +1,49 @@
+{
+    "": {
+        "controller":"homeController"
+    },
+    "test": {
+        "controller": "testController0"
+    },
+    "{test_r}": {
+        "controller": "testController1",
+        "url_filter": {
+            "{test_r}": "^[a-zก-๙]*$"
+        },
+        "post_filter": {
+            "test_post":"^a.*z$"
+        },
+        "get_filter": {
+            "test_get":"^b.*z$"
+        }
+    },
+    "test1":{
+        "controller":"testController2"
+    },
+    "test/tests":{
+        "controller":"testController3"
+    },
+    "test/tests1":{
+        "controller":"testController4"
+    },
+    "test2/{test}/test33":{
+        "controller":"testController5",
+        "url_filter":{
+            "{test}":"^test_route1$"
+        }
+    },
+    "test2/{test}/{test2}":{
+        "controller":"testController6",
+        "url_filter":{
+            "{test}":"^test_route2$",
+            "{test2}":"^test111$"
+        }
+    },
+    "test2/{test2}/{test3}":{
+        "controller":"testController7",
+        "url_filter":{
+            "{test2}":"^test_route2$",
+            "{test3}":"^a.{3}b$"
+        }
+    }
+}

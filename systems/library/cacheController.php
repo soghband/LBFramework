@@ -1,7 +1,7 @@
 <?php
 
 class cacheController {
-    static $share_cache;
+    static $share_cache ;
     static $cache;
     static $page_hash;
     static $cache_file_location;
@@ -13,6 +13,9 @@ class cacheController {
 
     }
     static function setShareCache($key,$data) {
+        if (!is_array(self::$share_cache)) {
+            self::$share_cache = array();
+        }
         self::$share_cache[$key] = $data;
     }
     static function getShareCache($key) {
@@ -27,7 +30,6 @@ class cacheController {
         }
     }
     static function loadShare() {
-        $share_cache = "";
         $share_cache = self::loadCache("share");
         if ($share_cache != "") {
             self::$_loaded = true;
@@ -42,7 +44,6 @@ class cacheController {
         }
     }
     static function loadCache($name) {
-        $data = "";
         if (function_exists("apc_cache_info")) {
             $data = apc_fetch($name);
         } else {
