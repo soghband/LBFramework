@@ -4,7 +4,8 @@ class configController {
     static function define($config_file) {
         $config = cacheController::getShareCache("config");
         if ($config == "") {
-            include_once $config_file;
+            $config_data = file_get_contents($config_file);
+            $config = pgnUtil::jsonDecode($config_data);
             cacheController::setShareCache("config",$config);
         }
         self::$config = $config;

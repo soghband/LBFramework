@@ -7,24 +7,26 @@ class routeController {
     static function register($route_file){
         self::$route_index = cacheController::getShareCache("route");
         if (self::$route_index == "") {
-            $route = "";
             $route_data = file_get_contents($route_file);
-            $route = json_decode($route_data, true);
-            var_dump($route);
+            $route = pgnUtil::jsonDecode($route_data);
             foreach ($route as $key => $value ) {
                 $key_split = explode("/",$key);
                 $file = $value["controller"];
                 $current_level_shift = array_shift($key_split);
+                $param_refine = "";
                 if (isset($value["url_filter"])) {
                     $pattern_refine = $value["url_filter"];
+                }
+                if (isset($value["param_filter"])) {
+                    $param_refine = $value["param_filter"];
                 }
                 if (count($key_split) > 0) {
                     if (empty(self::$route_index[$current_level_shift])) {
                         $parent = array();
-                        self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine);
+                        self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine,$param_refine);
                     } else {
                         $parent = self::$route_index[$current_level_shift];
-                        self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine);
+                        self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine,$param_refine);
                     }
                     if (isset($pattern_refine[$current_level_shift])) {
                         //self::$route_index[$current_level_shift]["_pattern"] = $pattern_refine[$current_level_shift];
@@ -35,36 +37,42 @@ class routeController {
                         self::$route_index = array();
                     }
                     self::$route_index[$current_level_shift]["_controller"] = $file;
+                    if (isset($param_refine)) {
+                        self::$route_index[$current_level_shift]["_param"] = $param_refine;
+                    }
                     if (isset($pattern_refine[$current_level_shift])) {
                         self::$route_index["_pattern"][$pattern_refine[$current_level_shift]] = $current_level_shift;
                     }
                 }
             }
         }
+        cacheController::setShareCache("route",self::$route_index);
     }
     static function show_index() {
         echo "<pre>";
         var_dump(self::$route_index);
         echo "</pre>";
     }
-    static function make_index($parent,$key_array,$file,$pattern) {
+    static function make_index($parent,$key_array,$file,$pattern,$param_refine) {
         $current_key_shift = array_shift($key_array);
         if (count($key_array) > 0) {
             if (empty($parent[$current_key_shift])) {
                 $parent_s = array();
-                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern);
-
+                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
             } else {
                 $parent_s = $parent[$current_key_shift];
-                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern);
+                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
             }
-            $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern);
+            $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
             if (isset($pattern[$current_key_shift])) {
                 $parent["_pattern"][$pattern[$current_key_shift]] = $current_key_shift;
             }
             return $parent;
         }
         $parent[$current_key_shift]["_controller"] = $file;
+        if (isset($param_refine)) {
+            $parent[$current_key_shift]["_param"] = $param_refine;
+        }
         if (isset($pattern[$current_key_shift])) {
             $parent["_pattern"][$pattern[$current_key_shift]] = $current_key_shift;
         }
@@ -79,7 +87,12 @@ class routeController {
         return $refine_data;
     }
     static function getRoute($path) {
-        $path_decode = urldecode($path);
+        if (preg_match("/\?/",$path)) {
+            list($url_split,$get_val) = explode("?",$path);
+        } else {
+            $url_split = $path;
+        }
+        $path_decode = urldecode($url_split);
         $path_array = explode("/",trim($path_decode,"/"));
         $route_index = self::$route_index;
         $parameter = array();
@@ -104,13 +117,31 @@ class routeController {
                 $route_index = 404;
             }
         }
+        /** Create POST - GET Parameter */
+        if (isset($_REQUEST)) {
+            $get_check = true;
+            foreach ($_REQUEST as $key => $value) {
+                if (isset($route_index["_param"][$key])) {
+                    if (preg_match("/".$route_index["_param"][$key]."/",$value)) {
+                        $parameter[$key] = $value;
+                    } else {
+                        $get_check = false;
+                    }
+                } else {
+                    $get_check = false;
+                }
+            }
+            if ($get_check == false) {
+                $route_index = 404;
+            }
+        }
         if (isset($route_index["_controller"])) {
             $route["controller"] = $route_index["_controller"];
         } else {
             $route["controller"] = 404;
         }
         $route["param"] = $parameter;
-        /** Create POST - GET Parameter */
+
         return $route;
     }
     static  function createCSRF() {

@@ -1,0 +1,10 @@
+{
+    "DB_CONNECT_STRING":"mysql:host=localhost;dbname=projectg_zs, projectg, sogh1982x",
+    "CACHE":false,
+    "TIME_CHECK":true,
+    "JS_PATH":"resource/js",
+    "JS_COMPRESS":false,
+    "CSS_PATH":"resource/sass",
+    "CSS_COMPRESS":false,
+    "DEFAULT_TITLE":"PGN FrameWork"
+}

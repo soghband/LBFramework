@@ -1,49 +1,54 @@
 {
     "": {
-        "controller":"homeController"
+        "controller":"home",
+        "param_filter":{
+            "aaa":"^a.*b$",
+            "bbb":"^c.*d$"
+        }
     },
     "test": {
-        "controller": "testController0"
+        "controller": "test0"
     },
     "{test_r}": {
-        "controller": "testController1",
-        "url_filter": {
+        "controller": "test",
+        "url_filter":{
             "{test_r}": "^[a-zก-๙]*$"
         },
-        "post_filter": {
-            "test_post":"^a.*z$"
-        },
-        "get_filter": {
+        "param_filter": {
             "test_get":"^b.*z$"
         }
     },
     "test1":{
-        "controller":"testController2"
+        "controller":"test2"
     },
     "test/tests":{
-        "controller":"testController3"
+        "controller":"test3"
     },
     "test/tests1":{
-        "controller":"testController4"
+        "controller":"test4"
     },
     "test2/{test}/test33":{
-        "controller":"testController5",
+        "controller":"test5",
         "url_filter":{
             "{test}":"^test_route1$"
         }
     },
     "test2/{test}/{test2}":{
-        "controller":"testController6",
+        "controller":"test6",
         "url_filter":{
             "{test}":"^test_route2$",
             "{test2}":"^test111$"
         }
     },
     "test2/{test2}/{test3}":{
-        "controller":"testController7",
+        "controller":"test7",
         "url_filter":{
             "{test2}":"^test_route2$",
             "{test3}":"^a.{3}b$"
+        },
+        "param_filter":{
+            "aaa":"^e.*f$",
+            "bbb":"^g.*h$"
         }
     }
 }
