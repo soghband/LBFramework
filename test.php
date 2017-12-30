@@ -1,10 +1,9 @@
 <?php
-$str = "apple/orange/banana";
-$i = 0;
-while(1){
-    if($str = strstr($str,"a")){
-        $i++;
-        $str = substr($str,1);
-    } else { break;  }
+if (function_exists("apcu_cache_info")) {
+    echo "11";
+} else {
+    echo "22";
 }
-echo $i;
+apcu_store("aa","1");
+echo apcu_fetch("aa");
+phpinfo();

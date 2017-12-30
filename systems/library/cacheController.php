@@ -37,15 +37,15 @@ class cacheController {
         self::$share_cache = $share_cache;
     }
     static function saveCache($name,$data) {
-        if (function_exists("apc_cache_info")) {
-            apc_add($name,$data);
+        if (function_exists("apcu_cache_info")) {
+            apcu_add($name,$data);
         } else {
             self::file_cache_set($name,$data);
         }
     }
     static function loadCache($name) {
-        if (function_exists("apc_cache_info")) {
-            $data = apc_fetch($name);
+        if (function_exists("apcu_cache_info")) {
+            $data = apcu_fetch($name);
         } else {
             $data = self::file_cache_get($name);
         }
@@ -75,17 +75,17 @@ class cacheController {
         }
     }
     static function clearCache() {
-        if (function_exists("apc_cache_info")) {
-            if (apc_clear_cache()) {
+        if (function_exists("apcu_cache_info")) {
+            if (apcu_clear_cache()) {
                 echo "All Cache Cleared";
             }
         } else {
             $files = glob(BASE_DIR."/cache_file/*");
             foreach($files as $file){ // iterate files
                 if(is_file($file)) {
+                    $file_name_array = explode("/",$file);
+                    $file_name = array_pop($file_name_array);
                     if (unlink($file)) {
-                        $file_name_array = explode("/",$file);
-                        $file_name = array_pop($file_name_array);
                         echo "<div>Cache file deleted ".$file_name."</div>";
                     } else {
                         echo "<div>Cache file can't delete ".$file_name."</div>";

@@ -30,22 +30,30 @@ class viewController {
 
     }
     static function genPage($controllerArray) {
+        if ($controllerArray["controller"] == 404) {
+            self::$_template = "";
+        }
         $controller_file = BASE_DIR."/controller/".$controllerArray["controller"]."Controller.php";
         self::addView($controllerArray["controller"]);
         if (file_exists($controller_file)) {
             include_once $controller_file;
+        } elseif (!file_exists($controller_file) && self::$_template == "") {
+            self::$_rawView  =  file_get_contents(BASE_DIR."/view/".$controllerArray["controller"].".html");
+            return;
         }
-        if (empty(self::$_data["<{view}>"])) {
-
+        if (isset(self::$_template) && self::$_template != "") {
+            if (empty(self::$_data["<{view}>"])) {
+                self::addView($controllerArray["controller"]);
+            }
+            self::dataRegister("header",file_get_contents(BASE_DIR."/view/template/".self::$_template."/header.html"));
+            self::dataRegister("footer", file_get_contents(BASE_DIR."/view/template/".self::$_template."/footer.html"));
+            self::dataRegister("metaTag", file_get_contents(BASE_DIR."/view/template/".self::$_template."/meta.html"));
+            if (empty(self::$_data["<{title}>"]) && defined("DEFAULT_TITLE")) {
+                self::dataRegister("title",DEFAULT_TITLE);
+            }
+            self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
+            self::dataReplace();
         }
-        self::dataRegister("header",file_get_contents(BASE_DIR."/view/template/".self::$_template."/header.html"));
-        self::dataRegister("footer", file_get_contents(BASE_DIR."/view/template/".self::$_template."/footer.html"));
-        self::dataRegister("metaTag", file_get_contents(BASE_DIR."/view/template/".self::$_template."/meta.html"));
-        if (empty(self::$_data["<{title}>"]) && defined("DEFAULT_TITLE")) {
-            self::dataRegister("title",DEFAULT_TITLE);
-        }
-        self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
-        self::dataReplace();
     }
     static function dataReplace() {
         $search = array();
