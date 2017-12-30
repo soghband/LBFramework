@@ -1,3 +1,5 @@
 <?php
-viewController::setFirstSignStyleSheet("home_fs");
+viewController::setFirstSignStyleSheet("header,home_fs");
 viewController::setEmbedJavaScript("nativeLoading");
+viewController::clearView();
+echo 111;

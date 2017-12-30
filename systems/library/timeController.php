@@ -6,7 +6,7 @@ class timeController {
     public static $time = 0;
     public static $static = array();
     static function set_type($type) {
-        if (preg_match("^(js|html)$",$type)) {
+        if (preg_match("/^(js|html)$/",$type)) {
             self::$type = $type;
         } else {
             self::$type = "js";
@@ -31,20 +31,30 @@ class timeController {
         self::$static[] =$display;
     }
     static function showProcessTime() {
-        $return_data = "";
         if (TIME_CHECK == true) {
+            $return_data = "";
             if (self::$type == "js") {
                 $return_data .= "<script language='JavaScript'>\n";
                 foreach (self::$static as $key => $val) {
                     $return_data .= "console.log('".$val."');\n";
                 }
                 $return_data .= "</script>";
+            } elseif (self::$type == "json") {
+                $return_data = json_encode(self::$static );
             } else {
                 foreach (self::$static as $key => $val) {
                     $return_data .= "<div>".$val."</div>";
                 }
             }
+            $pageView = ob_get_contents();
+            if (preg_match("/^({|\[).*(\]|})$/",$pageView)) {
+                $pageData = ob_get_clean();
+                $data = json_decode($pageData,true);
+                $data["time_process"] = self::$static;
+                echo json_encode($data);
+            } else {
+                echo $return_data;
+            }
         }
-        echo $return_data;
     }
 }
