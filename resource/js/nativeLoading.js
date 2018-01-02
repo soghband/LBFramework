@@ -13,9 +13,7 @@ function loadingInit() {
     loading_cycle.className = "loader_inner";
 
     loading_element.appendChild(loading_cycle);
-
     document.body.appendChild(loading_element);
-
 
 }
 function showLoading(timeOut, timeOutCallBack) {

@@ -1,9 +1,8 @@
 <!DOCTYPE html>
-<htm>
+<html>
     <head>
         <{metaTag}>
         <{firstSignCss}>
-        <{embedJS}>
     </head>
     <body>
         <{header}>
@@ -12,4 +11,9 @@
         </div>
         <{footer}>
     </body>
-</htm>
+    <script src="/js/nativeLoading.js"></script>
+    <{embedJS}>
+    <script language=JavaScript>
+        loadCss("css/testCssPreload.css");
+    </script>
+</html>

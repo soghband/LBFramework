@@ -77,6 +77,7 @@ class cacheController {
     static function clearCache() {
         if (function_exists("apcu_cache_info")) {
             if (apcu_clear_cache()) {
+                opcache_reset();
                 echo "All Cache Cleared";
             }
         } else {

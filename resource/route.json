@@ -12,7 +12,7 @@
     "{test_r}": {
         "controller": "test",
         "url_filter":{
-            "{test_r}": "^[a-zก-๙]*$"
+            "{test_r}": "^[a-zA-Zก-๙.]*$"
         },
         "param_filter": {
             "test_get":"^b.*z$"
