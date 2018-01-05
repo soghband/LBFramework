@@ -1,17 +1,16 @@
 <?php
 use MatthiasMullie\Minify;
-class viewController {
-    static $_fs_css;
-    static $_css;
-    static $_css_index;
-    static $_em_js;
-    static $_js;
-    static $_js_index;
-    static $_view;
-    static $_rawView;
-    static $_catch_page;
-    static $_template = "default";
-    static $_data = array();
+class view {
+    private static $_fs_css;
+    private static $_css;
+    private static $_css_index;
+    private static $_em_js;
+    private static $_js;
+    private static $_js_index;
+    private static $_view;
+    private static $_rawView;
+    private static $_template = "default";
+    private static $_data = array();
     static function getPageView($controllerArray) {
         $page_string = $controllerArray["controller"];
         if (count($controllerArray["param"]) > 0) {
@@ -21,7 +20,7 @@ class viewController {
         }
 //        echo "<div>".$page_string."</div>";
         $page_hash = md5($page_string);
-        $page_cache = cacheController::getCache($page_hash);
+        $page_cache = cache::getCache($page_hash);
         if ($page_cache == "") {
 //            echo "no cache page";
             $page_cache = self::genPage($controllerArray);
@@ -88,7 +87,11 @@ class viewController {
                 }
             }
             self::dataRegister("firstSignCss",$fs_css_data);
-            $em_js_data_all = "";
+            $core_js = file_get_contents(BASE_DIR."/systems/js/cssPreload.js");
+            $core_js .= "\n".file_get_contents(BASE_DIR."/systems/js/JsPreload.js");
+            $minifierCoreJs = new Minify\JS();
+            $minifierCoreJs->add($core_js);
+            $em_js_data_all = $minifierCoreJs->minify();
             if (is_array(self::$_em_js) && count(self::$_em_js ) > 0) {
                 foreach(self::$_em_js as $key => $val) {
                     $em_js_data = file_get_contents(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js");
@@ -98,12 +101,17 @@ class viewController {
                         $em_js_data_all .=  $minifierJs->minify();
                     }
                 }
-                if (strlen($em_js_data_all) > 0) {
-                    $em_js_data_all = "<script language=JavaScript>".$em_js_data_all."</script>";
-                }
+            }
+            if (strlen($em_js_data_all) > 0) {
+                $em_js_data_all = "<script language=JavaScript>".$em_js_data_all."</script>";
             }
             self::dataRegister("embedJS",$em_js_data_all);
             self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
+            $css_resource = resource::registerResourceHash(self::$_css,"css");
+            $js_resource = resource::registerResourceHash(self::$_js,"js");
+            cache::saveResource();
+            self::dataRegister("combineCss",$css_resource);
+            self::dataRegister("combineJs",$js_resource);
             self::dataReplace();
         } elseif ($htmlFileCheck == true) {
             self::$_rawView  =  file_get_contents($html_file);
@@ -171,7 +179,23 @@ class viewController {
             }
         }
     }
-    static function addEmbedJavaScript($js_file_name) {
+    static function addStyleSheet($css_file_name) {
+        if ($css_file_name != "") {
+            $css_array = explode(",",$css_file_name);
+            foreach ($css_array as $val) {
+                $file_path = BASE_DIR."/".CSS_PATH."/".$val.".css";
+                if (file_exists($file_path) && empty(self::$_css_index[$val])) {
+                    self::$_css_index[$val] = 1;
+                    self::$_css[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        pgnUtil::showMsg("CSS File not found: ".$val);
+                    }
+                }
+            }
+        }
+    }
+    static function addEmbedJavascript($js_file_name) {
         if ($js_file_name != "") {
             $js_array  = explode(",",$js_file_name);
             foreach ($js_array as $val) {
@@ -179,6 +203,22 @@ class viewController {
                 if (file_exists($file_path) && empty(self::$_js_index[$val])) {
                     self::$_js_index[$val] = 1;
                     self::$_em_js[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        pgnUtil::showMsg("JS File not found: ".$val);
+                    }
+                }
+            }
+        }
+    }
+    static function addJavascript($js_file_name) {
+        if ($js_file_name != "") {
+            $js_array  = explode(",",$js_file_name);
+            foreach ($js_array as $val) {
+                $file_path = BASE_DIR."/".JS_PATH."/".$val.".js";
+                if (file_exists($file_path) && empty(self::$_js_index[$val])) {
+                    self::$_js_index[$val] = 1;
+                    self::$_js[] = $val;
                 } else {
                     if (!file_exists($file_path)) {
                         pgnUtil::showMsg("JS File not found: ".$val);

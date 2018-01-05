@@ -1,7 +1,8 @@
 {
-    "timeController" : "systems/library/timeController.php",
-    "routeController" : "systems/library/routeController.php",
-    "configController" : "systems/library/configController.php",
-    "viewController" : "systems/library/viewController.php",
-    "pgnUtil" : "systems/library/pgnUtil.php"
+    "time" : "systems/library/time.php",
+    "route" : "systems/library/route.php",
+    "config" : "systems/library/config.php",
+    "view" : "systems/library/view.php",
+    "pgnUtil" : "systems/library/pgnUtil.php",
+    "resource" : "systems/library/resource.php"
 }

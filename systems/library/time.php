@@ -1,5 +1,5 @@
 <?php
-class timeController {
+class time {
     public static $start;
     public static $last_call;
     public static $type = "js";

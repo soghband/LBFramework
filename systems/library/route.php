@@ -1,11 +1,11 @@
 <?php
 
-class routeController {
+class route {
     private static $route_index;
     private static $param;
     private static $csrf;
     static function register($route_file){
-        self::$route_index = cacheController::getShareCache("route");
+        self::$route_index = cache::getShareCache("route");
         if (self::$route_index == "") {
             $route_data = file_get_contents($route_file);
             $route = pgnUtil::jsonDecode($route_data);
@@ -46,7 +46,7 @@ class routeController {
                 }
             }
         }
-        cacheController::setShareCache("route",self::$route_index);
+        cache::setShareCache("route",self::$route_index);
     }
     static function show_index() {
         echo "<pre>";

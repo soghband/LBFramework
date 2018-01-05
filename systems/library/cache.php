@@ -1,11 +1,9 @@
 <?php
 
-class cacheController {
-    static $share_cache ;
-    static $cache;
-    static $page_hash;
-    static $cache_file_location;
-    static $_loaded = false;
+class cache {
+    private static $_shareCache ;
+    private static $_resourceCache;
+    private static $_loaded = false;
     static function setCache($key,$data,$time) {
 
     }
@@ -13,28 +11,47 @@ class cacheController {
 
     }
     static function setShareCache($key,$data) {
-        if (!is_array(self::$share_cache)) {
-            self::$share_cache = array();
+        if (!is_array(self::$_shareCache)) {
+            self::$_shareCache = array();
         }
-        self::$share_cache[$key] = $data;
+        self::$_shareCache[$key] = $data;
     }
     static function getShareCache($key) {
-        if (isset(self::$share_cache[$key])) {
-            return self::$share_cache[$key];
+        if (isset(self::$_shareCache[$key])) {
+            return self::$_shareCache[$key];
+        }
+        return "";
+    }
+    static function setResourceCache($key,$data) {
+        if (!is_array(self::$_resourceCache)) {
+            self::$_resourceCache = array();
+        }
+        self::$_resourceCache[$key] = $data;
+    }
+    static function getResourceCache($key) {
+        if (isset(self::$_resourceCache[$key])) {
+            return self::$_resourceCache[$key];
         }
         return "";
     }
     static function saveShare() {
         if (self::$_loaded == false) {
-            self::saveCache("share",self::$share_cache);
+            self::saveCache("share",self::$_shareCache);
         }
     }
     static function loadShare() {
-        $share_cache = self::loadCache("share");
-        if ($share_cache != "") {
+        $_shareCache = self::loadCache("share");
+        if ($_shareCache != "") {
             self::$_loaded = true;
         }
-        self::$share_cache = $share_cache;
+        self::$_shareCache = $_shareCache;
+    }
+    static function saveResource() {
+        self::saveCache("resource",self::$_resourceCache);
+    }
+    static function loadResource() {
+        $_resourceCache = self::loadCache("resource");
+        self::$_resourceCache = $_resourceCache;
     }
     static function saveCache($name,$data) {
         if (function_exists("apcu_cache_info")) {
@@ -51,33 +68,33 @@ class cacheController {
         }
         return $data;
     }
-    static function file_cache_get($name) {
+    private static function file_cache_get($name) {
         $md5 = md5($name);
         $data = "";
         if (file_exists(BASE_DIR."/cache_file/".$md5.".cache")) {
             $data_file = file_get_contents(BASE_DIR."/cache_file/".$md5.".cache");
-            //$data = json_decode($data_file,true);
             $data = unserialize($data_file);
         }
         return $data;
     }
-    static function file_cache_set($name,$data) {
+    private static function file_cache_set($name,$data) {
         $md5 = md5($name);
         if (!is_dir(BASE_DIR."/cache_file")) {
             mkdir(BASE_DIR."/cache_file");
         }
-        //file_put_contents(BASE_DIR."/cache_file/".$md5.".cache",json_encode($data,true));
+        if (file_exists(BASE_DIR."/cache_file/".$md5.".cache")) {
+            unlink(BASE_DIR."/cache_file/".$md5.".cache");
+        }
         file_put_contents(BASE_DIR."/cache_file/".$md5.".cache",serialize($data));
     }
     static function initAutoload($autoload_file) {
-        if (!class_exists("autoloadController")){
+        if (!class_exists("autoload")){
             include_once $autoload_file;
         }
     }
     static function clearCache() {
         if (function_exists("apcu_cache_info")) {
             if (apcu_clear_cache()) {
-                opcache_reset();
                 echo "All Cache Cleared";
             }
         } else {

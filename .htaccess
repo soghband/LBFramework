@@ -3,6 +3,11 @@ Header set Cache-Control "max-age=31536050"
 </FilesMatch>
 RewriteEngine on
 RewriteRule ^(controller|resource|systems|view|vendor)/(.*)$ / [R=301,L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(css|js|images)/(.*)\.(css|js|jpg|png|gif)$ /resource_check.php?r=$2&t=$3 [L]
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . index.php [L]

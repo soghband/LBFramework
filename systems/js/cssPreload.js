@@ -2,6 +2,7 @@ var tempCSSList = [];
 var preloadTimeout;
 var tempCallback;
 var onloadProcessed = false;
+var cssLoadStatus = [];
 function loadCss(cssList,callBack) {
     tempCallback = callBack;
     var splitCssList = cssList.split(",");
@@ -13,7 +14,6 @@ function loadCss(cssList,callBack) {
         var linkTag = document.createElement('link');
         linkTag.rel = 'stylesheet';
         var linkTagArray = [];
-        var cssLoadStatus = [];
         var headerTag = document.getElementsByTagName('head')[0];
         var sheet;
         var rules;
@@ -59,7 +59,15 @@ function loadCss(cssList,callBack) {
                 }
             },50);
             preloadTimeout = setTimeout(function() {
-                console.log("CSS Preload Timeout");
+                var allCssLoaded = true;
+                for (var i in cssLoadStatus) {
+                    if (cssLoadStatus[i] == false) {
+                        allCssLoaded = false;
+                    }
+                }
+                if (allCssLoaded == false) {
+                    console.log("CSS Preload Timeout");
+                }
                 clearInterval(cssLoadCheck);
                 clearTimeout(preloadTimeout);
                 for (var i in linkTagArray) {
