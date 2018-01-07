@@ -6,5 +6,6 @@
     "JS_COMPRESS":false,
     "CSS_PATH":"resource/sass",
     "CSS_COMPRESS":false,
-    "DEFAULT_TITLE":"PGN FrameWork"
+    "DEFAULT_TITLE":"PGN FrameWork",
+    "RAW_IMAGE_PATH":"resource/images"
 }

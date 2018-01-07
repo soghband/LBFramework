@@ -11,9 +11,19 @@ cache::loadShare();
 autoload::register();
 config::define(BASE_DIR."/resource/config.json");
 cache::loadResource();
-if ($_GET["t"] == "css") {
-    resource::genCss($_GET["r"]);
-}
-if ($_GET["t"] == "js") {
-    resource::genJs($_GET["r"]);
+$type= $_GET["t"];
+$resource = $_GET["r"];
+switch ($type) {
+    case "css" :
+        resource::genCss($_GET["r"]);
+        break;
+    case "js" :
+        resource::genJs($_GET["r"]);
+        break;
+    case "jpg" || "png" || "gif" :
+        resource::optimizeImage($resource,$type);
+        break;
+    default :
+        header("HTTP/1.0 404 Not Found");
+        exit();
 }

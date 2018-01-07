@@ -62,6 +62,9 @@ class resource {
                 $minifierCss->add($cssCombine);
                 $css_data = $minifierCss->minify();
                 file_put_contents(BASE_DIR."/css/".$hash.".css",$css_data);
+                header("Content-type: text/css");
+                $timeExpires = gmdate("D, d M Y H:i:s", time() + 3600) . " GMT";
+                header("Expires: ".$timeExpires);
                 echo $css_data;
             } else {
                 header("HTTP/1.0 404 Not Found");
@@ -93,6 +96,9 @@ class resource {
             }
             if (strlen($jsCombine) > 0) {
                 file_put_contents(BASE_DIR."/js/".$hash.".js",$jsCombine);
+                header("Content-Type: application/javascript");
+                $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
+                header("Expires: ".$timeExpires);
                 echo $jsCombine;
             } else {
                 header("HTTP/1.0 404 Not Found");
@@ -101,6 +107,44 @@ class resource {
         } else {
             header("HTTP/1.0 404 Not Found");
             exit();
+        }
+    }
+    static function optimizeImage($resource,$type) {
+        $rawFilePath = BASE_DIR."/".RAW_IMAGE_PATH."/".$resource.".".$type;
+        $imgFilePath =  BASE_DIR."/images/".$resource.".".$type;
+        if (file_exists($rawFilePath)) {
+            self::createDirectory($resource);
+            switch ($type) {
+                case "jpg" :
+                    $img = imagecreatefromjpeg($rawFilePath);
+                    imagejpeg($img,$imgFilePath,85);
+                    break;
+                case "png" :
+                    $img = imagecreatefrompng($rawFilePath);
+                    imagesavealpha($img, true);
+                    imagepng($img,$imgFilePath,6, PNG_NO_FILTER );
+                    break;
+                default :
+                    copy($rawFilePath,$imgFilePath);
+            }
+            $header = array('gif'=> 'image/gif',
+                'png'=> 'image/png',
+                'jpg'=> 'image/jpeg');
+            header('Content-type: ' . $header[$type]);
+            $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
+            header("Expires: ".$timeExpires);
+            echo file_get_contents($imgFilePath);
+        }
+    }
+    private static function createDirectory($resource) {
+        $dirArray = explode("/",$resource);
+        array_pop($dirArray);
+        $dirCreate = BASE_DIR."/images";
+        while (count($dirArray) > 0) {
+            $dirCreate .= "/".array_shift($dirArray);
+            if (!file_exists($dirCreate)) {
+                mkdir($dirCreate);
+            }
         }
     }
 }

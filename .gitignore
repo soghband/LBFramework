@@ -4,4 +4,10 @@
 /composer.lock
 /cache_file/*.*
 /css/*.*
+/images/*.*
 /js/*.*
+/dev/node_modules/
+dev/node_modules/
+dev/package-lock.json
+images/
+/dev/package-lock.json

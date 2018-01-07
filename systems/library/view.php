@@ -88,7 +88,7 @@ class view {
             }
             self::dataRegister("firstSignCss",$fs_css_data);
             $core_js = file_get_contents(BASE_DIR."/systems/js/cssPreload.js");
-            $core_js .= "\n".file_get_contents(BASE_DIR."/systems/js/JsPreload.js");
+            $core_js .= "\n".file_get_contents(BASE_DIR."/systems/js/jsPreload.js");
             $minifierCoreJs = new Minify\JS();
             $minifierCoreJs->add($core_js);
             $em_js_data_all = $minifierCoreJs->minify();
@@ -110,8 +110,11 @@ class view {
             $css_resource = resource::registerResourceHash(self::$_css,"css");
             $js_resource = resource::registerResourceHash(self::$_js,"js");
             cache::saveResource();
-            self::dataRegister("combineCss",$css_resource);
-            self::dataRegister("combineJs",$js_resource);
+            $uxControlJs = "";
+            if (strlen($css_resource) > 0) {
+                $uxControlJs = " <script language=JavaScript>loadCss('css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('js/".$js_resource.".js')" : "").");</script>";
+            }
+            self::dataRegister("systemUXControl",$uxControlJs);
             self::dataReplace();
         } elseif ($htmlFileCheck == true) {
             self::$_rawView  =  file_get_contents($html_file);

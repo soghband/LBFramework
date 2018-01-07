@@ -2,7 +2,7 @@
 Header set Cache-Control "max-age=31536050"
 </FilesMatch>
 RewriteEngine on
-RewriteRule ^(controller|resource|systems|view|vendor)/(.*)$ / [R=301,L]
+RewriteRule ^(controller|resource|systems|view|vendor|cache_file)/(.*)$ / [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
