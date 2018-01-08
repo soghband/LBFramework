@@ -61,10 +61,39 @@ class resource {
                 $minifierCss = new Minify\CSS();
                 $minifierCss->add($cssCombine);
                 $css_data = $minifierCss->minify();
-                file_put_contents(BASE_DIR."/css/".$hash.".css",$css_data);
+                if (ENV_MODE != "dev") {
+                    file_put_contents(BASE_DIR."/css/".$hash.".css",$css_data);
+                }
                 header("Content-type: text/css");
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + 3600) . " GMT";
                 header("Expires: ".$timeExpires);
+                echo $css_data;
+            } else {
+                header("HTTP/1.0 404 Not Found");
+                exit();
+            }
+        } else {
+            header("HTTP/1.0 404 Not Found");
+            exit();
+        }
+    }
+    static function genCssFs($resource) {
+        $cssData = explode(",",$resource);
+        if (is_array($cssData) && count($cssData) > 0) {
+            $cssCombine = "";
+            foreach ($cssData as $key => $val) {
+                if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
+                    $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
+                } else{
+                    header("HTTP/1.0 404 Not Found");
+                    exit();
+                }
+            }
+            if (strlen($cssCombine) > 0) {
+                $minifierCss = new Minify\CSS();
+                $minifierCss->add($cssCombine);
+                $css_data = $minifierCss->minify();
+                header("Content-type: text/css");
                 echo $css_data;
             } else {
                 header("HTTP/1.0 404 Not Found");
@@ -95,7 +124,9 @@ class resource {
                 }
             }
             if (strlen($jsCombine) > 0) {
-                file_put_contents(BASE_DIR."/js/".$hash.".js",$jsCombine);
+                if (ENV_MODE != "dev") {
+                    file_put_contents(BASE_DIR . "/js/" . $hash . ".js", $jsCombine);
+                }
                 header("Content-Type: application/javascript");
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
                 header("Expires: ".$timeExpires);
@@ -112,28 +143,43 @@ class resource {
     static function optimizeImage($resource,$type) {
         $rawFilePath = BASE_DIR."/".RAW_IMAGE_PATH."/".$resource.".".$type;
         $imgFilePath =  BASE_DIR."/images/".$resource.".".$type;
+        $imageOut = "";
+        $header = array('gif'=> 'image/gif',
+            'png'=> 'image/png',
+            'jpg'=> 'image/jpeg');
+        header('Content-type: ' . $header[$type]);
+        $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
+        header("Expires: ".$timeExpires);
         if (file_exists($rawFilePath)) {
-            self::createDirectory($resource);
+            if (ENV_MODE != "dev") {
+                self::createDirectory($resource);
+            }
             switch ($type) {
                 case "jpg" :
                     $img = imagecreatefromjpeg($rawFilePath);
-                    imagejpeg($img,$imgFilePath,85);
+                    if (ENV_MODE != "dev") {
+                        imagejpeg($img,$imgFilePath,85);
+                    } else {
+                        imagejpeg($img,null,85);
+                    }
                     break;
                 case "png" :
                     $img = imagecreatefrompng($rawFilePath);
                     imagesavealpha($img, true);
-                    imagepng($img,$imgFilePath,6, PNG_NO_FILTER );
+                    if (ENV_MODE != "dev") {
+                        imagepng($img, $imgFilePath, 6, PNG_NO_FILTER);
+                    } else {
+                        imagepng($img,null,6, PNG_NO_FILTER );
+                    }
                     break;
                 default :
-                    copy($rawFilePath,$imgFilePath);
+                    if (ENV_MODE != "dev") {
+                        echo file_get_contents($rawFilePath);
+                    } else {
+                        copy($rawFilePath,$imgFilePath);
+                        echo file_get_contents($imgFilePath);
+                    }
             }
-            $header = array('gif'=> 'image/gif',
-                'png'=> 'image/png',
-                'jpg'=> 'image/jpeg');
-            header('Content-type: ' . $header[$type]);
-            $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
-            header("Expires: ".$timeExpires);
-            echo file_get_contents($imgFilePath);
         }
     }
     private static function createDirectory($resource) {

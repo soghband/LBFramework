@@ -1,7 +1,7 @@
 {
 "version": 3,
-"mappings": "AAAA,IAAK;EACH,UAAU,EAAE,IAAI;EAChB,KAAK,EAAC,IAAI",
-"sources": ["home_fs.scss"],
+"mappings": "",
+"sources": [],
 "names": [],
 "file": "home_fs.css"
 }

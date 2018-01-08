@@ -1,3 +1,24 @@
 #header {
-  color:#00F;
+  background: #eee;
+  .headerName {
+    color: #000;
+    font-size: 20px;
+    font-weight: bold;
+    padding:20px;
+    display: inline-block;
+    wisth:200px;
+  }
+  .menuPanel {
+    display: inline-block;
+    width:calc(100% - 200px);
+    text-align: right;
+    .link {
+      color: #666;
+      display:inline-block;;
+      padding: 0px 20px;
+      a {
+        text-decoration: none;
+      }
+    }
+  }
 }

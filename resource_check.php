@@ -15,10 +15,13 @@ $type= $_GET["t"];
 $resource = $_GET["r"];
 switch ($type) {
     case "css" :
-        resource::genCss($_GET["r"]);
+        resource::genCss($resource);
+        break;
+    case "cssfs" :
+        resource::genCssFs($resource);
         break;
     case "js" :
-        resource::genJs($_GET["r"]);
+        resource::genJs($resource);
         break;
     case "jpg" || "png" || "gif" :
         resource::optimizeImage($resource,$type);

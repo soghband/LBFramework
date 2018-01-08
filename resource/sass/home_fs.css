@@ -1,5 +1,4 @@
-body {
-  background: #666;
-  color: #fff; }
-
-/*# sourceMappingURL=home_fs.css.map */
+#firstSignPanel {
+  height: 50vh;
+  padding: 20px;
+  position: relative; }

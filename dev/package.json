@@ -1,5 +1,8 @@
 {
   "dependencies": {
+    "express": "^4.16.2",
+    "fs": "0.0.1-security",
+    "node-watch": "^0.5.5",
     "socket.io": "^2.0.4"
   },
   "name": "dev",

@@ -95,19 +95,21 @@ function loadCss(cssList,callBack) {
     if (eventCapter) {
         eventCapter(function () {
             loadProcess();
+            onloadProcessed = true;
         });
     }else {
-        onloadProcessed = true;
-    }
-    if (typeof(window.onload) == 'function') {
-        var windowsOnLoadOld = window.onload;
-        window.onload = function () {
-            windowsOnLoadOld();
-            loadProcess();
-        }
-    }else {
-        window.onload = function () {
-            loadProcess()
+        if (typeof(window.onload) == 'function') {
+            var windowsOnLoadOld = window.onload;
+            window.onload = function () {
+                windowsOnLoadOld();
+                loadProcess();
+                onloadProcessed = true;
+            }
+        }else {
+            window.onload = function () {
+                loadProcess()
+                onloadProcessed = true;
+            }
         }
     }
 }

@@ -83,7 +83,7 @@ class view {
                 if (strlen($fs_css_data) > 0) {
                     $minifierCss = new Minify\CSS();
                     $minifierCss->add($fs_css_data);
-                    $fs_css_data = "<style>".$minifierCss->minify()."</style>";
+                    $fs_css_data = "<style id='cssEmbed' fileList='".implode(",",self::$_fs_css)."'>".$minifierCss->minify()."</style>";
                 }
             }
             self::dataRegister("firstSignCss",$fs_css_data);
