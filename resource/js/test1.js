@@ -1,1 +1,1 @@
-console.log(1);
+console.log("test java 1");

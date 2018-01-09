@@ -28,6 +28,9 @@ class view {
         self::$_view = $page_cache;
         echo self::$_rawView;
     }
+    static  function  getTemplateName() {
+        return self::$_template;
+    }
     static function sessionView() {
 
     }
@@ -83,7 +86,7 @@ class view {
                 if (strlen($fs_css_data) > 0) {
                     $minifierCss = new Minify\CSS();
                     $minifierCss->add($fs_css_data);
-                    $fs_css_data = "<style id='cssEmbed' fileList='".implode(",",self::$_fs_css)."'>".$minifierCss->minify()."</style>";
+                    $fs_css_data = "<style ".(ENV_MODE == "dev" ? " class='devCss' fileList='".implode(",",self::$_fs_css)."'":"").">".$minifierCss->minify()."</style>";
                 }
             }
             self::dataRegister("firstSignCss",$fs_css_data);
@@ -112,7 +115,12 @@ class view {
             cache::saveResource();
             $uxControlJs = "";
             if (strlen($css_resource) > 0) {
-                $uxControlJs = " <script language=JavaScript>loadCss('css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('js/".$js_resource.".js')" : "").");</script>";
+                if (ENV_MODE == "dev") {
+                    $uxControlJs = "<style class='devCss' fileList=".implode(",",self::$_css)."></style>";
+                    $uxControlJs .= " <script language=JavaScript>loadJs('js/".$js_resource.".js');</script>";
+                } else {
+                    $uxControlJs = " <script language=JavaScript>loadCss('css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('js/".$js_resource.".js')" : "").");</script>";
+                }
             }
             self::dataRegister("systemUXControl",$uxControlJs);
             self::dataReplace();

@@ -1,4 +1,34 @@
-#firstSignPanel {
-  height: 50vh;
+#firstSignPanel .whatIs {
   padding: 20px;
-  position: relative; }
+  position: relative;
+  display: inline-block;
+  height: 100%;
+  vertical-align: top; }
+  #firstSignPanel .whatIs .table {
+    display: inline-table;
+    height: inherit; }
+    #firstSignPanel .whatIs .table .row {
+      display: table-row;
+      vertical-align: center; }
+      #firstSignPanel .whatIs .table .row .cell:first-child {
+        font-size: 28px;
+        font-weight: bold;
+        text-align: center;
+        width: calc(45vw - 35px);
+        display: table-cell;
+        vertical-align: middle; }
+      #firstSignPanel .whatIs .table .row .cell {
+        width: calc(55vw - 35px);
+        display: table-cell;
+        font-size: 20px;
+        text-align: left; }
+#firstSignPanel .panel1 {
+  padding: 20px;
+  background: #eeeeee; }
+  #firstSignPanel .panel1 .header {
+    font-size: 28px;
+    font-weight: bold; }
+  #firstSignPanel .panel1 .head2 {
+    font-size: 18px;
+    text-indent: 20px;
+    margin-top: 10px; }

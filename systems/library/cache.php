@@ -35,7 +35,7 @@ class cache {
         return "";
     }
     static function saveShare() {
-        if (self::$_loaded == false) {
+        if (self::$_loaded == false && ENV_MODE != "dev") {
             self::saveCache("share",self::$_shareCache);
         }
     }

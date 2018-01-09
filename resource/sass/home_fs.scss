@@ -1,8 +1,47 @@
 #firstSignPanel {
-  height: 50vh;
-  padding:20px;
-  position: relative;
-  .fwName {
+    .whatIs {
+        padding: 20px;
+        position: relative;
+        display: inline-block;
+        height: 100%;
+        vertical-align: top;
+        .table {
+            display: inline-table;
+            height: inherit;
+            .row {
+                display: table-row;
+                vertical-align: center;
+                .cell:first-child {
+                    font-size: 28px;
+                    font-weight: bold;
+                    text-align: center;
+                    width: calc(45vw - 35px);
+                    display: table-cell;
+                    vertical-align: middle;
+                }
+                .cell {
+                    width: calc(55vw - 35px);
+                    display: table-cell;
+                    font-size: 20px;
+                    text-align: left;
+                }
+            }
+        }
+    }
+    .panel1 {
+        padding:20px;
+        background: #eeeeee;
+        .header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .head2 {
+            font-size: 18px;
+            text-indent: 20px;
+            margin-top:10px;
+        }
+        .info {
 
-  }
+        }
+    }
 }

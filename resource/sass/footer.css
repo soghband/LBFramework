@@ -1,4 +1,5 @@
 #footer {
-  color: #F00; }
-
-/*# sourceMappingURL=footer.css.map */
+  background: #333;
+  color: #FFF;
+  padding: 10px 20px;
+  text-align: center; }
