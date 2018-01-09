@@ -62,6 +62,9 @@ class resource {
                 $minifierCss->add($cssCombine);
                 $css_data = $minifierCss->minify();
                 if (ENV_MODE != "dev") {
+                    if (!file_exists(BASE_DIR . "/css")) {
+                        mkdir(BASE_DIR . "/css");
+                    }
                     file_put_contents(BASE_DIR."/css/".$hash.".css",$css_data);
                 }
                 header("Content-type: text/css");
@@ -125,6 +128,9 @@ class resource {
             }
             if (strlen($jsCombine) > 0) {
                 if (ENV_MODE != "dev") {
+                    if (!file_exists(BASE_DIR . "/js")) {
+                        mkdir(BASE_DIR . "/js");
+                    }
                     file_put_contents(BASE_DIR . "/js/" . $hash . ".js", $jsCombine);
                 }
                 header("Content-Type: application/javascript");
@@ -186,6 +192,9 @@ class resource {
         $dirArray = explode("/",$resource);
         array_pop($dirArray);
         $dirCreate = BASE_DIR."/images";
+        if (!file_exists($dirCreate)) {
+            mkdir($dirCreate);
+        }
         while (count($dirArray) > 0) {
             $dirCreate .= "/".array_shift($dirArray);
             if (!file_exists($dirCreate)) {
