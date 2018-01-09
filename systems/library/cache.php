@@ -3,12 +3,23 @@
 class cache {
     private static $_shareCache ;
     private static $_resourceCache;
+    private static $_pageHash;
+    private static $_pageCache;
     private static $_loaded = false;
-    static function setCache($key,$data,$time) {
-
+    static function setCache($key,$data) {
+        if (!is_array(self::$_pageCache)) {
+            self::$_pageCache = array();
+        }
+        self::$_pageCache[$key] = $data;
     }
     static function getCache($key) {
-
+        if (isset(self::$_pageCache[$key])) {
+            return self::$_pageCache[$key];
+        }
+        return "";
+    }
+    static function  setPageHash($hash) {
+        self::$_pageHash = $hash;
     }
     static function setShareCache($key,$data) {
         if (!is_array(self::$_shareCache)) {
@@ -34,25 +45,33 @@ class cache {
         }
         return "";
     }
-    static function saveShare() {
+    static function saveShareCache() {
         if (self::$_loaded == false && ENV_MODE != "dev") {
             self::saveCache("share",self::$_shareCache);
         }
     }
-    static function loadShare() {
+    static function loadShareCache() {
         $_shareCache = self::loadCache("share");
         if ($_shareCache != "") {
             self::$_loaded = true;
         }
         self::$_shareCache = $_shareCache;
     }
-    static function saveResource() {
+    static function saveResourceCache() {
         self::saveCache("resource",self::$_resourceCache);
     }
-    static function loadResource() {
+    static function loadResourceCache() {
         $_resourceCache = self::loadCache("resource");
         self::$_resourceCache = $_resourceCache;
     }
+    static function loadPageCache() {
+        $_pageCache = self::loadCache(self::$_pageHash);
+        self::$_pageCache= $_pageCache;
+    }
+    static function savePageCache() {
+        self::saveCache(self::$_pageHash,self::$_pageCache);
+    }
+
     static function saveCache($name,$data) {
         if (function_exists("apcu_cache_info")) {
             apcu_add($name,$data);

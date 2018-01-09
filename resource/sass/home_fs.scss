@@ -41,7 +41,39 @@
             margin-top:10px;
         }
         .info {
-
+            margin-top:20px;
+            color:#555;
+        }
+    }
+    .panel2 {
+        padding:20px;
+        background: #FFF;
+        .header {
+            font-size: 28px;
+            font-weight: bold;
+        }
+        .head2 {
+            font-size: 18px;
+            text-indent: 20px;
+            margin-top:10px;
+        }
+        .info {
+            margin-top:20px;
+            padding-left:20px;
+            color:#333;
+            font-weight: bold;
+        }
+        pre {
+            border-radius: 10px;
+            text-indent: 0px;
+            margin: 5px 0px 5px 20px;
+            padding:10px;
+            border: 2px solid #666;
+            background: #f2f2f2;
+        }
+        .info2 {
+            padding-left:20px;
+            color:#777;
         }
     }
 }

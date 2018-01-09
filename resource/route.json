@@ -1,10 +1,6 @@
 {
     "": {
-        "controller":"home",
-        "param_filter":{
-            "aaa":"^a.*b$",
-            "bbb":"^c.*d$"
-        }
+        "controller":"home"
     },
     "json_example": {
         "controller": "jsonExample"
@@ -14,6 +10,31 @@
     },
     "example_full": {
         "controller": "exampleFull"
+    },
+    "filterUrl/example": {
+        "controller":"filterUrlExample1"
+    },
+    "filterUrl/{ex1}/{ex2}": {
+        "controller":"filterUrlExample2",
+        "url_filter":{
+            "{ex1}": "^[a-z]{3}$",
+            "{ex2}": "^[A-Z]{3}$"
+        }
+    },
+    "filterExample1": {
+        "controller": "filterExample1",
+        "param_filter":{
+            "aaa":"^a.*b$",
+            "bbb":"^c.*d$"
+        }
+    },
+    "filterExample2": {
+        "controller":"filterExample2",
+        "param_filter":{
+            "aaa":"^[a-z]*$",
+            "bbb":"^[0-9]*$",
+            "csrf":"^[a-z0-9]{32}$"
+        }
     },
     "{test_r}": {
         "controller": "test",

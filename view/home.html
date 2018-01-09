@@ -23,7 +23,10 @@
                             Session process while caching if you need.
                         </li>
                         <li>
-                            Optimizetion image by GD2
+                            Auto optimization image by GD
+                        </li>
+                        <li>
+                            Time controller tool make you know how lag in which process.
                         </li>
                     </ul>
                 </div>
@@ -49,6 +52,82 @@
                     Full process with template <a href="/example_full" target='_blank'>Example</a>
                 </li>
             </ul>
+        </div>
+    </div>
+    <div class='panel2'>
+        <div class='header'>
+            Easy config route and filter data
+        </div>
+        <div class="head2">
+            Using JSON for config route and filter.
+        </div>
+        <div class="info">
+            Example1 Filter url pattern
+        </div>
+        <pre>{
+    "filterUrl/example": {
+        "controller":"filterUrlExample1"
+    },
+    "filterUrl/{ex1}/{ex2}": {
+        "controller":"filterUrlExample2",
+        "url_filter":{
+            "{ex1}": "^[a-z]{3}$",
+            "{ex2}": "^[A-Z]{3}$"
+        }
+    }
+}</pre>
+        <div class="info2">
+            <div>
+                Normal route <a href="/filterUrl/example" target='_blank'>Example</a>
+            </div>
+            <div>
+                Dynamic route match Pattern <a href="/filterUrl/abc/DEF" target='_blank'>Example</a>
+            </div>
+            <div>
+                Dynamic route mismatch Pattern <a href="/filterUrl/abcd/DEFG" target='_blank'>Example</a>
+            </div>
+        </div>
+        <div class="info">
+            Example2 Filter GET parameter
+        </div>
+        <pre>{
+    "filterExample": {
+        "controller":"filterExample",
+        "param_filter":{
+            "aaa":"^a.*b$",
+            "bbb":"^c.*d$"
+        }
+    }
+}</pre>
+        <div class="info2">
+            <div>
+                Allow parameter <a href="/filterExample1?aaa=aanyb&bbb=canyd" target='_blank'>Example</a>
+            </div>
+            <div>
+                Deny parameter <a href="/filterExample1?aaa=aanyc&bbb=canye" target='_blank'>Example</a>
+            </div>
+        </div>
+        <div class="info">
+            Example2 Filter POST parameter
+        </div>
+        <pre>{
+    "filterExample2": {
+        "controller":"filterExample2",
+        "param_filter":{
+            "aaa":"^[a-z]*$",
+            "bbb":"^[0-9]*$",
+            "csrf":"^[a-z0-9]{32}$"
+        }
+    }
+}</pre>
+        <div class="info2">
+            Example
+            <form action="/filterExample2" method="post" target='_blank'>
+                <input type='hidden' value='<$csrf$>' name='csrf'/>
+                <input type='text' value="abcd" name="aaa"/>
+                <input type='text' value="1234" name="bbb"/>
+                <input type='submit' value='Submit'/>
+            </form>
         </div>
     </div>
 </div>

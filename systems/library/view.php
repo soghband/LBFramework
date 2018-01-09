@@ -11,6 +11,10 @@ class view {
     private static $_rawView;
     private static $_template = "default";
     private static $_data = array();
+    private static  $_sessionData = array();
+    private static $_cachePage = true;
+    private static $_sessionProcess = false;
+    private static $_pageHash;
     static function getPageView($controllerArray) {
         $page_string = $controllerArray["controller"];
         if (count($controllerArray["param"]) > 0) {
@@ -18,21 +22,58 @@ class view {
                 $page_string.= "&".$key."=".$val;
             }
         }
-//        echo "<div>".$page_string."</div>";
         $page_hash = md5($page_string);
-        $page_cache = cache::getCache($page_hash);
-        if ($page_cache == "") {
-//            echo "no cache page";
-            $page_cache = self::genPage($controllerArray);
+        self::$_pageHash = $page_hash;
+        header("PageHash: ".$page_hash);
+        cache::setPageHash($page_hash);
+        cache::loadPageCache();
+        $page_cache = cache::getCache("pageData");
+        $session_process =  cache::getCache("sessionProcess");
+        if ($session_process != "") {
+            self::$_sessionProcess = $session_process;
         }
-        self::$_view = $page_cache;
-        echo self::$_rawView;
+        if ($page_cache == "") {
+            self::genPage($controllerArray);
+            $page_cache = self::$_rawView;
+            if (self::$_cachePage == true && ENV_MODE != "dev") {
+                cache::setCache("pageData",$page_cache);
+                cache::setCache("sessionProcess",self::$_sessionProcess);
+                cache::savePageCache();
+            }
+        }
+        if (self::$_sessionProcess == true) {
+            self::$_view  = self::sessionView($page_cache,$controllerArray);
+        } else {
+            self::$_view = $page_cache;
+        }
+        echo  self::$_view;
+    }
+    static function setCachePage($bool) {
+        self::$_cachePage = $bool;
+    }
+    static  function getPageHash() {
+        return self::$_pageHash;
+    }
+    static function setSessionProcess($bool) {
+        self::$_sessionProcess = $bool;
     }
     static  function  getTemplateName() {
         return self::$_template;
     }
-    static function sessionView() {
-
+    static function sessionView($data,$controllerArray) {
+        if (file_exists(BASE_DIR."/controller/session/globalSession.php")) {
+            include_once  BASE_DIR."/controller/session/globalSession.php";
+        }
+        if (file_exists(BASE_DIR."/controller/session/".$controllerArray["controller"]."Session.php")) {
+            include_once  BASE_DIR."/controller/session/".$controllerArray["controller"]."Session.php";
+        }
+        $search = array();
+        $replace = array();
+        foreach (self::$_sessionData as $key => $val) {
+            $search[] = $key;
+            $replace[] = $val;
+        }
+       return str_replace($search,$replace,$data);
     }
     static function genPage($controllerArray) {
         $htmlFileCheck = false;
@@ -112,20 +153,22 @@ class view {
             self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
             $css_resource = resource::registerResourceHash(self::$_css,"css");
             $js_resource = resource::registerResourceHash(self::$_js,"js");
-            cache::saveResource();
+            cache::saveResourceCache();
             $uxControlJs = "";
             if (strlen($css_resource) > 0) {
                 if (ENV_MODE == "dev") {
                     $uxControlJs = "<style class='devCss' fileList=".implode(",",self::$_css)."></style>";
-                    $uxControlJs .= " <script language=JavaScript>loadJs('js/".$js_resource.".js');</script>";
+                    $uxControlJs .= " <script language=JavaScript>loadJs('/js/".$js_resource.".js');</script>";
                 } else {
-                    $uxControlJs = " <script language=JavaScript>loadCss('css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('js/".$js_resource.".js')" : "").");</script>";
+                    $uxControlJs = " <script language=JavaScript>loadCss('/css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('/js/".$js_resource.".js')" : "").");</script>";
                 }
             }
             self::dataRegister("systemUXControl",$uxControlJs);
             self::dataReplace();
         } elseif ($htmlFileCheck == true) {
             self::$_rawView  =  file_get_contents($html_file);
+        } else {
+            self::$_rawView  =  ob_get_clean();
         }
     }
     static function dataReplace() {
@@ -162,6 +205,12 @@ class view {
             self::$_data = array();
         }
         self::$_data["<{".$key."}>"] = $data;
+    }
+    static function sessionDataRegister($key,$data) {
+        if (!is_array(self::$_sessionData)) {
+            self::$_sessionData = array();
+        }
+        self::$_sessionData["<$".$key."$>"] = $data;
     }
     static function setTemplate($template) {
         if (is_dir(BASE_DIR."/view/template/".$template)

@@ -4,5 +4,6 @@
     "config" : "systems/library/config.php",
     "view" : "systems/library/view.php",
     "pgnUtil" : "systems/library/pgnUtil.php",
-    "resource" : "systems/library/resource.php"
+    "resource" : "systems/library/resource.php",
+    "session" : "systems/library/session.php"
 }

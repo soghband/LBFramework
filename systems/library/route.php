@@ -14,6 +14,7 @@ class route {
                 $file = $value["controller"];
                 $current_level_shift = array_shift($key_split);
                 $param_refine = "";
+                $pattern_refine = "";
                 if (isset($value["url_filter"])) {
                     $pattern_refine = $value["url_filter"];
                 }
@@ -141,13 +142,30 @@ class route {
             $route["controller"] = 404;
         }
         $route["param"] = $parameter;
-
+        self::$param = $parameter;
         return $route;
     }
+    static function getParam($name="") {
+        if ($name == "") {
+            return self::$param;
+        } else {
+            if (isset(self::$param[$name])) {
+                return self::$param[$name];
+            } else {
+                return "";
+            }
+        }
+    }
     static  function createCSRF() {
-
+        $csrf = session::get("csrf");
+        if ($csrf == "") {
+            $csrf_time = microtime(true);
+            $csrf = md5($csrf_time.session::id());
+            session::set("csrf",$csrf);
+        }
+        return $csrf;
     }
     static function getCSRF() {
-
+        return session::get("csrf");
     }
 }

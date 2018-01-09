@@ -7,10 +7,10 @@ ini_set('display_startup_errors', 1);
 include_once BASE_DIR . "/systems/library/cache.php";
 include_once BASE_DIR."/vendor/autoload.php";
 cache::initAutoload(BASE_DIR."/systems/library/autoload.php");
-cache::loadShare();
+cache::loadShareCache();
 autoload::register();
 config::define(BASE_DIR."/resource/config.json");
-cache::loadResource();
+cache::loadResourceCache();
 $type= $_GET["t"];
 $resource = $_GET["r"];
 switch ($type) {

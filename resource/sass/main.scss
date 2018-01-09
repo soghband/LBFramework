@@ -1,3 +1,6 @@
 body {
   margin:0px;
 }
+#content {
+  min-height: calc(100vh - (72px + 38px));
+}
