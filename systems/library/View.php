@@ -1,6 +1,6 @@
 <?php
 use MatthiasMullie\Minify;
-class view {
+class View {
     private static $_fs_css;
     private static $_css;
     private static $_css_index;
@@ -25,10 +25,10 @@ class view {
         $page_hash = md5($page_string);
         self::$_pageHash = $page_hash;
         header("PageHash: ".$page_hash);
-        cache::setPageHash($page_hash);
-        cache::loadPageCache();
-        $page_cache = cache::getCache("pageData");
-        $session_process =  cache::getCache("sessionProcess");
+        Cache::setPageHash($page_hash);
+        Cache::loadPageCache();
+        $page_cache = Cache::getCache("pageData");
+        $session_process =  Cache::getCache("sessionProcess");
         if ($session_process != "") {
             self::$_sessionProcess = $session_process;
         }
@@ -36,9 +36,9 @@ class view {
             self::genPage($controllerArray);
             $page_cache = self::$_rawView;
             if (self::$_cachePage == true && ENV_MODE != "dev") {
-                cache::setCache("pageData",$page_cache);
-                cache::setCache("sessionProcess",self::$_sessionProcess);
-                cache::savePageCache();
+                Cache::setCache("pageData",$page_cache);
+                Cache::setCache("sessionProcess",self::$_sessionProcess);
+                Cache::savePageCache();
             }
         }
         if (self::$_sessionProcess == true) {
@@ -96,7 +96,7 @@ class view {
             }
         }
         if ($htmlFileCheck == false && $controllerFileCheck == false) {
-            pgnUtil::showMsg("File not found: ".$controllerArray["controller"].".html or ".$controllerArray["controller"]."Controller.php");
+            PGNUtil::showMsg("File not found: ".$controllerArray["controller"].".html or ".$controllerArray["controller"]."Controller.php");
         }
         if ($controllerFileCheck == true) {
             if ($htmlFileCheck == false) {
@@ -151,9 +151,9 @@ class view {
             }
             self::dataRegister("embedJS",$em_js_data_all);
             self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
-            $css_resource = resource::registerResourceHash(self::$_css,"css");
-            $js_resource = resource::registerResourceHash(self::$_js,"js");
-            cache::saveResourceCache();
+            $css_resource = Resource::registerResourceHash(self::$_css,"css");
+            $js_resource = Resource::registerResourceHash(self::$_js,"js");
+            Cache::saveResourceCache();
             $uxControlJs = "";
             if (strlen($css_resource) > 0) {
                 if (ENV_MODE == "dev") {
@@ -197,7 +197,7 @@ class view {
             $currentViewData.= file_get_contents(BASE_DIR."/view/".$fileName.".html");
             self::dataRegister("view",$currentViewData);
         } else {
-            pgnUtil::showMsg("File Missing: view/".$fileName.".html");
+            PGNUtil::showMsg("File Missing: view/".$fileName.".html");
         }
     }
     static function dataRegister($key,$data) {
@@ -220,7 +220,7 @@ class view {
             && file_exists(BASE_DIR."/view/template/".$template."/meta.html")) {
             self::$_template = $template;
         } else {
-            pgnUtil::showMsg("Template Missing: ".$template);
+            PGNUtil::showMsg("Template Missing: ".$template);
         }
     }
     static function addFirstSignStyleSheet($css_file_name) {
@@ -233,7 +233,7 @@ class view {
                     self::$_fs_css[] = $val;
                 } else {
                     if (!file_exists($file_path)) {
-                        pgnUtil::showMsg("CSS File not found: ".$val);
+                        PGNUtil::showMsg("CSS File not found: ".$val);
                     }
                 }
             }
@@ -249,7 +249,7 @@ class view {
                     self::$_css[] = $val;
                 } else {
                     if (!file_exists($file_path)) {
-                        pgnUtil::showMsg("CSS File not found: ".$val);
+                        PGNUtil::showMsg("CSS File not found: ".$val);
                     }
                 }
             }
@@ -265,7 +265,7 @@ class view {
                     self::$_em_js[] = $val;
                 } else {
                     if (!file_exists($file_path)) {
-                        pgnUtil::showMsg("JS File not found: ".$val);
+                        PGNUtil::showMsg("JS File not found: ".$val);
                     }
                 }
             }
@@ -281,7 +281,7 @@ class view {
                     self::$_js[] = $val;
                 } else {
                     if (!file_exists($file_path)) {
-                        pgnUtil::showMsg("JS File not found: ".$val);
+                        PGNUtil::showMsg("JS File not found: ".$val);
                     }
                 }
             }

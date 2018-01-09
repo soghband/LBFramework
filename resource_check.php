@@ -4,27 +4,27 @@ define("BASE_DIR",__DIR__);
 define("TRANSACTION_CODE",crc32(microtime(true)));
 ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
-include_once BASE_DIR . "/systems/library/cache.php";
+include_once BASE_DIR . "/systems/library/Cache.php";
 include_once BASE_DIR."/vendor/autoload.php";
-cache::initAutoload(BASE_DIR."/systems/library/autoload.php");
-cache::loadShareCache();
-autoload::register();
-config::define(BASE_DIR."/resource/config.json");
-cache::loadResourceCache();
+Cache::initAutoload(BASE_DIR."/systems/library/autoload.php");
+Cache::loadShareCache();
+Autoload::register();
+Config::define(BASE_DIR."/resource/config.json");
+Cache::loadResourceCache();
 $type= $_GET["t"];
 $resource = $_GET["r"];
 switch ($type) {
     case "css" :
-        resource::genCss($resource);
+        Resource::genCss($resource);
         break;
     case "cssfs" :
-        resource::genCssFs($resource);
+        Resource::genCssFs($resource);
         break;
     case "js" :
-        resource::genJs($resource);
+        Resource::genJs($resource);
         break;
     case "jpg" || "png" || "gif" :
-        resource::optimizeImage($resource,$type);
+        Resource::optimizeImage($resource,$type);
         break;
     default :
         header("HTTP/1.0 404 Not Found");

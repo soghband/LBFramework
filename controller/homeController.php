@@ -1,7 +1,7 @@
 <?php
-view::addFirstSignStyleSheet("home_fs");
-view::addStyleSheet("home");
-view::addJavascript("test1,test2,test3");
-view::setSessionProcess(true);
+View::addFirstSignStyleSheet("home_fs");
+View::addStyleSheet("home");
+View::addJavascript("test1,test2,test3");
+View::setSessionProcess(true);
 //view::clearView();
 //echo 111;

@@ -1,21 +1,20 @@
 <?php
-class autoload {
+class Autoload {
     public static $_list;
     static function register() {
-        $list = cache::getShareCache("autoload");
+        $list = Cache::getShareCache("autoload");
         if ($list == "") {
             $list = json_decode(file_get_contents(BASE_DIR."/resource/autoload.json"),true);
             if ($list == null) {
-                throw new Exception('Json Return NULL value');
+                throw new InvalidArgumentException('Json Return NULL value');
             }
-            cache::setShareCache("autoload",$list);
+            Cache::setShareCache("autoload",$list);
         }
         self::$_list = $list;
-        foreach (self::$_list as $key => $val) {
-            //echo BASE_DIR . "/" . $val;
+        foreach (self::$_list as $val) {
             if (file_exists(BASE_DIR . "/" . $val)) {
                 spl_autoload_register(function ($key) {
-                    autoload::load_file($key);
+                    Autoload::load_file($key);
                 });
             }
         }

@@ -1,2 +1,2 @@
 <?php
-var_dump(route::getParam());
+var_dump(Route::getParam());

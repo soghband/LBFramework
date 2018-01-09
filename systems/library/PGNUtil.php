@@ -1,9 +1,9 @@
 <?php
-class pgnUtil{
+class PGNUtil{
     static function jsonDecode($json) {
         $array = json_decode($json,true);
         if ($array == null) {
-            throw new Exception('Json Return NULL value');
+            throw new InvalidArgumentException('Json Return NULL value');
         }
         return $array;
     }

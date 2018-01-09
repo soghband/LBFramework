@@ -1,9 +1,9 @@
 {
-    "time" : "systems/library/time.php",
-    "route" : "systems/library/route.php",
-    "config" : "systems/library/config.php",
-    "view" : "systems/library/view.php",
-    "pgnUtil" : "systems/library/pgnUtil.php",
-    "resource" : "systems/library/resource.php",
-    "session" : "systems/library/session.php"
+    "Time" : "systems/library/Time.php",
+    "Route" : "systems/library/Route.php",
+    "Config" : "systems/library/Config.php",
+    "View" : "systems/library/View.php",
+    "PGNUtil" : "systems/library/PGNUtil.php",
+    "Resource" : "systems/library/Resource.php",
+    "Session" : "systems/library/Session.php"
 }

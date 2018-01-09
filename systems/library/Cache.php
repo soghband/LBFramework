@@ -1,6 +1,6 @@
 <?php
 
-class cache {
+class Cache {
     private static $_shareCache ;
     private static $_resourceCache;
     private static $_pageHash;
@@ -107,7 +107,7 @@ class cache {
         file_put_contents(BASE_DIR."/cache_file/".$md5.".cache",serialize($data));
     }
     static function initAutoload($autoload_file) {
-        if (!class_exists("autoload")){
+        if (!class_exists("Autoload")){
             include_once $autoload_file;
         }
     }

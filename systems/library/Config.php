@@ -1,12 +1,12 @@
 <?php
-class config {
+class Config {
     private static $config;
     static function define($config_file) {
-        $config = cache::getShareCache("config");
+        $config = Cache::getShareCache("config");
         if ($config == "") {
             $config_data = file_get_contents($config_file);
-            $config = pgnUtil::jsonDecode($config_data);
-            cache::setShareCache("config",$config);
+            $config = PGNUtil::jsonDecode($config_data);
+            Cache::setShareCache("config",$config);
         }
         self::$config = $config;
         foreach (self::$config as $key => $value) {

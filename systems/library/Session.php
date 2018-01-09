@@ -1,5 +1,5 @@
 <?php
-    class session {
+    class Session {
         static function start() {
             ini_set("session.use_cookies", 1);
             ini_set("session.cookie_httponly", 1);
@@ -39,7 +39,7 @@
             return false;
         }
         static function getByPage($dataName = "") {
-            $pageHash = view::getPageHash();
+            $pageHash = View::getPageHash();
             if ($dataName == "") {
                 return $_SESSION[$pageHash];
             } else {
@@ -54,7 +54,7 @@
             if ($dataName == "") {
                 return false;
             } else {
-                $pageHash = view::getPageHash();
+                $pageHash = View::getPageHash();
                 if ($value=="") {
                     if (isset($_SESSION[$pageHash][$dataName])) {
                         unset($_SESSION[$pageHash][$dataName]);

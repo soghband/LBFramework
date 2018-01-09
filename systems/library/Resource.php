@@ -1,6 +1,6 @@
 <?php
 use MatthiasMullie\Minify;
-class resource {
+class Resource {
     static function registerResourceHash($fileList,$type) {
         $lastModify = "";
         if ($type == "css") {
@@ -10,20 +10,20 @@ class resource {
         }
         $fileImplodeName = implode($fileList,",");
         $hashName = md5($fileImplodeName.$lastModify);
-        cache::setResourceCache($hashName,$fileList);
+        Cache::setResourceCache($hashName,$fileList);
         return $hashName;
     }
     private static function getCssLastModifyDate($fileList) {
         $lastMod = 0;
         if (is_array($fileList) && count($fileList) > 0) {
-            foreach ($fileList as $key=>$val) {
+            foreach ($fileList as $val) {
                 if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
                     $mod_time = filemtime(BASE_DIR."/".CSS_PATH."/".$val.".css");
                     if ($mod_time > $lastMod) {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    pgnUtil::showMsg("CSS File not found: ".$val);
+                    PGNUtil::showMsg("CSS File not found: ".$val);
                 }
             }
         }
@@ -32,24 +32,24 @@ class resource {
     private static function getJsLastModifyDate($fileList) {
         $lastMod = 0;
         if (is_array($fileList) && count($fileList) > 0) {
-            foreach ($fileList as $key=>$val) {
+            foreach ($fileList as $val) {
                 if (file_exists(BASE_DIR."/".JS_PATH."/".$val.".js")) {
                     $mod_time = filemtime(BASE_DIR."/".JS_PATH."/".$val.".js");
                     if ($mod_time > $lastMod) {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    pgnUtil::showMsg("JS File not found: ".$val);
+                    PGNUtil::showMsg("JS File not found: ".$val);
                 }
             }
         }
         return $lastMod;
     }
     static function genCss($hash) {
-        $cssData = cache::getResourceCache($hash);
+        $cssData = Cache::getResourceCache($hash);
         if (is_array($cssData) && count($cssData) > 0) {
             $cssCombine = "";
-            foreach ($cssData as $key => $val) {
+            foreach ($cssData as  $val) {
                 if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
                     $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
                 } else{
@@ -84,7 +84,7 @@ class resource {
         $cssData = explode(",",$resource);
         if (is_array($cssData) && count($cssData) > 0) {
             $cssCombine = "";
-            foreach ($cssData as $key => $val) {
+            foreach ($cssData as $val) {
                 if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
                     $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
                 } else{
@@ -108,10 +108,10 @@ class resource {
         }
     }
     static function genJs($hash) {
-        $jsData = cache::getResourceCache($hash);
+        $jsData = Cache::getResourceCache($hash);
         if (is_array($jsData) && count($jsData) > 0) {
             $jsCombine = "";
-            foreach ($jsData as $key => $val) {
+            foreach ($jsData as $val) {
                 if (file_exists(BASE_DIR."/".JS_PATH."/".$val.".js")) {
                     $jsDataLoad = file_get_contents(BASE_DIR."/".JS_PATH."/".$val.".js");
                     if (!preg_match(".min.",$val)) {
@@ -149,7 +149,6 @@ class resource {
     static function optimizeImage($resource,$type) {
         $rawFilePath = BASE_DIR."/".RAW_IMAGE_PATH."/".$resource.".".$type;
         $imgFilePath =  BASE_DIR."/images/".$resource.".".$type;
-        $imageOut = "";
         $header = array('gif'=> 'image/gif',
             'png'=> 'image/png',
             'jpg'=> 'image/jpeg');

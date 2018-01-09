@@ -1,14 +1,14 @@
 <?php
 
-class route {
+class Route {
     private static $route_index;
     private static $param;
     private static $csrf;
     static function register($route_file){
-        self::$route_index = cache::getShareCache("route");
+        self::$route_index = Cache::getShareCache("route");
         if (self::$route_index == "") {
             $route_data = file_get_contents($route_file);
-            $route = pgnUtil::jsonDecode($route_data);
+            $route = PGNUtil::jsonDecode($route_data);
             foreach ($route as $key => $value ) {
                 $key_split = explode("/",$key);
                 $file = $value["controller"];
@@ -47,7 +47,7 @@ class route {
                 }
             }
         }
-        cache::setShareCache("route",self::$route_index);
+        Cache::setShareCache("route",self::$route_index);
     }
     static function show_index() {
         echo "<pre>";
@@ -89,7 +89,7 @@ class route {
     }
     static function getRoute($path) {
         if (preg_match("/\?/",$path)) {
-            list($url_split,$get_val) = explode("?",$path);
+            list($url_split) = explode("?",$path);
         } else {
             $url_split = $path;
         }
@@ -111,7 +111,7 @@ class route {
                         $parameter[trim($val,"{}")] = $shift_route;
                     }
                 }
-                if ($check_route == false) {
+                if (!$check_route) {
                     $route_index = 404;
                 }
             } else {
@@ -132,7 +132,7 @@ class route {
                     $get_check = false;
                 }
             }
-            if ($get_check == false) {
+            if (!$get_check) {
                 $route_index = 404;
             }
         }
@@ -157,15 +157,15 @@ class route {
         }
     }
     static  function createCSRF() {
-        $csrf = session::get("csrf");
+        $csrf = Session::get("csrf");
         if ($csrf == "") {
             $csrf_time = microtime(true);
-            $csrf = md5($csrf_time.session::id());
-            session::set("csrf",$csrf);
+            $csrf = md5($csrf_time.Session::id());
+            Session::set("csrf",$csrf);
         }
         return $csrf;
     }
     static function getCSRF() {
-        return session::get("csrf");
+        return Session::get("csrf");
     }
 }
