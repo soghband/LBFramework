@@ -1,8 +1,12 @@
 #firstSignPanel {
+    .centerPanel {
+        max-width:900px;
+        margin:0 auto;
+        position: relative;
+    }
     .whatIs {
         padding: 20px;
         position: relative;
-        display: inline-block;
         height: 100%;
         vertical-align: top;
         .table {

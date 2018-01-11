@@ -163,20 +163,20 @@ class Resource {
                 case "jpg" :
                     $img = imagecreatefromjpeg($rawFilePath);
                     if (ENV_MODE != "dev") {
-                        imagejpeg($img,$imgFilePath,85);
+                        imagejpeg($img,$imgFilePath,JPG_QUALITY);
                         echo file_get_contents($imgFilePath);
                     } else {
-                        imagejpeg($img,null,85);
+                        imagejpeg($img,null,JPG_QUALITY);
                     }
                     break;
                 case "png" :
                     $img = imagecreatefrompng($rawFilePath);
                     imagesavealpha($img, true);
                     if (ENV_MODE != "dev") {
-                        imagepng($img, $imgFilePath, 6, PNG_NO_FILTER );
+                        imagepng($img, $imgFilePath, PNG_COMPRESS_LEVEL, PNG_NO_FILTER );
                         echo file_get_contents($imgFilePath);
                     } else {
-                        imagepng($img,null,6, PNG_NO_FILTER  );
+                        imagepng($img,null,PNG_COMPRESS_LEVEL, PNG_NO_FILTER  );
                     }
                     break;
                 default :

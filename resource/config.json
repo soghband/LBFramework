@@ -1,6 +1,5 @@
 {
     "ENV_MODE":"dev",
-    "DB_CONNECT_STRING":"mysql:host=localhost;dbname=projectg_zs, projectg, sogh1982x",
     "CACHE":false,
     "TIME_CHECK":true,
     "JS_PATH":"resource/js",
@@ -9,5 +8,7 @@
     "CSS_COMPRESS":false,
     "DEFAULT_TITLE":"PGN FrameWork",
     "RAW_IMAGE_PATH":"resource/images",
-    "ENABLE_DEV_IO":true
+    "ENABLE_DEV_IO":true,
+    "JPG_QUALITY":85,
+    "PNG_COMPRESS_LEVEL":6
 }

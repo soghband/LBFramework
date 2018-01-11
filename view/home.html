@@ -1,70 +1,75 @@
 <div id="firstSignPanel">
     <div class='whatIs'>
-        <div class="table">
-            <div class="row">
-                <div class="cell">
-                    What's PGN Framework can do?
-                </div>
-                <div class="cell">
-                    <ul>
-                        <li>
-                            Flexible to using controller or html.
-                        </li>
-                        <li>
-                            Easy config route and filter data.
-                        </li>
-                        <li>
-                            Auto optimization image by GD
-                        </li>
-                        <li>
-                            Time controller tool make you know how lag in which process.
-                        </li>
-                        <li>
-                            Auto caching when switch to production mode.
-                        </li>
-                        <li>
-                            Session process while caching if you need.
-                        </li>
-                        <li>
-                            Dev IO real-time build CSS like SASS.
-                        </li>
-                    </ul>
+        <div class="centerPanel">
+            <div class="table">
+                <div class="row">
+                    <div class="cell">
+                        What's PGN Framework can do?
+                    </div>
+                    <div class="cell">
+                        <ul>
+                            <li>
+                                Flexible to using controller or html.
+                            </li>
+                            <li>
+                                Easy config route and filter data.
+                            </li>
+                            <li>
+                                Auto optimization image by GD
+                            </li>
+                            <li>
+                                Auto caching when switch to production mode.
+                            </li>
+                            <li>
+                                Time controller tool make you know how lag in which process.
+                            </li>
+                            <li>
+                                Session process while caching if you need.
+                            </li>
+                            <li>
+                                Dev IO real-time build CSS like SASS.
+                            </li>
+                        </ul>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class='panel1'>
-        <div class='header'>
-            Flexible to using controller or html
-        </div>
-        <div class="head2">
-            Work under condition.
-        </div>
-        <div class="info">
-            <ul>
-                <li>
-                    Html only when system not found controller file in controller folder and have html tag in html file <a href="/example_html" target='_blank'>Example</a>
-                </li>
-                <li>
-                    Controller only when system not found html file in view folder <a href="/json_example" target='_blank'>Example</a>
-                </li>
-                <li>
-                    Full process with template <a href="/example_full" target='_blank'>Example</a>
-                </li>
-            </ul>
+        <div class="centerPanel">
+            <div class='header'>
+                Flexible to using controller or html
+            </div>
+            <div class="head2">
+                Work under condition.
+            </div>
+            <div class="info">
+                <ul>
+                    <li>
+                        Html only when system not found controller file in controller folder and have html tag in html file <a href="/example_html" target='_blank'>Example</a>
+                    </li>
+                    <li>
+                        Controller only when system not found html file in view folder <a href="/json_example" target='_blank'>Example</a>
+                    </li>
+                    <li>
+                        Full process with template <a href="/example_full" target='_blank'>Example</a>
+                    </li>
+                </ul>
+            </div>
         </div>
     </div>
     <div class='panel2'>
-        <div class='header'>
-            Easy config route and filter data
-        </div>
-        <div class="head2">
-            Using JSON for config route and filter.
-        </div>
-        <div class="info">
-            Example1 Filter url pattern
-        </div>
-        <pre>{
+        <div class="centerPanel">
+            <div class='header'>
+                Easy config route and filter data
+            </div>
+            <div class="head2">
+                Using JSON for config route and filter.
+            </div>
+            <div class="info">
+                Example1 Filter url pattern
+            </div>
+            <pre>{
     "filterUrl/example": {
         "controller":"filterUrlExample1"
     },
@@ -76,21 +81,21 @@
         }
     }
 }</pre>
-        <div class="info2">
-            <div>
-                Normal route <a href="/filterUrl/example" target='_blank'>Example</a>
+            <div class="info2">
+                <div>
+                    Normal route <a href="/filterUrl/example" target='_blank'>Example</a>
+                </div>
+                <div>
+                    Dynamic route match Pattern <a href="/filterUrl/abc/DEF" target='_blank'>Example</a>
+                </div>
+                <div>
+                    Dynamic route mismatch Pattern <a href="/filterUrl/abcd/DEFG" target='_blank'>Example</a>
+                </div>
             </div>
-            <div>
-                Dynamic route match Pattern <a href="/filterUrl/abc/DEF" target='_blank'>Example</a>
+            <div class="info">
+                Example2 Filter GET parameter
             </div>
-            <div>
-                Dynamic route mismatch Pattern <a href="/filterUrl/abcd/DEFG" target='_blank'>Example</a>
-            </div>
-        </div>
-        <div class="info">
-            Example2 Filter GET parameter
-        </div>
-        <pre>{
+            <pre>{
     "filterExample": {
         "controller":"filterExample",
         "param_filter":{
@@ -99,18 +104,18 @@
         }
     }
 }</pre>
-        <div class="info2">
-            <div>
-                Allow parameter <a href="/filterExample1?aaa=aanyb&bbb=canyd" target='_blank'>Example</a>
+            <div class="info2">
+                <div>
+                    Allow parameter <a href="/filterExample1?aaa=aanyb&bbb=canyd" target='_blank'>Example</a>
+                </div>
+                <div>
+                    Deny parameter <a href="/filterExample1?aaa=aanyc&bbb=canye" target='_blank'>Example</a>
+                </div>
             </div>
-            <div>
-                Deny parameter <a href="/filterExample1?aaa=aanyc&bbb=canye" target='_blank'>Example</a>
+            <div class="info">
+                Example2 Filter POST parameter
             </div>
-        </div>
-        <div class="info">
-            Example2 Filter POST parameter
-        </div>
-        <pre>{
+            <pre>{
     "filterExample2": {
         "controller":"filterExample2",
         "param_filter":{
@@ -120,61 +125,48 @@
         }
     }
 }</pre>
-        <div class="info2">
-            Example
-            <form action="/filterExample2" method="post" target='_blank'>
-                <input type='hidden' value='<$csrf$>' name='csrf'/>
-                <input type='text' value="abcd" name="aaa"/>
-                <input type='text' value="1234" name="bbb"/>
-                <input type='submit' value='Submit'/>
-            </form>
+            <div class="info2">
+                Example
+                <form action="/filterExample2" method="post" target='_blank'>
+                    <input type='hidden' value='<$csrf$>' name='csrf'/>
+                    <input type='text' value="abcd" name="aaa"/>
+                    <input type='text' value="1234" name="bbb"/>
+                    <input type='submit' value='Submit'/>
+                </form>
+            </div>
         </div>
     </div>
     <div class='panel1'>
-        <div class='header'>
-            Auto optimization image by GD
-        </div>
-        <div class="head2">
-            Just drop image in resource/images folder and link at public url<br>
-            Example: Drop in [DOC_ROOT]/resource/images/some_image.jpg<br>
-            Link: [URL]/images/some_image.jpg
-        </div>
-        <div class="info">
-            JPG Optimize
-        </div>
-        <div class='img_block'>
-            <div class='img_view'>
-                <img src="http://projectgn.org/images/sample_jpg.jpg">
+        <div class='centerPanel'>
+            <div class='header'>
+                Auto optimization image by GD
             </div>
-            <div class="detail">
-                Original Full Quality 43.3Kb
+            <div class="head2">
+                Just drop image in resource/images folder and link at public url<br>
+                Example: Drop in [DOC_ROOT]/resource/images/some_image.jpg<br>
+                Link to [URL]/images/some_image.jpg
             </div>
-        </div>
-        <div class='img_block'>
-            <div class='img_view'>
-                <img src="/images/sample_jpg.jpg">
+            <div class="info">
+                JPG Optimize
             </div>
-            <div class="detail">
-                Original Optimize Quality 9.1Kb
+            <div class='img_block'>
+                <div class='img_view'>
+                    <img src="/images/sample_jpg.jpg">
+                </div>
+                <div class="detail">
+                    Optimize quality 9.1Kb from original full quality 43.3Kb <a href="http://projectgn.org/images/sample_jpg.jpg" target='_blank'>Original</a>
+                </div>
             </div>
-        </div>
-        <div class="info">
-            PNG Optimize
-        </div>
-        <div class='img_block'>
-            <div class='img_view'>
-                <img src="http://projectgn.org/images/sample_png.png">
+            <div class="info">
+                PNG Optimize
             </div>
-            <div class="detail">
-                Original No Compress 310Kb
-            </div>
-        </div>
-        <div class='img_block'>
-            <div class='img_view'>
-                <img src="/images/sample_png.png">
-            </div>
-            <div class="detail">
-                Original Optimize Quality 77.1Kb
+            <div class='img_block'>
+                <div class='img_view'>
+                    <img src="/images/sample_png.png">
+                </div>
+                <div class="detail">
+                    Compress 77.1Kb from original no compress 310Kb <a href="http://projectgn.org/images/sample_png.png" target='_blank'>Original</a>
+                </div>
             </div>
         </div>
     </div>
