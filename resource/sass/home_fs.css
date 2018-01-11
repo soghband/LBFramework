@@ -1,7 +1,10 @@
+#firstSignPanel .centerPanel {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative; }
 #firstSignPanel .whatIs {
   padding: 20px;
   position: relative;
-  display: inline-block;
   height: 100%;
   vertical-align: top; }
   #firstSignPanel .whatIs .table {
@@ -30,11 +33,15 @@
     font-weight: bold; }
   #firstSignPanel .panel1 .head2 {
     font-size: 18px;
-    text-indent: 20px;
+    margin-left: 20px;
     margin-top: 10px; }
   #firstSignPanel .panel1 .info {
     margin-top: 20px;
-    color: #555; }
+    color: #555;
+    margin-left: 20px; }
+  #firstSignPanel .panel1 .img_block {
+    margin-left: 20px;
+    display: inline-block; }
 #firstSignPanel .panel2 {
   padding: 20px;
   background: #FFF; }
