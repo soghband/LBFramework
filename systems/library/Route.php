@@ -95,9 +95,15 @@ class Route {
         }
         $path_decode = urldecode($url_split);
         $path_array = explode("/",trim($path_decode,"/"));
+        if (preg_match("/^\/public.*/",$url_split)) {
+            array_shift($path_array);
+        }
         $route_index = self::$route_index;
         $parameter = array();
         $route = array();
+        if (count($path_array) == 0) {
+            $path_array[] = "";
+        }
         while (count($path_array) > 0) {
             $shift_route = array_shift($path_array);
             if (isset($route_index[$shift_route])) {

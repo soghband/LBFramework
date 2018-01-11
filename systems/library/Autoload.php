@@ -21,7 +21,7 @@ class Autoload {
     }
     static function load_file($class) {
         $file = self::$_list[$class];
-        include $file;
+        include BASE_DIR."/".$file;
     }
 }
 ?>

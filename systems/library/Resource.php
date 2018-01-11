@@ -62,10 +62,10 @@ class Resource {
                 $minifierCss->add($cssCombine);
                 $css_data = $minifierCss->minify();
                 if (ENV_MODE != "dev") {
-                    if (!file_exists(BASE_DIR . "/css")) {
-                        mkdir(BASE_DIR . "/css");
+                    if (!file_exists(BASE_DIR . "/public/css")) {
+                        mkdir(BASE_DIR . "/public/css");
                     }
-                    file_put_contents(BASE_DIR."/css/".$hash.".css",$css_data);
+                    file_put_contents(BASE_DIR."/public/css/".$hash.".css",$css_data);
                 }
                 header("Content-type: text/css");
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + 3600) . " GMT";
@@ -128,10 +128,10 @@ class Resource {
             }
             if (strlen($jsCombine) > 0) {
                 if (ENV_MODE != "dev") {
-                    if (!file_exists(BASE_DIR . "/js")) {
-                        mkdir(BASE_DIR . "/js");
+                    if (!file_exists(BASE_DIR . "/public/js")) {
+                        mkdir(BASE_DIR . "/public/js");
                     }
-                    file_put_contents(BASE_DIR . "/js/" . $hash . ".js", $jsCombine);
+                    file_put_contents(BASE_DIR . "/public/js/" . $hash . ".js", $jsCombine);
                 }
                 header("Content-Type: application/javascript");
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
@@ -148,7 +148,7 @@ class Resource {
     }
     static function optimizeImage($resource,$type) {
         $rawFilePath = BASE_DIR."/".RAW_IMAGE_PATH."/".$resource.".".$type;
-        $imgFilePath =  BASE_DIR."/images/".$resource.".".$type;
+        $imgFilePath =  BASE_DIR."/public/images/".$resource.".".$type;
         $header = array('gif'=> 'image/gif',
             'png'=> 'image/png',
             'jpg'=> 'image/jpeg');
@@ -164,6 +164,7 @@ class Resource {
                     $img = imagecreatefromjpeg($rawFilePath);
                     if (ENV_MODE != "dev") {
                         imagejpeg($img,$imgFilePath,85);
+                        echo file_get_contents($imgFilePath);
                     } else {
                         imagejpeg($img,null,85);
                     }
@@ -173,6 +174,7 @@ class Resource {
                     imagesavealpha($img, true);
                     if (ENV_MODE != "dev") {
                         imagepng($img, $imgFilePath, 6, PNG_NO_FILTER);
+                        echo file_get_contents($imgFilePath);
                     } else {
                         imagepng($img,null,6, PNG_NO_FILTER );
                     }
@@ -190,7 +192,7 @@ class Resource {
     private static function createDirectory($resource) {
         $dirArray = explode("/",$resource);
         array_pop($dirArray);
-        $dirCreate = BASE_DIR."/images";
+        $dirCreate = BASE_DIR."/public/images";
         if (!file_exists($dirCreate)) {
             mkdir($dirCreate);
         }
