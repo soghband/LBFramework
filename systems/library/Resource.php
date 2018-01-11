@@ -173,10 +173,10 @@ class Resource {
                     $img = imagecreatefrompng($rawFilePath);
                     imagesavealpha($img, true);
                     if (ENV_MODE != "dev") {
-                        imagepng($img, $imgFilePath, 6, PNG_NO_FILTER);
+                        imagepng($img, $imgFilePath, 6, PNG_NO_FILTER );
                         echo file_get_contents($imgFilePath);
                     } else {
-                        imagepng($img,null,6, PNG_NO_FILTER );
+                        imagepng($img,null,6, PNG_NO_FILTER  );
                     }
                     break;
                 default :

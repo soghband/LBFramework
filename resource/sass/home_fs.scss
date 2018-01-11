@@ -37,12 +37,17 @@
         }
         .head2 {
             font-size: 18px;
-            text-indent: 20px;
+            margin-left: 20px;
             margin-top:10px;
         }
         .info {
             margin-top:20px;
             color:#555;
+            margin-left:20px;
+        }
+        .img_block{
+            margin-left:20px;
+            display: inline-block;
         }
     }
     .panel2 {
