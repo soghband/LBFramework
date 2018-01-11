@@ -3,9 +3,9 @@
 /vendor/
 /composer.lock
 /cache_file/*
-/css/*
-/images/*
-/js/*
+/public/css/*
+/public/images/*
+/public/js/*
 /dev/node_modules/
 dev/node_modules/
 dev/package-lock.json
