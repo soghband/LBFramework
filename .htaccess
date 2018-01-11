@@ -1,12 +1,20 @@
+<IfModule mod_headers.c>
 <FilesMatch "\.(ico|css|js|pdf|jpg|jpeg|png|gif|html|htm|xml|txt|xsl)$">
 Header set Cache-Control "max-age=31536050"
 </FilesMatch>
+<FilesMatch "\\.(ico|x-icon|js|css|jpg|jpeg|png|gif|swf|pdf)$">
+Header set Pragma "public"
+RequestHeader unset Cookie
+Header unset Cookie
+Header unset Set-Cookie
+</FilesMatch>
+</IfModule>
 RewriteEngine on
 RewriteRule ^(controller|resource|systems|view|vendor|cache_file)/(.*)$ / [R=301,L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(css|js|images)/(.*)\.(css|js|jpg|png|gif)$ /resource_check.php?r=$2&t=$3 [L]
+RewriteRule ^(css|js|images)/(.*)\.(css|js|jpg|png|gif|svg)$ /resource_check.php?r=$2&t=$3 [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f

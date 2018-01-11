@@ -152,6 +152,14 @@ class View {
             self::dataRegister("embedJS",$em_js_data_all);
             self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
             $css_resource = Resource::registerResourceHash(self::$_css,"css");
+            if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
+                if (!file_exists((BASE_DIR."/".JS_PATH."/dev-tool.js"))) {
+                    $devToolContent = file_get_contents(BASE_DIR."/systems/js/socket.io.js");
+                    $devToolContent .= "\n".file_get_contents(BASE_DIR."/systems/js/dev_io.js");
+                    file_put_contents(BASE_DIR."/".JS_PATH."/dev-tool.js",$devToolContent);
+                }
+                view::addJavascript("dev-tool");
+            }
             $js_resource = Resource::registerResourceHash(self::$_js,"js");
             Cache::saveResourceCache();
             $uxControlJs = "";

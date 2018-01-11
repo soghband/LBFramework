@@ -5,4 +5,4 @@
 View::addFirstSignStyleSheet("main,header");
 View::addStyleSheet("footer");
 
-View::addJavascript("jquery-3.0.0.min,socket.io,dev_io");
+View::addJavascript("jquery-3.0.0.min");

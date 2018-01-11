@@ -4,4 +4,3 @@ View::addStyleSheet("home");
 View::addJavascript("test1,test2,test3");
 View::setSessionProcess(true);
 //view::clearView();
-//echo 111;

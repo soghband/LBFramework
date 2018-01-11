@@ -46,7 +46,7 @@ class Cache {
         return "";
     }
     static function saveShareCache() {
-        if (self::$_loaded == false && ENV_MODE != "dev") {
+        if (self::$_loaded && ENV_MODE != "dev") {
             self::saveCache("share",self::$_shareCache);
         }
     }
@@ -118,14 +118,16 @@ class Cache {
             }
         } else {
             $files = glob(BASE_DIR."/cache_file/*");
-            foreach($files as $file){ // iterate files
-                if(is_file($file)) {
-                    $file_name_array = explode("/",$file);
-                    $file_name = array_pop($file_name_array);
-                    if (unlink($file)) {
-                        echo "<div>Cache file deleted ".$file_name."</div>";
-                    } else {
-                        echo "<div>Cache file can't delete ".$file_name."</div>";
+            if ($files) {
+                foreach($files as $file){ // iterate files
+                    if(is_file($file)) {
+                        $file_name_array = explode("/",$file);
+                        $file_name = array_pop($file_name_array);
+                        if (unlink($file)) {
+                            echo "<div>Cache file deleted ".$file_name."</div>";
+                        } else {
+                            echo "<div>Cache file can't delete ".$file_name."</div>";
+                        }
                     }
                 }
             }

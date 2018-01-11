@@ -7,7 +7,7 @@ ini_set('display_errors', 1);
 ini_set('display_startup_errors', 1);
 include_once BASE_DIR . "/systems/library/Cache.php";
 include_once BASE_DIR."/vendor/autoload.php";
-Cache::initAutoload(BASE_DIR."/systems/library/autoload.php");
+Cache::initAutoload(BASE_DIR."/systems/library/Autoload.php");
 Cache::loadShareCache();
 Autoload::register();
 Config::define(BASE_DIR."/resource/config.json");
