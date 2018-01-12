@@ -15,5 +15,6 @@ RewriteRule ^(controller|resource|systems|view|vendor|cache_file)/(.*)$ / [R=301
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(images|css|js|)/(.*)$ /public/$1/$2 [L,NC]
-RewriteRule ^favicon.ico public/favicon.ico [L,NC]
+RewriteRule ^(favicon)/(.*)\.(.*)$ /public/favicon/$2.$3 [L,NC]
+RewriteRule favicon.ico public/favicon/favicon.ico [L,NC]
 RewriteRule ^.*$ /public/index.php [L]

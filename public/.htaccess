@@ -17,4 +17,9 @@ RewriteRule ^(css|js|images)/(.*)\.(css|js|jpg|png|gif|svg)$ resource_check.php?
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(favicon)/(.*)\.(.*)$ /favicon/$2.$3 [L,NC]
+RewriteRule favicon.ico /favicon/favicon.ico [L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L,NC]
