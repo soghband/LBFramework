@@ -15,6 +15,13 @@ RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(css|js|images)/(.*)\.(css|js|jpg|png|gif|svg)$ resource_check.php?r=$2&t=$3 [L]
 
+Options +FollowSymLinks
+RewriteRule ^favicon.ico /favicon/favicon.ico [L]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(favicon)/(.*)\.(.*)$ /favicon/$2.$3 [L,NC]
+
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L,NC]

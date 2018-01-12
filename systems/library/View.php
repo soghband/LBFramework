@@ -35,13 +35,13 @@ class View {
         if ($page_cache == "") {
             self::genPage($controllerArray);
             $page_cache = self::$_rawView;
-            if (self::$_cachePage == true && ENV_MODE != "dev") {
+            if (self::$_cachePage && ENV_MODE != "dev") {
                 Cache::setCache("pageData",$page_cache);
                 Cache::setCache("sessionProcess",self::$_sessionProcess);
                 Cache::savePageCache();
             }
         }
-        if (self::$_sessionProcess == true) {
+        if (self::$_sessionProcess) {
             self::$_view  = self::sessionView($page_cache,$controllerArray);
         } else {
             self::$_view = $page_cache;
@@ -87,7 +87,7 @@ class View {
         if (file_exists($controller_file)) {
             $controllerFileCheck = true;
         }
-        if ($htmlFileCheck == true) {
+        if ($htmlFileCheck) {
             self::addView($controllerArray["controller"]);
             if (!preg_match("/<html[ a-z='\"-_]*>/m",self::$_data["<{view}>"])) {
                 $templateUsingCheck = true;
@@ -95,11 +95,11 @@ class View {
                 self::$_template = "";
             }
         }
-        if ($htmlFileCheck == false && $controllerFileCheck == false) {
+        if (!$htmlFileCheck && !$controllerFileCheck) {
             PGNUtil::showMsg("File not found: ".$controllerArray["controller"].".html or ".$controllerArray["controller"]."Controller.php");
         }
-        if ($controllerFileCheck == true) {
-            if ($htmlFileCheck == false) {
+        if ($controllerFileCheck) {
+            if (!$htmlFileCheck) {
                 self::$_template  = "";
             }
             if (file_exists(BASE_DIR."/controller/globalController.php")) {
@@ -107,7 +107,7 @@ class View {
             }
             include_once $controller_file;
         }
-        if ($templateUsingCheck == true && self::$_template != "") {
+        if ($templateUsingCheck && self::$_template != "") {
             $out = ob_get_clean();
             if (empty(self::$_data["<{view}>"])) {
                 self::$_data["<{view}>"] = "";
@@ -164,7 +164,7 @@ class View {
             Cache::saveResourceCache();
             $uxControlJs = "";
             if (strlen($css_resource) > 0) {
-                if (ENV_MODE == "dev") {
+                if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
                     $uxControlJs = "<style class='devCss' fileList=".implode(",",self::$_css)."></style>";
                     $uxControlJs .= " <script language=JavaScript>loadJs('/js/".$js_resource.".js');</script>";
                 } else {
@@ -173,10 +173,8 @@ class View {
             }
             self::dataRegister("systemUXControl",$uxControlJs);
             self::dataReplace();
-        } elseif ($htmlFileCheck == true) {
+        } elseif ($htmlFileCheck) {
             self::$_rawView  =  file_get_contents($html_file);
-        } else {
-            self::$_rawView  =  ob_get_clean();
         }
     }
     static function dataReplace() {

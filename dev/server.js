@@ -12,13 +12,11 @@ server.listen(89);
 
 io.on('connection', function (socket) {
     var filePathArray = [];
-    var firstSignCss = [];
     socket.emit('link', {msg: "Dev-IO onnected"});
     socket.on('my other event', function (data) {
         console.log(data);
     });
     socket.on('registerCSS',function(data) {
-        firstSignCss.push(data);
         filePathArray.push("../"+config.CSS_PATH+"/"+data+".css");
         console.log("Register CSS:"+data);
         var initData =  fs.readFileSync("../"+config.CSS_PATH+"/"+data+".css", 'utf8');

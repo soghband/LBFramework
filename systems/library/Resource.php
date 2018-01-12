@@ -50,48 +50,35 @@ class Resource {
         if (is_array($cssData) && count($cssData) > 0) {
             $cssCombine = "";
             foreach ($cssData as  $val) {
-                if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
-                    $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
-                } else{
+                if (!file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
                     header("HTTP/1.0 404 Not Found");
                     exit();
                 }
+                $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
             }
             if (strlen($cssCombine) > 0) {
                 $minifierCss = new Minify\CSS();
                 $minifierCss->add($cssCombine);
                 $css_data = $minifierCss->minify();
                 if (ENV_MODE != "dev") {
-                    if (!file_exists(BASE_DIR . "/public/css")) {
-                        mkdir(BASE_DIR . "/public/css");
-                    }
+                    self::createPublicCSSFolder();
                     file_put_contents(BASE_DIR."/public/css/".$hash.".css",$css_data);
                 }
                 header("Content-type: text/css");
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + 3600) . " GMT";
                 header("Expires: ".$timeExpires);
                 echo $css_data;
-            } else {
-                header("HTTP/1.0 404 Not Found");
                 exit();
             }
-        } else {
-            header("HTTP/1.0 404 Not Found");
-            exit();
         }
+        header("HTTP/1.0 404 Not Found");
+        exit();
     }
     static function genCssFs($resource) {
         $cssData = explode(",",$resource);
         if (is_array($cssData) && count($cssData) > 0) {
             $cssCombine = "";
-            foreach ($cssData as $val) {
-                if (file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
-                    $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
-                } else{
-                    header("HTTP/1.0 404 Not Found");
-                    exit();
-                }
-            }
+            $cssCombine = self::combineCSS($cssData, $cssCombine);
             if (strlen($cssCombine) > 0) {
                 $minifierCss = new Minify\CSS();
                 $minifierCss->add($cssCombine);
@@ -111,21 +98,7 @@ class Resource {
         $jsData = Cache::getResourceCache($hash);
         if (is_array($jsData) && count($jsData) > 0) {
             $jsCombine = "";
-            foreach ($jsData as $val) {
-                if (file_exists(BASE_DIR."/".JS_PATH."/".$val.".js")) {
-                    $jsDataLoad = file_get_contents(BASE_DIR."/".JS_PATH."/".$val.".js");
-                    if (!preg_match(".min.",$val)) {
-                        $minifierJs = new Minify\JS();
-                        $minifierJs->add($jsDataLoad);
-                        $jsCombine .= $minifierJs->minify().";\n";
-                    } else {
-                        $jsCombine.= $jsDataLoad;
-                    }
-                } else{
-                    header("HTTP/1.0 404 Not Found");
-                    exit();
-                }
-            }
+            $jsCombine = self::combineAndMinifyJS($jsData, $jsCombine);
             if (strlen($jsCombine) > 0) {
                 if (ENV_MODE != "dev") {
                     if (!file_exists(BASE_DIR . "/public/js")) {
@@ -137,14 +110,11 @@ class Resource {
                 $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
                 header("Expires: ".$timeExpires);
                 echo $jsCombine;
-            } else {
-                header("HTTP/1.0 404 Not Found");
                 exit();
             }
-        } else {
-            header("HTTP/1.0 404 Not Found");
-            exit();
         }
+        header("HTTP/1.0 404 Not Found");
+        exit();
     }
     static function optimizeImage($resource,$type) {
         $rawFilePath = BASE_DIR."/".RAW_IMAGE_PATH."/".$resource.".".$type;
@@ -161,23 +131,10 @@ class Resource {
             }
             switch ($type) {
                 case "jpg" :
-                    $img = imagecreatefromjpeg($rawFilePath);
-                    if (ENV_MODE != "dev") {
-                        imagejpeg($img,$imgFilePath,JPG_QUALITY);
-                        echo file_get_contents($imgFilePath);
-                    } else {
-                        imagejpeg($img,null,JPG_QUALITY);
-                    }
+                    self::optimizeJPG($rawFilePath, $imgFilePath);
                     break;
                 case "png" :
-                    $img = imagecreatefrompng($rawFilePath);
-                    imagesavealpha($img, true);
-                    if (ENV_MODE != "dev") {
-                        imagepng($img, $imgFilePath, PNG_COMPRESS_LEVEL, PNG_NO_FILTER );
-                        echo file_get_contents($imgFilePath);
-                    } else {
-                        imagepng($img,null,PNG_COMPRESS_LEVEL, PNG_NO_FILTER  );
-                    }
+                    self::optimizePNG($rawFilePath, $imgFilePath);
                     break;
                 default :
                     if (ENV_MODE != "dev") {
@@ -202,5 +159,83 @@ class Resource {
                 mkdir($dirCreate);
             }
         }
+    }
+
+    private static function createPublicCSSFolder()
+    {
+        if (!file_exists(BASE_DIR . "/public/css")) {
+            mkdir(BASE_DIR . "/public/css");
+        }
+    }
+
+    /**
+     * @param $rawFilePath
+     * @param $imgFilePath
+     */
+    private static function optimizePNG($rawFilePath, $imgFilePath)
+    {
+        $img = imagecreatefrompng($rawFilePath);
+        imagesavealpha($img, true);
+        if (ENV_MODE != "dev") {
+            imagepng($img, $imgFilePath, PNG_COMPRESS_LEVEL, PNG_NO_FILTER);
+            echo file_get_contents($imgFilePath);
+        } else {
+            imagepng($img, null, PNG_COMPRESS_LEVEL, PNG_NO_FILTER);
+        }
+    }
+
+    /**
+     * @param $rawFilePath
+     * @param $imgFilePath
+     */
+    private static function optimizeJPG($rawFilePath, $imgFilePath)
+    {
+        $img = imagecreatefromjpeg($rawFilePath);
+        if (ENV_MODE != "dev") {
+            imagejpeg($img, $imgFilePath, JPG_QUALITY);
+            echo file_get_contents($imgFilePath);
+        } else {
+            imagejpeg($img, null, JPG_QUALITY);
+        }
+    }
+
+    /**
+     * @param $jsData
+     * @param $jsCombine
+     * @return string
+     */
+    private static function combineAndMinifyJS($jsData, $jsCombine) {
+        foreach ($jsData as $val) {
+            if (!file_exists(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js")) {
+                header("HTTP/1.0 404 Not Found");
+                exit();
+            }
+            $jsDataLoad = file_get_contents(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js");
+            if (!preg_match(".min.", $val)) {
+                $minifierJs = new Minify\JS();
+                $minifierJs->add($jsDataLoad);
+                $jsCombine .= $minifierJs->minify() . ";\n";
+            } else {
+                $jsCombine .= $jsDataLoad;
+            }
+        }
+        return $jsCombine;
+    }
+
+    /**
+     * @param $cssData
+     * @param $cssCombine
+     * @return string
+     */
+    private static function combineCSS($cssData, $cssCombine) {
+        foreach ($cssData as $val) {
+            if (file_exists(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css")) {
+                $cssCombine .= file_get_contents(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css");
+            } else {
+                header("HTTP/1.0 404 Not Found");
+                exit();
+            }
+        }
+        return $cssCombine;
     }
 }

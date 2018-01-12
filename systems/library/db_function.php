@@ -10,8 +10,7 @@ class SDB {
         }
     }
     public function query($query_string) {
-        $data = $this->_db->query($query_string);
-        return $data;
+        return $this->_db->query($query_string);
     }
     public function fetch() {
 
