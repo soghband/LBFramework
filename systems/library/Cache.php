@@ -1,7 +1,7 @@
 <?php
 define("CACHE_FILE_FOLDER",BASE_DIR."/cache_file");
 define("APCU_FUNCTION_NAME", "apcu_cache_info");
-define("CACHE_FILE_EXTENSION", "cache");
+define("CACHE_FILE_EXTENSION", ".cache");
 class Cache {
     private static $_shareCache ;
     private static $_resourceCache;
