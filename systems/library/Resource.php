@@ -204,7 +204,7 @@ class Resource {
      * @param $jsCombine
      * @return string
      */
-    private static function combineAndMinifyJS($jsData, $jsCombine): string {
+    private static function combineAndMinifyJS($jsData, $jsCombine) {
         foreach ($jsData as $val) {
             if (!file_exists(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js")) {
                 header("HTTP/1.0 404 Not Found");
@@ -227,7 +227,7 @@ class Resource {
      * @param $cssCombine
      * @return string
      */
-    private static function combineCSS($cssData, $cssCombine): string {
+    private static function combineCSS($cssData, $cssCombine) {
         foreach ($cssData as $val) {
             if (file_exists(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css")) {
                 $cssCombine .= file_get_contents(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css");

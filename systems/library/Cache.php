@@ -1,15 +1,13 @@
 <?php
-
+define("CACHE_FILE_FOLDER",BASE_DIR."/cache_file");
+define("APCU_FUNCTION_NAME", "apcu_cache_info");
+define("CACHE_FILE_EXTENSION", "cache");
 class Cache {
     private static $_shareCache ;
     private static $_resourceCache;
     private static $_pageHash;
     private static $_pageCache;
     private static $_loaded = false;
-    const APCU_FUNCTION_NAME = "apcu_cache_info";
-    const CACHE_FILE_FOLDER = BASE_DIR."/cache_file";
-
-    const CACHE_FILE_EXTENSION = ".cache";
 
     static function setCache($key, $data) {
         if (!is_array(self::$_pageCache)) {
@@ -78,14 +76,14 @@ class Cache {
     }
 
     static function saveCache($name,$data) {
-        if (function_exists(self::APCU_FUNCTION_NAME)) {
+        if (function_exists(APCU_FUNCTION_NAME)) {
             apcu_add($name,$data);
         } else {
             self::file_cache_set($name,$data);
         }
     }
     static function loadCache($name) {
-        if (function_exists(self::APCU_FUNCTION_NAME)) {
+        if (function_exists(APCU_FUNCTION_NAME)) {
             $data = apcu_fetch($name);
         } else {
             $data = self::file_cache_get($name);
@@ -95,21 +93,21 @@ class Cache {
     private static function file_cache_get($name) {
         $md5 = md5($name);
         $data = "";
-        if (file_exists(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION)) {
-            $data_file = file_get_contents(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION);
+        if (file_exists(CACHE_FILE_FOLDER."/".$md5. CACHE_FILE_EXTENSION)) {
+            $data_file = file_get_contents(CACHE_FILE_FOLDER."/".$md5. CACHE_FILE_EXTENSION);
             $data = unserialize($data_file);
         }
         return $data;
     }
     private static function file_cache_set($name,$data) {
         $md5 = md5($name);
-        if (!is_dir(self::CACHE_FILE_FOLDER)) {
-            mkdir(self::CACHE_FILE_FOLDER);
+        if (!is_dir(CACHE_FILE_FOLDER)) {
+            mkdir(CACHE_FILE_FOLDER);
         }
-        if (file_exists(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION)) {
-            unlink(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION);
+        if (file_exists(CACHE_FILE_FOLDER."/".$md5. CACHE_FILE_EXTENSION)) {
+            unlink(CACHE_FILE_FOLDER."/".$md5. CACHE_FILE_EXTENSION);
         }
-        file_put_contents(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION,serialize($data));
+        file_put_contents(CACHE_FILE_FOLDER."/".$md5. CACHE_FILE_EXTENSION,serialize($data));
     }
     static function initAutoload($autoload_file) {
         if (!class_exists("Autoload")){
@@ -117,7 +115,7 @@ class Cache {
         }
     }
     static function clearCache() {
-        if (function_exists(self::APCU_FUNCTION_NAME)) {
+        if (function_exists(APCU_FUNCTION_NAME)) {
             if (apcu_clear_cache()) {
                 echo "All Cache Cleared";
             }
@@ -126,7 +124,7 @@ class Cache {
         }
     }
     private static function clearCacheFile() {
-        $files = glob(self::CACHE_FILE_FOLDER . "/*");
+        $files = glob(CACHE_FILE_FOLDER . "/*");
         if ($files) {
             foreach ($files as $file) { // iterate files
                 if (is_file($file)) {
