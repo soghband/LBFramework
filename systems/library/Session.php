@@ -3,10 +3,9 @@
         static function start() {
             ini_set("session.use_cookies", 1);
             ini_set("session.cookie_httponly", 1);
-            ini_set("session.cookie_secure", 1);
-            ini_set("session.use_only_cookies", 0);
-            ini_set("session.use_trans_sid", 0);
-            ini_set("session.cache_limiter", "");
+            if (SESSION_SECURE) {
+                ini_set("session.cookie_secure", 1);
+            }
             session_start();
         }
         static function get($dataName = "") {
@@ -21,15 +20,11 @@
             }
         }
         static function set($dataName="",$value="") {
-            if ($dataName == "") {
-                return false;
-            } else {
+            if ($dataName != "") {
                 if ($value=="") {
                     if (isset($_SESSION[$dataName])) {
                         unset($_SESSION[$dataName]);
                         return true;
-                    } else {
-                        return false;
                     }
                 } else {
                     $_SESSION[$dataName] = $value;
@@ -51,16 +46,12 @@
             }
         }
         static function setByPage($dataName="",$value="") {
-            if ($dataName == "") {
-                return false;
-            } else {
+            if ($dataName != "") {
                 $pageHash = View::getPageHash();
                 if ($value=="") {
                     if (isset($_SESSION[$pageHash][$dataName])) {
                         unset($_SESSION[$pageHash][$dataName]);
                         return true;
-                    } else {
-                        return false;
                     }
                 } else {
                     $_SESSION[$pageHash][$dataName] = $value;

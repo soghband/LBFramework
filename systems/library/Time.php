@@ -31,7 +31,7 @@ class Time {
         self::$static[] =$display;
     }
     static function showProcessTime() {
-        if (TIME_CHECK == true) {
+        if (TIME_CHECK  && ENV_MODE == "dev") {
             $return_data = "";
             if (self::$type == "js") {
                 $return_data .= "<script language='JavaScript'>\n";

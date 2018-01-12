@@ -6,7 +6,12 @@ class Cache {
     private static $_pageHash;
     private static $_pageCache;
     private static $_loaded = false;
-    static function setCache($key,$data) {
+    const APCU_FUNCTION_NAME = "apcu_cache_info";
+    const CACHE_FILE_FOLDER = BASE_DIR."/cache_file";
+
+    const CACHE_FILE_EXTENSION = ".cache";
+
+    static function setCache($key, $data) {
         if (!is_array(self::$_pageCache)) {
             self::$_pageCache = array();
         }
@@ -73,14 +78,14 @@ class Cache {
     }
 
     static function saveCache($name,$data) {
-        if (function_exists("apcu_cache_info")) {
+        if (function_exists(self::APCU_FUNCTION_NAME)) {
             apcu_add($name,$data);
         } else {
             self::file_cache_set($name,$data);
         }
     }
     static function loadCache($name) {
-        if (function_exists("apcu_cache_info")) {
+        if (function_exists(self::APCU_FUNCTION_NAME)) {
             $data = apcu_fetch($name);
         } else {
             $data = self::file_cache_get($name);
@@ -90,21 +95,21 @@ class Cache {
     private static function file_cache_get($name) {
         $md5 = md5($name);
         $data = "";
-        if (file_exists(BASE_DIR."/cache_file/".$md5.".cache")) {
-            $data_file = file_get_contents(BASE_DIR."/cache_file/".$md5.".cache");
+        if (file_exists(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION)) {
+            $data_file = file_get_contents(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION);
             $data = unserialize($data_file);
         }
         return $data;
     }
     private static function file_cache_set($name,$data) {
         $md5 = md5($name);
-        if (!is_dir(BASE_DIR."/cache_file")) {
-            mkdir(BASE_DIR."/cache_file");
+        if (!is_dir(self::CACHE_FILE_FOLDER)) {
+            mkdir(self::CACHE_FILE_FOLDER);
         }
-        if (file_exists(BASE_DIR."/cache_file/".$md5.".cache")) {
-            unlink(BASE_DIR."/cache_file/".$md5.".cache");
+        if (file_exists(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION)) {
+            unlink(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION);
         }
-        file_put_contents(BASE_DIR."/cache_file/".$md5.".cache",serialize($data));
+        file_put_contents(self::CACHE_FILE_FOLDER."/".$md5. self::CACHE_FILE_EXTENSION,serialize($data));
     }
     static function initAutoload($autoload_file) {
         if (!class_exists("Autoload")){
@@ -112,22 +117,25 @@ class Cache {
         }
     }
     static function clearCache() {
-        if (function_exists("apcu_cache_info")) {
+        if (function_exists(self::APCU_FUNCTION_NAME)) {
             if (apcu_clear_cache()) {
                 echo "All Cache Cleared";
             }
         } else {
-            $files = glob(BASE_DIR."/cache_file/*");
-            if ($files) {
-                foreach($files as $file){ // iterate files
-                    if(is_file($file)) {
-                        $file_name_array = explode("/",$file);
-                        $file_name = array_pop($file_name_array);
-                        if (unlink($file)) {
-                            echo "<div>Cache file deleted ".$file_name."</div>";
-                        } else {
-                            echo "<div>Cache file can't delete ".$file_name."</div>";
-                        }
+            self::clearCacheFile();
+        }
+    }
+    private static function clearCacheFile() {
+        $files = glob(self::CACHE_FILE_FOLDER . "/*");
+        if ($files) {
+            foreach ($files as $file) { // iterate files
+                if (is_file($file)) {
+                    $file_name_array = explode("/", $file);
+                    $file_name = array_pop($file_name_array);
+                    if (unlink($file)) {
+                        echo "<div>Cache file deleted " . $file_name . "</div>";
+                    } else {
+                        echo "<div>Cache file can't delete " . $file_name . "</div>";
                     }
                 }
             }
