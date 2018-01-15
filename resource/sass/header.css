@@ -6,10 +6,10 @@
     font-weight: bold;
     padding: 20px;
     display: inline-block;
-    wisth: 300px; }
+    wisth: 400px; }
   #header .menuPanel {
     display: inline-block;
-    width: calc(100% - 300px);
+    width: calc(100% - 400px);
     text-align: right; }
     #header .menuPanel .link {
       color: #666;

@@ -4,7 +4,7 @@
             <div class="table">
                 <div class="row">
                     <div class="cell">
-                        What's PGN Framework can do?
+                        What's LightBreak Framework can do?
                     </div>
                     <div class="cell">
                         <ul>
@@ -21,10 +21,10 @@
                                 Auto caching when switch to production mode.
                             </li>
                             <li>
-                                Time controller tool make you know how lag in which process.
+                                Session process while caching if you need.
                             </li>
                             <li>
-                                Session process while caching if you need.
+                                Time controller tool make you know how lag in which process.
                             </li>
                             <li>
                                 Dev IO real-time build CSS like SASS.
@@ -167,6 +167,67 @@
                 <div class="detail">
                     Compress 77.1Kb from original no compress 310Kb <a href="http://projectgn.org/images/sample_png.png" target='_blank'>Original</a>
                 </div>
+            </div>
+        </div>
+    </div>
+    <div class="panel2">
+        <div class="centerPanel">
+            <div class="header">
+                Auto caching when switch to production mode.
+            </div>
+            <div class="head2">
+                System process 'll not process controller when caching.
+            </div>
+            <div class="info2">
+                Example: <a href="/cachingExample" target='_blank'>Caching page.</a>
+            </div>
+            <div class="info2">
+                Example: <a href="/cachingExample2" target='_blank'>Disable caching page.</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel1">
+        <div class="centerPanel">
+            <div class="header">
+                Session process while caching if you need.
+            </div>
+            <div class="head2">
+                System 'll keep all data in page for caching, Then there are process session after load cache just using View::setSessionProcess(true);  in controller.
+            </div>
+            <div class="info">
+                Example: <a href="/sessionExample" target='_blank'>Session process page.</a>
+            </div>
+        </div>
+    </div>
+    <div class="panel2">
+        <div class="centerPanel">
+            <div class="header">
+                Time controller tool make you know how lag in which process.
+            </div>
+            <div class="head2">
+                Show time process in browser console or print out.
+            </div>
+            <div class="info">
+                <img src='images/time_process.png'/>
+            </div>
+        </div>
+    </div>
+    <div class="panel1">
+        <div class="centerPanel">
+            <div class="header">
+                Dev IO real-time build CSS like SASS.
+            </div>
+            <div class="head2">
+                Dev IO is NodeJS and Socket.io help for real-time update css while you coding stylesheet.
+                For this framework there can't use SASS because system need to combine CSS and JS, So i build this module for real-time update stylesheet instead.
+            </div>
+            <div class="info">
+                How to use Dev IO<br>
+                1. Change config "ENV_MODE" to "dev" and "ENABLE_DEV_IO" to "true".<br>
+                2. Make sure jou installed NodeJS and go to folder "dev".<br>
+                3. Run "npm install".<br>
+                4. Start Dev IO by command "node start" and refresh page.<br>
+                Then enjoin css coding.
             </div>
         </div>
     </div>

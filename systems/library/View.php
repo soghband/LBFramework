@@ -75,7 +75,7 @@ class View {
         }
        return str_replace($search,$replace,$data);
     }
-    static function genPage($controllerArray) {
+    private static function genPage($controllerArray) {
         $htmlFileCheck = false;
         $controllerFileCheck = false;
         $templateUsingCheck = false;
@@ -175,6 +175,8 @@ class View {
             self::dataReplace();
         } elseif ($htmlFileCheck) {
             self::$_rawView  =  file_get_contents($html_file);
+        } else {
+            self::$_rawView = ob_get_clean();
         }
     }
     static function dataReplace() {

@@ -65,7 +65,8 @@
     border: 2px solid #666;
     background: #f2f2f2;
     max-width: 400px;
-    min-width: 340px; }
+    min-width: 340px;
+    font-weight: normal; }
   #firstSignPanel .panel2 .info2 {
     padding-left: 20px;
     color: #777; }

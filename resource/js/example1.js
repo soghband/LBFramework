@@ -1,0 +1,1 @@
+console.log("Example java 1");

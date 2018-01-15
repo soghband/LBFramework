@@ -1,7 +1,4 @@
-# PGN Framework
-Project Generation Framework
-
-## MVC Structure
+# LightBreak Framework
 
 ## Route & Filter Parameter
 Using JSON to check url and POST - GET parameter

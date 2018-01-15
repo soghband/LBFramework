@@ -36,46 +36,16 @@
             "csrf":"^[a-z0-9]{32}$"
         }
     },
-    "{test_r}": {
-        "controller": "test",
-        "url_filter":{
-            "{test_r}": "^[a-zA-Zก-๙.]*$"
-        },
-        "param_filter": {
-            "test_get":"^b.*z$"
-        }
+    "cachingExample":{
+        "controller":"cachingExample"
+    },
+    "cachingExample2":{
+        "controller":"cachingExample2"
+    },
+    "sessionExample":{
+        "controller":"sessionExample"
     },
     "document":{
         "controller":"document"
-    },
-    "test/tests":{
-        "controller":"test3"
-    },
-    "test/tests1":{
-        "controller":"test4"
-    },
-    "test2/{test}/test33":{
-        "controller":"test5",
-        "url_filter":{
-            "{test}":"^test_route1$"
-        }
-    },
-    "test2/{test}/{test2}":{
-        "controller":"test6",
-        "url_filter":{
-            "{test}":"^test_route2$",
-            "{test2}":"^test111$"
-        }
-    },
-    "test2/{test2}/{test3}":{
-        "controller":"test7",
-        "url_filter":{
-            "{test2}":"^test_route2$",
-            "{test3}":"^a.{3}b$"
-        },
-        "param_filter":{
-            "aaa":"^e.*f$",
-            "bbb":"^g.*h$"
-        }
     }
 }

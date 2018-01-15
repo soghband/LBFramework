@@ -21,7 +21,9 @@ Time::phase("Route Register");
 $route = Route::getRoute($_SERVER["REQUEST_URI"]);
 Time::phase("Route Calculate");
 View::getPageView($route);
-Cache::saveShareCache();
+if (ENV_MODE != "dev") {
+    Cache::saveShareCache();
+}
 Time::phase("Stop");
 Time::showProcessTime();
 

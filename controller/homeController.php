@@ -1,5 +1,5 @@
 <?php
 View::addFirstSignStyleSheet("home_fs");
 View::addStyleSheet("home");
-View::addJavascript("test1,test2,test3");
+View::addJavascript("example1,example2,example3");
 View::setSessionProcess(true);

@@ -5,6 +5,7 @@ class Time {
     public static $type = "js";
     public static $time = 0;
     public static $static = array();
+    private static $show_process = false;
     static function set_type($type) {
         if (preg_match("/^(js|html)$/",$type)) {
             self::$type = $type;
@@ -12,7 +13,13 @@ class Time {
             self::$type = "js";
         }
     }
+    static function setShowTimeProcess($bool) {
+        self::$show_process = $bool;
+    }
     static function start($msg,$first_init) {
+        if (TIME_CHECK  && ENV_MODE == "dev") {
+            self::$show_process = true;
+        }
         self::$start = $first_init;
         self::$last_call = microtime(true);
         self::$time++;
@@ -31,7 +38,7 @@ class Time {
         self::$static[] =$display;
     }
     static function showProcessTime() {
-        if (TIME_CHECK  && ENV_MODE == "dev") {
+        if (self::$show_process) {
             $return_data = "";
             if (self::$type == "js") {
                 $return_data .= "<script language='JavaScript'>\n";
