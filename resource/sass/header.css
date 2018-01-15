@@ -6,14 +6,30 @@
     font-weight: bold;
     padding: 20px;
     display: inline-block;
-    wisth: 400px; }
+    width: 390px;
+    height: 50px; }
+    #header .headerName .logo {
+      background: url("/images/logo.png");
+      width: 50px;
+      height: 50px;
+      display: inline-block; }
+    #header .headerName .name {
+      display: inline-block;
+      vertical-align: 20%; }
   #header .menuPanel {
     display: inline-block;
-    width: calc(100% - 400px);
+    width: calc(100% - 460px);
     text-align: right; }
     #header .menuPanel .link {
       color: #666;
       display: inline-block;
-      padding: 0px 20px; }
+      padding: 0px 20px;
+      font-size: 15px; }
       #header .menuPanel .link a {
         text-decoration: none; }
+      #header .menuPanel .link a:visited {
+        color: white; }
+      #header .menuPanel .link a:hover {
+        color: lightgray; }
+    #header .menuPanel .link:last-child {
+      padding-right: 0px; }

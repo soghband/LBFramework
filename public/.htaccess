@@ -20,8 +20,11 @@ RewriteRule ^favicon.ico /favicon/favicon.ico [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(favicon)/(.*)\.(.*)$ /favicon/$2.$3 [L,NC]
+RewriteRule ^(favicon|fonts)/(.*)$ /$1/$2 [L,NC]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule . /index.php [L,NC]
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
