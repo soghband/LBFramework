@@ -8,7 +8,7 @@
     "CSS_COMPRESS":false,
     "DEFAULT_TITLE":"LightBreak Framework",
     "RAW_IMAGE_PATH":"resource/images",
-    "ENABLE_DEV_IO":false,
+    "ENABLE_DEV_IO":true,
     "JPG_QUALITY":85,
     "PNG_COMPRESS_LEVEL":6,
     "SESSION_SECURE":false

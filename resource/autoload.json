@@ -3,6 +3,7 @@
     "Route" : "systems/library/Route.php",
     "Config" : "systems/library/Config.php",
     "View" : "systems/library/View.php",
+    "ViewComponent" : "systems/library/ViewComponent.php",
     "PGNUtil" : "systems/library/PGNUtil.php",
     "Resource" : "systems/library/Resource.php",
     "Session" : "systems/library/Session.php"

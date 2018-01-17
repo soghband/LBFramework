@@ -16,6 +16,14 @@
     #header .headerName .name {
       display: inline-block;
       vertical-align: 20%; }
+    #header .headerName a {
+      text-decoration: none; }
+    #header .headerName a:link {
+      color: white; }
+    #header .headerName a:visited {
+      color: white; }
+    #header .headerName a:hover {
+      color: white; }
   #header .menuPanel {
     display: inline-block;
     width: calc(100% - 460px);
@@ -27,6 +35,8 @@
       font-size: 15px; }
       #header .menuPanel .link a {
         text-decoration: none; }
+      #header .menuPanel .link a:link {
+        color: white; }
       #header .menuPanel .link a:visited {
         color: white; }
       #header .menuPanel .link a:hover {

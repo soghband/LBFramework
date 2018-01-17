@@ -1,4 +1,7 @@
 <?php
+define("HTTP_404_STR","HTTP/1.0 404 Not Found");
+define("DATE_FORMAT_STR","D, d M Y H:i:s");
+define("EXPIRE_STR","Expires: ");
 use MatthiasMullie\Minify;
 class Resource {
     static function registerResourceHash($fileList,$type) {
@@ -51,27 +54,25 @@ class Resource {
             $cssCombine = "";
             foreach ($cssData as  $val) {
                 if (!file_exists(BASE_DIR."/".CSS_PATH."/".$val.".css")) {
-                    header("HTTP/1.0 404 Not Found");
+                    header(HTTP_404_STR);
                     exit();
                 }
                 $cssCombine.= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css");
             }
             if (strlen($cssCombine) > 0) {
-                $minifierCss = new Minify\CSS();
-                $minifierCss->add($cssCombine);
-                $css_data = $minifierCss->minify();
+                $css_data = self::compressCSSProcess($cssCombine);
                 if (ENV_MODE != "dev") {
                     self::createPublicCSSFolder();
                     file_put_contents(BASE_DIR."/public/css/".$hash.".css",$css_data);
                 }
                 header("Content-type: text/css");
-                $timeExpires = gmdate("D, d M Y H:i:s", time() + 3600) . " GMT";
-                header("Expires: ".$timeExpires);
+                $timeExpires = gmdate(DATE_FORMAT_STR, time() + 3600) . " GMT";
+                header(EXPIRE_STR.$timeExpires);
                 echo $css_data;
                 exit();
             }
         }
-        header("HTTP/1.0 404 Not Found");
+        header(HTTP_404_STR);
         exit();
     }
     static function genCssFs($resource) {
@@ -80,17 +81,15 @@ class Resource {
             $cssCombine = "";
             $cssCombine = self::combineCSS($cssData, $cssCombine);
             if (strlen($cssCombine) > 0) {
-                $minifierCss = new Minify\CSS();
-                $minifierCss->add($cssCombine);
-                $css_data = $minifierCss->minify();
+                $css_data = self::compressCSSProcess($cssCombine);
                 header("Content-type: text/css");
                 echo $css_data;
             } else {
-                header("HTTP/1.0 404 Not Found");
+                header(HTTP_404_STR);
                 exit();
             }
         } else {
-            header("HTTP/1.0 404 Not Found");
+            header(HTTP_404_STR);
             exit();
         }
     }
@@ -107,13 +106,13 @@ class Resource {
                     file_put_contents(BASE_DIR . "/public/js/" . $hash . ".js", $jsCombine);
                 }
                 header("Content-Type: application/javascript");
-                $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
-                header("Expires: ".$timeExpires);
+                $timeExpires = gmdate(DATE_FORMAT_STR, time() + (3600*30)) . " GMT";
+                header(EXPIRE_STR.$timeExpires);
                 echo $jsCombine;
                 exit();
             }
         }
-        header("HTTP/1.0 404 Not Found");
+        header(HTTP_404_STR);
         exit();
     }
     static function optimizeImage($resource,$type) {
@@ -123,8 +122,8 @@ class Resource {
             'png'=> 'image/png',
             'jpg'=> 'image/jpeg');
         header('Content-type: ' . $header[$type]);
-        $timeExpires = gmdate("D, d M Y H:i:s", time() + (3600*30)) . " GMT";
-        header("Expires: ".$timeExpires);
+        $timeExpires = gmdate(DATE_FORMAT_STR, time() + (3600*30)) . " GMT";
+        header(EXPIRE_STR.$timeExpires);
         if (file_exists($rawFilePath)) {
             if (ENV_MODE != "dev") {
                 self::createDirectory($resource);
@@ -207,14 +206,18 @@ class Resource {
     private static function combineAndMinifyJS($jsData, $jsCombine) {
         foreach ($jsData as $val) {
             if (!file_exists(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js")) {
-                header("HTTP/1.0 404 Not Found");
+                header(HTTP_404_STR);
                 exit();
             }
             $jsDataLoad = file_get_contents(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js");
             if (!preg_match(".min.", $val)) {
-                $minifierJs = new Minify\JS();
-                $minifierJs->add($jsDataLoad);
-                $jsCombine .= $minifierJs->minify() . ";\n";
+                if (JS_COMPRESS) {
+                    $minifierJs = new Minify\JS();
+                    $minifierJs->add($jsDataLoad);
+                    $jsCombine .= $minifierJs->minify() . ";\n";
+                } else {
+                    $jsCombine .= "\n".$jsDataLoad;
+                }
             } else {
                 $jsCombine .= $jsDataLoad;
             }
@@ -232,10 +235,26 @@ class Resource {
             if (file_exists(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css")) {
                 $cssCombine .= file_get_contents(BASE_DIR . "/" . CSS_PATH . "/" . $val . ".css");
             } else {
-                header("HTTP/1.0 404 Not Found");
+                header(HTTP_404_STR);
                 exit();
             }
         }
         return $cssCombine;
+    }
+
+    /**
+     * @param $cssCombine
+     * @return string
+     */
+    private static function compressCSSProcess($cssCombine)
+    {
+        if (CSS_COMPRESS) {
+            $minifierCss = new Minify\CSS();
+            $minifierCss->add($cssCombine);
+            $css_data = $minifierCss->minify();
+        } else {
+            $css_data = $cssCombine;
+        }
+        return $css_data;
     }
 }

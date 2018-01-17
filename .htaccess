@@ -17,7 +17,7 @@ RewriteRule ^favicon.ico /public/favicon/favicon.ico [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
-RewriteRule ^(favicon|fonts)/(.*)$ /$1/$2 [L,NC]
+RewriteRule ^(favicon|fonts)/(.*)$ /public/$1/$2 [L,NC]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
