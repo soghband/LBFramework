@@ -1,4 +1,9 @@
 <?php
+define("DATA_VIEW","<{view}>");
+define("CONTROLLER_STR","controller");
+define("HTML_EXTENSION",".html");
+define("TEMPLATE_FOLDER",BASE_DIR."/view/template/");
+define("VIEW_FOLDER",BASE_DIR."/view/");
 use MatthiasMullie\Minify;
 class View {
     private static $_fs_css;
@@ -16,7 +21,7 @@ class View {
     private static $_sessionProcess = false;
     private static $_pageHash;
     static function getPageView($controllerArray) {
-        $page_string = $controllerArray["controller"];
+        $page_string = $controllerArray[CONTROLLER_STR];
         if (count($controllerArray["param"]) > 0) {
             foreach ($controllerArray["param"] as $key => $val) {
                 $page_string.= "&".$key."=".$val;
@@ -64,8 +69,8 @@ class View {
         if (file_exists(BASE_DIR."/controller/session/globalSession.php")) {
             include_once  BASE_DIR."/controller/session/globalSession.php";
         }
-        if (file_exists(BASE_DIR."/controller/session/".$controllerArray["controller"]."Session.php")) {
-            include_once  BASE_DIR."/controller/session/".$controllerArray["controller"]."Session.php";
+        if (file_exists(BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php")) {
+            include_once  BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php";
         }
         $search = array();
         $replace = array();
@@ -76,108 +81,23 @@ class View {
        return str_replace($search,$replace,$data);
     }
     private static function genPage($controllerArray) {
-        $htmlFileCheck = false;
-        $controllerFileCheck = false;
         $templateUsingCheck = false;
-        $html_file = BASE_DIR."/view/".$controllerArray["controller"].".html";
-        if (file_exists($html_file)) {
-            $htmlFileCheck = true;
-        }
-        $controller_file = BASE_DIR."/controller/".$controllerArray["controller"]."Controller.php";
-        if (file_exists($controller_file)) {
-            $controllerFileCheck = true;
-        }
+        $html_file = VIEW_FOLDER.$controllerArray[CONTROLLER_STR].HTML_EXTENSION;
+        $htmlFileCheck = ViewComponent::checkHtml($html_file);
+        $controller_file = BASE_DIR."/controller/".$controllerArray[CONTROLLER_STR]."Controller.php";
+        $controllerFileCheck = ViewComponent::checkController($controller_file);
         if ($htmlFileCheck) {
-            self::addView($controllerArray["controller"]);
-            if (!preg_match("/<html[ a-z='\"-_]*>/m",self::$_data["<{view}>"])) {
-                $templateUsingCheck = true;
-            } else {
+            self::addView($controllerArray[CONTROLLER_STR]);
+            $templateUsingCheck = ViewComponent::checkTemplate(self::$_data[DATA_VIEW]);
+            if (!$templateUsingCheck) {
                 self::$_template = "";
             }
         }
         if (!$htmlFileCheck && !$controllerFileCheck) {
-            PGNUtil::showMsg("File not found: ".$controllerArray["controller"].".html or ".$controllerArray["controller"]."Controller.php");
+            PGNUtil::showMsg("File not found: ".$controllerArray[CONTROLLER_STR].".html or ".$controllerArray[CONTROLLER_STR]."Controller.php");
         }
-        if ($controllerFileCheck) {
-            if (!$htmlFileCheck) {
-                self::$_template  = "";
-            }
-            if (file_exists(BASE_DIR."/controller/globalController.php")) {
-                include_once BASE_DIR."/controller/globalController.php";
-            }
-            include_once $controller_file;
-        }
-        if ($templateUsingCheck && self::$_template != "") {
-            $out = ob_get_clean();
-            if (empty(self::$_data["<{view}>"])) {
-                self::$_data["<{view}>"] = "";
-            }
-            self::$_data["<{view}>"].=$out;
-            self::dataRegister("header",file_get_contents(BASE_DIR."/view/template/".self::$_template."/header.html"));
-            self::dataRegister("footer", file_get_contents(BASE_DIR."/view/template/".self::$_template."/footer.html"));
-            self::dataRegister("metaTag", file_get_contents(BASE_DIR."/view/template/".self::$_template."/meta.html"));
-            if (empty(self::$_data["<{title}>"]) && defined("DEFAULT_TITLE")) {
-                self::dataRegister("title",DEFAULT_TITLE);
-            }
-            $fs_css_data = "";
-            if (is_array(self::$_fs_css) && count(self::$_fs_css) > 0) {
-                foreach(self::$_fs_css as $key => $val) {
-                    $fs_css_data .= file_get_contents(BASE_DIR."/".CSS_PATH."/".$val.".css")."\r\n";
-                }
-                if (strlen($fs_css_data) > 0) {
-                    $minifierCss = new Minify\CSS();
-                    $minifierCss->add($fs_css_data);
-                    $fs_css_data = "<style ".(ENV_MODE == "dev" ? " class='devCss' fileList='".implode(",",self::$_fs_css)."'":"").">".$minifierCss->minify()."</style>";
-                }
-            }
-            self::dataRegister("firstSignCss",$fs_css_data);
-            $core_js = file_get_contents(BASE_DIR."/systems/js/cssPreload.js");
-            $core_js .= "\n".file_get_contents(BASE_DIR."/systems/js/jsPreload.js");
-            $minifierCoreJs = new Minify\JS();
-            $minifierCoreJs->add($core_js);
-            $em_js_data_all = $minifierCoreJs->minify();
-            if (is_array(self::$_em_js) && count(self::$_em_js ) > 0) {
-                foreach(self::$_em_js as $key => $val) {
-                    $em_js_data = file_get_contents(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js");
-                    if (!preg_match("/\.min\./", $val)) {
-                        $minifierJs = new Minify\JS();
-                        $minifierJs->add($em_js_data);
-                        $em_js_data_all .=  $minifierJs->minify();
-                    }
-                }
-            }
-            if (strlen($em_js_data_all) > 0) {
-                $em_js_data_all = "<script language=JavaScript>".$em_js_data_all."</script>";
-            }
-            self::dataRegister("embedJS",$em_js_data_all);
-            self::$_rawView  =  file_get_contents(BASE_DIR."/view/template/".self::$_template."/master.html");
-            $css_resource = Resource::registerResourceHash(self::$_css,"css");
-            if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
-                if (!file_exists((BASE_DIR."/".JS_PATH."/dev-tool.js"))) {
-                    $devToolContent = file_get_contents(BASE_DIR."/systems/js/socket.io.js");
-                    $devToolContent .= "\n".file_get_contents(BASE_DIR."/systems/js/dev_io.js");
-                    file_put_contents(BASE_DIR."/".JS_PATH."/dev-tool.js",$devToolContent);
-                }
-                view::addJavascript("dev-tool");
-            }
-            $js_resource = Resource::registerResourceHash(self::$_js,"js");
-            Cache::saveResourceCache();
-            $uxControlJs = "";
-            if (strlen($css_resource) > 0) {
-                if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
-                    $uxControlJs = "<style class='devCss' fileList=".implode(",",self::$_css)."></style>";
-                    $uxControlJs .= " <script language=JavaScript>loadJs('/js/".$js_resource.".js');</script>";
-                } else {
-                    $uxControlJs = " <script language=JavaScript>loadCss('/css/".$css_resource.".css'".(strlen($js_resource) > 0 ? ",loadJs('/js/".$js_resource.".js')" : "").");</script>";
-                }
-            }
-            self::dataRegister("systemUXControl",$uxControlJs);
-            self::dataReplace();
-        } elseif ($htmlFileCheck) {
-            self::$_rawView  =  file_get_contents($html_file);
-        } else {
-            self::$_rawView = ob_get_clean();
-        }
+        self::$_template = ViewComponent::controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file, self::$_template);
+        self::templateProcess($templateUsingCheck, $htmlFileCheck, $html_file);
     }
     static function dataReplace() {
         $search = array();
@@ -189,23 +109,23 @@ class View {
         self::$_rawView = str_replace($search,$replace,self::$_rawView);
     }
     static function clearView() {
-        if (isset(self::$_data["<{view}>"])) {
-            unset(self::$_data["<{view}>"]);
+        if (isset(self::$_data[DATA_VIEW])) {
+            unset(self::$_data[DATA_VIEW]);
         }
     }
     static function addView($fileName) {
-        if (file_exists(BASE_DIR."/view/".$fileName.".html")) {
+        if (file_exists(VIEW_FOLDER.$fileName.HTML_EXTENSION)) {
             if (!is_array(self::$_data)) {
                 self::$_data = array();
             }
             $currentViewData = "";
-            if (isset(self::$_data["<{view}>"])) {
-                $currentViewData = self::$_data["<{view}>"];
+            if (isset(self::$_data[DATA_VIEW])) {
+                $currentViewData = self::$_data[DATA_VIEW];
             }
-            $currentViewData.= file_get_contents(BASE_DIR."/view/".$fileName.".html");
+            $currentViewData.= file_get_contents(VIEW_FOLDER.$fileName.HTML_EXTENSION);
             self::dataRegister("view",$currentViewData);
         } else {
-            PGNUtil::showMsg("File Missing: view/".$fileName.".html");
+            PGNUtil::showMsg("File Missing: view/".$fileName.HTML_EXTENSION);
         }
     }
     static function dataRegister($key,$data) {
@@ -214,6 +134,14 @@ class View {
         }
         self::$_data["<{".$key."}>"] = $data;
     }
+    static function dataRegisterFromHtml($key,$htmlFileName) {
+        if (file_exists(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION)) {
+            $htmlData = file_get_contents(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION);
+            self::dataRegister($key,$htmlData);
+        } else {
+            PGNUtil::showMsg("File Missing: view/".$htmlFileName.HTML_EXTENSION);
+        }
+    }
     static function sessionDataRegister($key,$data) {
         if (!is_array(self::$_sessionData)) {
             self::$_sessionData = array();
@@ -221,11 +149,11 @@ class View {
         self::$_sessionData["<$".$key."$>"] = $data;
     }
     static function setTemplate($template) {
-        if (is_dir(BASE_DIR."/view/template/".$template)
-            && file_exists(BASE_DIR."/view/template/".$template."/master.html")
-            && file_exists(BASE_DIR."/view/template/".$template."/header.html")
-            && file_exists(BASE_DIR."/view/template/".$template."/footer.html")
-            && file_exists(BASE_DIR."/view/template/".$template."/meta.html")) {
+        if (is_dir(TEMPLATE_FOLDER.$template)
+            && file_exists(TEMPLATE_FOLDER.$template."/master.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/header.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/footer.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/meta.html")) {
             self::$_template = $template;
         } else {
             PGNUtil::showMsg("Template Missing: ".$template);
@@ -294,5 +222,54 @@ class View {
                 }
             }
         }
+    }
+    private static function templateProcess($templateUsingCheck, $htmlFileCheck, $html_file) {
+        if ($templateUsingCheck && self::$_template != "") {
+            $out = ob_get_clean();
+            if (empty(self::$_data[DATA_VIEW])) {
+                self::$_data[DATA_VIEW] = "";
+            }
+            self::$_data[DATA_VIEW] .= $out;
+            self::dataRegister("header", file_get_contents(TEMPLATE_FOLDER . self::$_template . "/header.html"));
+            self::dataRegister("footer", file_get_contents(TEMPLATE_FOLDER . self::$_template . "/footer.html"));
+            self::dataRegister("metaTag", file_get_contents(TEMPLATE_FOLDER . self::$_template . "/meta.html"));
+            if (empty(self::$_data["<{title}>"]) && defined("DEFAULT_TITLE")) {
+                self::dataRegister("title", DEFAULT_TITLE);
+            }
+            $fs_css_data = ViewComponent::firstSignCSSProcess(self::$_fs_css);
+            self::dataRegister("firstSignCss", $fs_css_data);
+            $registeredEmbedJS = self::$_em_js;
+            $em_js_data_all = ViewComponent::embedJSProcess($registeredEmbedJS);
+            self::dataRegister("embedJS", $em_js_data_all);
+            self::$_rawView = file_get_contents(TEMPLATE_FOLDER . self::$_template . "/master.html");
+            $css_resource = Resource::registerResourceHash(self::$_css, "css");
+            ViewComponent::devIOProcess();
+            $js_resource = Resource::registerResourceHash(self::$_js, "js");
+            Cache::saveResourceCache();
+            $uxControlJs = self::resourceProcess($css_resource, $js_resource);
+            self::dataRegister("systemUXControl", $uxControlJs);
+            self::dataReplace();
+        } elseif ($htmlFileCheck) {
+            self::$_rawView = file_get_contents($html_file);
+        } else {
+            self::$_rawView = ob_get_clean();
+        }
+    }
+
+    /**
+     * @param $css_resource
+     * @param $js_resource
+     * @return string
+     */
+    private static function resourceProcess($css_resource, $js_resource) {
+        if (strlen($css_resource) > 0) {
+            if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
+                $uxControlJs = "<style class='devCss' fileList=" . implode(",", self::$_css) . "></style>";
+                $uxControlJs .= " <script language=JavaScript>loadJs('/js/" . $js_resource . ".js');</script>";
+            } else {
+                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'" . (strlen($js_resource) > 0 ? ",loadJs('/js/" . $js_resource . ".js')" : "") . ");</script>";
+            }
+        }
+        return $uxControlJs;
     }
 }

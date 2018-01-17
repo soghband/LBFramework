@@ -1,0 +1,39 @@
+#document .centerPanel {
+  max-width: 900px;
+  margin: 0px auto;
+  padding: 20px;
+  position: relative; }
+  #document .centerPanel .header {
+    color: #999;
+    font-size: 36px;
+    border-bottom: 2px #999 solid; }
+  #document .centerPanel .docAll .leftSide {
+    box-sizing: border-box;
+    margin-top: 10px;
+    width: 180px;
+    display: inline-block;
+    line-height: 22px; }
+    #document .centerPanel .docAll .leftSide .group {
+      color: #333;
+      font-size: -2px;
+      font-weight: bold; }
+    #document .centerPanel .docAll .leftSide .className {
+      color: #666;
+      font-size: -2px;
+      margin-left: 10px; }
+    #document .centerPanel .docAll .leftSide .functionName {
+      color: #999;
+      font-size: -2px;
+      margin-left: 20px; }
+  #document .centerPanel .docAll .rightSide {
+    margin-top: 10px;
+    vertical-align: top;
+    width: calc(100% - 184px);
+    box-sizing: border-box;
+    display: inline-block; }
+    #document .centerPanel .docAll .rightSide .head {
+      font-size: 24px;
+      color: #666;
+      border-bottom: 1px solid #eee; }
+    #document .centerPanel .docAll .rightSide .detail {
+      margin-top: 10px; }

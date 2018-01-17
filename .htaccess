@@ -17,5 +17,12 @@ RewriteRule ^favicon.ico /public/favicon/favicon.ico [L]
 
 RewriteCond %{REQUEST_FILENAME} !-d
 RewriteCond %{REQUEST_FILENAME} !-f
+RewriteRule ^(favicon|fonts)/(.*)$ /public/$1/$2 [L,NC]
+
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteCond %{REQUEST_FILENAME} !-f
 RewriteRule ^(images|css|js|)/(.*)$ /public/$1/$2 [L,NC]
 RewriteRule ^.*$ /public/index.php [L]
+
+RewriteCond %{HTTP:Authorization} .
+RewriteRule .* - [E=HTTP_AUTHORIZATION:%{HTTP:Authorization}]
