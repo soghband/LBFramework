@@ -1,4 +1,10 @@
 {
+    "repositories": [
+        {
+            "type": "vcs",
+            "url": "https://github.com/soghband/LBFramework.git"
+        }
+    ],
     "require": {
         "matthiasmullie/minify": "^1.3"
     }

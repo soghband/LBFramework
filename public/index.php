@@ -11,6 +11,7 @@ include_once BASE_DIR . "/systems/library/Cache.php";
 include_once BASE_DIR . "/vendor/autoload.php";
 Cache::initAutoload(BASE_DIR."/systems/library/Autoload.php");
 Cache::loadShareCache();
+Cache::loadResourceCache();
 Autoload::register();
 Config::define(BASE_DIR."/resource/config.json");
 Time::start("Start",$first_init);

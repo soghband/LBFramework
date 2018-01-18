@@ -17,6 +17,7 @@ socket.on('link', function (data) {
             }
         }
     }
+    cssElement.html("");
 });
 socket.on("CssChange",function(data) {
     $("#cssDev_"+data.fileName).html(data.data);

@@ -47,5 +47,11 @@
     },
     "document":{
         "controller":"document"
+    },
+    "document/{class}":{
+        "controller":"document",
+        "url_filter":{
+            "{class}":"^(view|route)*$"
+        }
     }
 }

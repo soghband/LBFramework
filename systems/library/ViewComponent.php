@@ -38,7 +38,7 @@ class ViewComponent {
                 } else {
                     $css_printout = $fs_css_data;
                 }
-                $fs_css_data = "<style " . (ENV_MODE == "dev" ? " class='devCss' fileList='" . implode(",", $registeredFirstSignCss) . "'" : "") . ">" . $css_printout . "</style>";
+                $fs_css_data = "<style " . (ENV_MODE == "dev" ? " class='devCss' fileList='" . implode(",", $registeredFirstSignCss) . "'" : "") . ">" . (ENABLE_DEV_IO  && ENV_MODE == "dev" ? "":$css_printout) . "</style>";
             }
         }
         return $fs_css_data;
@@ -79,17 +79,12 @@ class ViewComponent {
             View::addJavascript("dev-tool");
         }
     }
-    public static function controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file, $inputTemplate) {
-        $template = $inputTemplate;
+    public static function controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file) {
         if ($controllerFileCheck) {
-            if (!$htmlFileCheck) {
-                $template = "";
-            }
             if (file_exists(BASE_DIR . "/controller/globalController.php")) {
                 include_once BASE_DIR . "/controller/globalController.php";
             }
             include_once $controller_file;
         }
-        return $template;
     }
 }
