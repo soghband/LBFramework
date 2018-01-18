@@ -1,0 +1,14 @@
+{
+    "name": "soghband/LBFramwork",
+    "description": "LightBreak Framwork",
+    "authors": [
+        {
+            "name": "Bonlawit Butsabong",
+            "email": "soghband@gmail.com"
+        }
+    ],
+    "minimum-stability": "dev",
+    "require": {
+        "matthiasmullie/minify": "^1.3"
+    }
+}
