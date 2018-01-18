@@ -4,7 +4,7 @@ define("APCU_FUNCTION_NAME", "apcu_cache_info");
 define("CACHE_FILE_EXTENSION", ".cache");
 class Cache {
     private static $_shareCache ;
-    private static $_resourceCache;
+    public static $_resourceCache;
     private static $_pageHash;
     private static $_pageCache;
     private static $_loaded = false;

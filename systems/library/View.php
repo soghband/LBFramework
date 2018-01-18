@@ -53,33 +53,7 @@ class View {
         }
         echo  self::$_view;
     }
-    static function setCachePage($bool) {
-        self::$_cachePage = $bool;
-    }
-    static  function getPageHash() {
-        return self::$_pageHash;
-    }
-    static function setSessionProcess($bool) {
-        self::$_sessionProcess = $bool;
-    }
-    static  function  getTemplateName() {
-        return self::$_template;
-    }
-    static function sessionView($data,$controllerArray) {
-        if (file_exists(BASE_DIR."/controller/session/globalSession.php")) {
-            include_once  BASE_DIR."/controller/session/globalSession.php";
-        }
-        if (file_exists(BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php")) {
-            include_once  BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php";
-        }
-        $search = array();
-        $replace = array();
-        foreach (self::$_sessionData as $key => $val) {
-            $search[] = $key;
-            $replace[] = $val;
-        }
-       return str_replace($search,$replace,$data);
-    }
+
     private static function genPage($controllerArray) {
         $templateUsingCheck = false;
         $html_file = VIEW_FOLDER.$controllerArray[CONTROLLER_STR].HTML_EXTENSION;
@@ -96,23 +70,10 @@ class View {
         if (!$htmlFileCheck && !$controllerFileCheck) {
             PGNUtil::showMsg("File not found: ".$controllerArray[CONTROLLER_STR].".html or ".$controllerArray[CONTROLLER_STR]."Controller.php");
         }
-        self::$_template = ViewComponent::controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file, self::$_template);
+        ViewComponent::controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file);
         self::templateProcess($templateUsingCheck, $htmlFileCheck, $html_file);
     }
-    static function dataReplace() {
-        $search = array();
-        $replace = array();
-        foreach (self::$_data as $key => $val) {
-            $search[] = $key;
-            $replace[] = $val;
-        }
-        self::$_rawView = str_replace($search,$replace,self::$_rawView);
-    }
-    static function clearView() {
-        if (isset(self::$_data[DATA_VIEW])) {
-            unset(self::$_data[DATA_VIEW]);
-        }
-    }
+
     static function addView($fileName) {
         if (file_exists(VIEW_FOLDER.$fileName.HTML_EXTENSION)) {
             if (!is_array(self::$_data)) {
@@ -128,101 +89,14 @@ class View {
             PGNUtil::showMsg("File Missing: view/".$fileName.HTML_EXTENSION);
         }
     }
+
     static function dataRegister($key,$data) {
         if (!is_array(self::$_data)) {
             self::$_data = array();
         }
         self::$_data["<{".$key."}>"] = $data;
     }
-    static function dataRegisterFromHtml($key,$htmlFileName) {
-        if (file_exists(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION)) {
-            $htmlData = file_get_contents(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION);
-            self::dataRegister($key,$htmlData);
-        } else {
-            PGNUtil::showMsg("File Missing: view/".$htmlFileName.HTML_EXTENSION);
-        }
-    }
-    static function sessionDataRegister($key,$data) {
-        if (!is_array(self::$_sessionData)) {
-            self::$_sessionData = array();
-        }
-        self::$_sessionData["<$".$key."$>"] = $data;
-    }
-    static function setTemplate($template) {
-        if (is_dir(TEMPLATE_FOLDER.$template)
-            && file_exists(TEMPLATE_FOLDER.$template."/master.html")
-            && file_exists(TEMPLATE_FOLDER.$template."/header.html")
-            && file_exists(TEMPLATE_FOLDER.$template."/footer.html")
-            && file_exists(TEMPLATE_FOLDER.$template."/meta.html")) {
-            self::$_template = $template;
-        } else {
-            PGNUtil::showMsg("Template Missing: ".$template);
-        }
-    }
-    static function addFirstSignStyleSheet($css_file_name) {
-        if ($css_file_name != "") {
-            $css_array = explode(",",$css_file_name);
-            foreach ($css_array as $val) {
-                $file_path = BASE_DIR."/".CSS_PATH."/".$val.".css";
-                if (file_exists($file_path) && empty(self::$_css_index[$val])) {
-                    self::$_css_index[$val] = 1;
-                    self::$_fs_css[] = $val;
-                } else {
-                    if (!file_exists($file_path)) {
-                        PGNUtil::showMsg("CSS File not found: ".$val);
-                    }
-                }
-            }
-        }
-    }
-    static function addStyleSheet($css_file_name) {
-        if ($css_file_name != "") {
-            $css_array = explode(",",$css_file_name);
-            foreach ($css_array as $val) {
-                $file_path = BASE_DIR."/".CSS_PATH."/".$val.".css";
-                if (file_exists($file_path) && empty(self::$_css_index[$val])) {
-                    self::$_css_index[$val] = 1;
-                    self::$_css[] = $val;
-                } else {
-                    if (!file_exists($file_path)) {
-                        PGNUtil::showMsg("CSS File not found: ".$val);
-                    }
-                }
-            }
-        }
-    }
-    static function addEmbedJavascript($js_file_name) {
-        if ($js_file_name != "") {
-            $js_array  = explode(",",$js_file_name);
-            foreach ($js_array as $val) {
-                $file_path = BASE_DIR."/".JS_PATH."/".$val.".js";
-                if (file_exists($file_path) && empty(self::$_js_index[$val])) {
-                    self::$_js_index[$val] = 1;
-                    self::$_em_js[] = $val;
-                } else {
-                    if (!file_exists($file_path)) {
-                        PGNUtil::showMsg("JS File not found: ".$val);
-                    }
-                }
-            }
-        }
-    }
-    static function addJavascript($js_file_name) {
-        if ($js_file_name != "") {
-            $js_array  = explode(",",$js_file_name);
-            foreach ($js_array as $val) {
-                $file_path = BASE_DIR."/".JS_PATH."/".$val.".js";
-                if (file_exists($file_path) && empty(self::$_js_index[$val])) {
-                    self::$_js_index[$val] = 1;
-                    self::$_js[] = $val;
-                } else {
-                    if (!file_exists($file_path)) {
-                        PGNUtil::showMsg("JS File not found: ".$val);
-                    }
-                }
-            }
-        }
-    }
+
     private static function templateProcess($templateUsingCheck, $htmlFileCheck, $html_file) {
         if ($templateUsingCheck && self::$_template != "") {
             $out = ob_get_clean();
@@ -249,7 +123,7 @@ class View {
             $uxControlJs = self::resourceProcess($css_resource, $js_resource);
             self::dataRegister("systemUXControl", $uxControlJs);
             self::dataReplace();
-        } elseif ($htmlFileCheck) {
+        } elseif ($htmlFileCheck && !$templateUsingCheck) {
             self::$_rawView = file_get_contents($html_file);
         } else {
             self::$_rawView = ob_get_clean();
@@ -267,9 +141,155 @@ class View {
                 $uxControlJs = "<style class='devCss' fileList=" . implode(",", self::$_css) . "></style>";
                 $uxControlJs .= " <script language=JavaScript>loadJs('/js/" . $js_resource . ".js');</script>";
             } else {
-                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'" . (strlen($js_resource) > 0 ? ",loadJs('/js/" . $js_resource . ".js')" : "") . ");</script>";
+                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'" . (strlen($js_resource) > 0 ? ",loadJs('/js/" . $js_resource . ".js')" : "") . ")</script>";
             }
         }
         return $uxControlJs;
+    }
+
+    private static function dataReplace() {
+        $search = array();
+        $replace = array();
+        foreach (self::$_data as $key => $val) {
+            $search[] = $key;
+            $replace[] = $val;
+        }
+        self::$_rawView = str_replace($search,$replace,self::$_rawView);
+    }
+
+    private static function sessionView($data,$controllerArray) {
+        if (file_exists(BASE_DIR."/controller/session/globalSession.php")) {
+            include_once  BASE_DIR."/controller/session/globalSession.php";
+        }
+        if (file_exists(BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php")) {
+            include_once  BASE_DIR."/controller/session/".$controllerArray[CONTROLLER_STR]."Session.php";
+        }
+        $search = array();
+        $replace = array();
+        foreach (self::$_sessionData as $key => $val) {
+            $search[] = $key;
+            $replace[] = $val;
+        }
+       return str_replace($search,$replace,$data);
+    }
+
+    static function setCachePage($bool) {
+        self::$_cachePage = $bool;
+    }
+
+    static  function getPageHash() {
+        return self::$_pageHash;
+    }
+
+    static function setSessionProcess($bool) {
+        self::$_sessionProcess = $bool;
+    }
+
+    static  function  getTemplateName() {
+        return self::$_template;
+    }
+
+    static function clearView() {
+        if (isset(self::$_data[DATA_VIEW])) {
+            unset(self::$_data[DATA_VIEW]);
+        }
+    }
+
+    static function dataRegisterFromHtml($key,$htmlFileName) {
+        if (file_exists(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION)) {
+            $htmlData = file_get_contents(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION);
+            self::dataRegister($key,$htmlData);
+        } else {
+            PGNUtil::showMsg("File Missing: view/".$htmlFileName.HTML_EXTENSION);
+        }
+    }
+
+    static function sessionDataRegister($key,$data) {
+        if (!is_array(self::$_sessionData)) {
+            self::$_sessionData = array();
+        }
+        self::$_sessionData["<$".$key."$>"] = $data;
+    }
+
+    static function setTemplate($template) {
+        if (is_dir(TEMPLATE_FOLDER.$template)
+            && file_exists(TEMPLATE_FOLDER.$template."/master.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/header.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/footer.html")
+            && file_exists(TEMPLATE_FOLDER.$template."/meta.html")) {
+            self::$_template = $template;
+        } else {
+            PGNUtil::showMsg("Template Missing: ".$template);
+        }
+    }
+    static function clearTemplate() {
+        self::$_template = "";
+    }
+    static function addFirstSignStyleSheet($css_file_name) {
+        if ($css_file_name != "") {
+            $css_array = explode(",",$css_file_name);
+            foreach ($css_array as $val) {
+                $file_path = BASE_DIR."/".CSS_PATH."/".$val.".css";
+                if (file_exists($file_path) && empty(self::$_css_index[$val])) {
+                    self::$_css_index[$val] = 1;
+                    self::$_fs_css[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        PGNUtil::showMsg("CSS File not found: ".$val);
+                    }
+                }
+            }
+        }
+    }
+
+    static function addStyleSheet($css_file_name) {
+        if ($css_file_name != "") {
+            $css_array = explode(",",$css_file_name);
+            foreach ($css_array as $val) {
+                $file_path = BASE_DIR."/".CSS_PATH."/".$val.".css";
+                if (file_exists($file_path) && empty(self::$_css_index[$val])) {
+                    self::$_css_index[$val] = 1;
+                    self::$_css[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        PGNUtil::showMsg("CSS File not found: ".$val);
+                    }
+                }
+            }
+        }
+    }
+
+    static function addEmbedJavascript($js_file_name) {
+        if ($js_file_name != "") {
+            $js_array  = explode(",",$js_file_name);
+            foreach ($js_array as $val) {
+                $file_path = BASE_DIR."/".JS_PATH."/".$val.".js";
+                if (file_exists($file_path) && empty(self::$_js_index[$val])) {
+                    self::$_js_index[$val] = 1;
+                    self::$_em_js[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        PGNUtil::showMsg("JS File not found: ".$val);
+                    }
+                }
+            }
+        }
+    }
+
+    static function addJavascript($js_file_name) {
+        if ($js_file_name != "") {
+            $js_array  = explode(",",$js_file_name);
+            foreach ($js_array as $val) {
+                $file_path = BASE_DIR."/".JS_PATH."/".$val.".js";
+                if (file_exists($file_path) && empty(self::$_js_index[$val])) {
+                    self::$_js_index[$val] = 1;
+                    self::$_js[] = $val;
+                } else {
+                    if (!file_exists($file_path)) {
+                        PGNUtil::showMsg("JS File not found: ".$val);
+                    }
+                }
+            }
+        }
     }
 }

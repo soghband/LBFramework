@@ -10,25 +10,28 @@
   #document .centerPanel .docAll .leftSide {
     box-sizing: border-box;
     margin-top: 10px;
-    width: 180px;
+    width: 190px;
     display: inline-block;
     line-height: 22px; }
     #document .centerPanel .docAll .leftSide .group {
       color: #333;
       font-size: -2px;
-      font-weight: bold; }
-    #document .centerPanel .docAll .leftSide .className {
+      font-weight: bold;
+      margin-top: 10px; }
+    #document .centerPanel .docAll .leftSide .group:first-child {
+      margin-top: 0px; }
+    #document .centerPanel .docAll .leftSide .lap1 .className {
       color: #666;
       font-size: -2px;
       margin-left: 10px; }
-    #document .centerPanel .docAll .leftSide .functionName {
+    #document .centerPanel .docAll .leftSide .lap1 .lap2 .functionName {
       color: #999;
       font-size: -2px;
       margin-left: 20px; }
   #document .centerPanel .docAll .rightSide {
     margin-top: 10px;
     vertical-align: top;
-    width: calc(100% - 184px);
+    width: calc(100% - 194px);
     box-sizing: border-box;
     display: inline-block; }
     #document .centerPanel .docAll .rightSide .head {

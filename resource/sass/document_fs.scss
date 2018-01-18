@@ -13,29 +13,37 @@
             .leftSide {
                 box-sizing: border-box;
                 margin-top:10px;
-                width: 180px;
+                width: 190px;
                 display: inline-block;
                 line-height: 22px;
                 .group {
                     color:#333;
                     font-size:-2px;
                     font-weight: bold;
+                    margin-top:10px;
                 }
-                .className {
-                    color:#666;
-                    font-size:-2px;
-                    margin-left:10px
+                .group:first-child {
+                    margin-top:0px;
                 }
-                .functionName {
-                    color:#999;
-                    font-size:-2px;
-                    margin-left:20px;
+                .lap1 {
+                    .className {
+                        color:#666;
+                        font-size:-2px;
+                        margin-left:10px
+                    }
+                    .lap2 {
+                        .functionName {
+                            color:#999;
+                            font-size:-2px;
+                            margin-left:20px;
+                        }
+                    }
                 }
             }
             .rightSide {
                 margin-top:10px;
                 vertical-align: top;
-                width:calc(100% - 184px);
+                width:calc(100% - 194px);
                 box-sizing: border-box;
                 display: inline-block;
                 .head {
