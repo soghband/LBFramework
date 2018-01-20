@@ -79,37 +79,8 @@ function loadCss(cssList,callBack) {
             }
         },15000);
     }
-    var eventCapter ;
-    if (typeof(requestAnimationFrame) != 'undefined') {
-        eventCapter = requestAnimationFrame
-    }
-    else if (typeof(mozRequestAnimationFrame) != 'undefined') {
-        eventCapter = mozRequestAnimationFrame
-    }
-    else if (typeof(webkitRequestAnimationFrame) != 'undefined') {
-        eventCapter = webkitRequestAnimationFrame
-    }
-    else if (typeof(msRequestAnimationFrame) != 'undefined') {
-        eventCapter = msRequestAnimationFrame
-    }
-    if (eventCapter) {
-        eventCapter(function () {
-            loadProcess();
-            onloadProcessed = true;
-        });
-    }else {
-        if (typeof(window.onload) == 'function') {
-            var windowsOnLoadOld = window.onload;
-            window.onload = function () {
-                windowsOnLoadOld();
-                loadProcess();
-                onloadProcessed = true;
-            }
-        }else {
-            window.onload = function () {
-                loadProcess()
-                onloadProcessed = true;
-            }
-        }
-    }
+    var raf = window.requestAnimationFrame || window.mozRequestAnimationFrame ||
+        window.webkitRequestAnimationFrame || window.msRequestAnimationFrame;
+    if (raf) raf(function() { window.setTimeout(loadProcess, 0); });
+    else window.addEventListener('load', loadProcess);
 }

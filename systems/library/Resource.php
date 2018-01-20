@@ -258,13 +258,11 @@ class Resource {
                 $uxControlJs = "<style class='devCss' fileList=" . $cssFileList . "></style>";
                 $uxControlJs .= " <script language=JavaScript>loadJs('/js/" . $js_resource . ".js');</script>";
             } else {
-                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'/*callbackJs*/)</script>";
+                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'";
                 if (strlen($js_resource) > 0) {
-                    $callbackJsStr = ",loadJs('/js/" . $js_resource . ".js')";
-                } else {
-                    $callbackJsStr = "";
+                    $uxControlJs .= ",loadJs('/js/" . $js_resource . ".js')";
                 }
-                str_replace("/*callbackJs*/",$callbackJsStr,$uxControlJs);
+                $uxControlJs .= ")</script>";
             }
         }
         return $uxControlJs;
