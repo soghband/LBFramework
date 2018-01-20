@@ -10,7 +10,7 @@ class Route {
         self::$route_index = Cache::getShareCache("route");
         if (self::$route_index == "") {
             $route_data = file_get_contents($route_file);
-            $route = PGNUtil::jsonDecode($route_data);
+            $route = LBUtil::jsonDecode($route_data);
             foreach ($route as $key => $value ) {
                 self::processRouteRegister($key, $value);
             }

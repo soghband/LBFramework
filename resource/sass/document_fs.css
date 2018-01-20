@@ -10,7 +10,7 @@
   #document .centerPanel .docAll .leftSide {
     box-sizing: border-box;
     margin-top: 10px;
-    width: 190px;
+    width: 200px;
     display: inline-block;
     line-height: 22px; }
     #document .centerPanel .docAll .leftSide .group {
@@ -24,19 +24,104 @@
       color: #666;
       font-size: -2px;
       margin-left: 10px; }
-    #document .centerPanel .docAll .leftSide .lap1 .lap2 .functionName {
-      color: #999;
-      font-size: -2px;
-      margin-left: 20px; }
+    #document .centerPanel .docAll .leftSide .lap1 .lap2 {
+      display: none; }
+      #document .centerPanel .docAll .leftSide .lap1 .lap2 .functionName {
+        color: #999;
+        font-size: -2px;
+        margin-left: 20px; }
+    #document .centerPanel .docAll .leftSide a {
+      text-decoration: none; }
   #document .centerPanel .docAll .rightSide {
     margin-top: 10px;
     vertical-align: top;
-    width: calc(100% - 194px);
+    width: calc(100% - 204px);
     box-sizing: border-box;
     display: inline-block; }
     #document .centerPanel .docAll .rightSide .head {
       font-size: 24px;
       color: #666;
-      border-bottom: 1px solid #eee; }
+      border-bottom: 1px solid #AAA; }
     #document .centerPanel .docAll .rightSide .detail {
       margin-top: 10px; }
+    #document .centerPanel .docAll .rightSide .block {
+      margin-top: 20px;
+      padding-top: 10px;
+      border-top: 1px solid #bbb;
+      position: relative; }
+      #document .centerPanel .docAll .rightSide .block .left {
+        padding-right: 10px;
+        vertical-align: top;
+        width: calc(40% - 10px);
+        display: inline-block; }
+        #document .centerPanel .docAll .rightSide .block .left .function {
+          color: #777;
+          font-size: 18px; }
+        #document .centerPanel .docAll .rightSide .block .left .info {
+          text-indent: 20px;
+          margin-top: 5px;
+          font-size: 14px;
+          color: #999; }
+      #document .centerPanel .docAll .rightSide .block .right {
+        width: calc(60% - 10px);
+        display: inline-block; }
+        #document .centerPanel .docAll .rightSide .block .right .parameter {
+          font-size: 14px;
+          border: 1px solid #eee;
+          padding: 10px;
+          margin-top: 15px;
+          position: relative;
+          border-radius: 10px;
+          color: #aaa; }
+          #document .centerPanel .docAll .rightSide .block .right .parameter span {
+            color: #666; }
+        #document .centerPanel .docAll .rightSide .block .right .parameter::before {
+          content: "Parameter";
+          display: block;
+          font-size: 14px;
+          position: absolute;
+          top: -12px;
+          left: 10px;
+          background: #fff;
+          padding: 0px 10px;
+          color: #ccc; }
+        #document .centerPanel .docAll .rightSide .block .right .return {
+          font-size: 14px;
+          border: 1px solid #eee;
+          padding: 10px;
+          margin-top: 15px;
+          position: relative;
+          border-radius: 10px;
+          color: #aaa; }
+          #document .centerPanel .docAll .rightSide .block .right .return span {
+            color: #666; }
+        #document .centerPanel .docAll .rightSide .block .right .return::before {
+          content: "Return";
+          display: block;
+          font-size: 14px;
+          position: absolute;
+          top: -12px;
+          left: 10px;
+          background: #fff;
+          padding: 0px 10px;
+          color: #ccc; }
+        #document .centerPanel .docAll .rightSide .block .right .example {
+          font-size: 14px;
+          border: 1px solid #eee;
+          padding: 10px;
+          margin-top: 15px;
+          position: relative;
+          border-radius: 10px;
+          color: #aaa; }
+          #document .centerPanel .docAll .rightSide .block .right .example span {
+            color: #666; }
+        #document .centerPanel .docAll .rightSide .block .right .example::before {
+          content: "Example";
+          display: block;
+          font-size: 14px;
+          position: absolute;
+          top: -12px;
+          left: 10px;
+          background: #fff;
+          padding: 0px 10px;
+          color: #ccc; }

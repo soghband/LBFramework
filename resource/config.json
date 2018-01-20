@@ -1,6 +1,5 @@
 {
     "ENV_MODE":"dev",
-    "CACHE":false,
     "TIME_CHECK":true,
     "JS_PATH":"resource/js",
     "JS_COMPRESS":false,

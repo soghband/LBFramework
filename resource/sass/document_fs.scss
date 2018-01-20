@@ -13,7 +13,7 @@
             .leftSide {
                 box-sizing: border-box;
                 margin-top:10px;
-                width: 190px;
+                width: 200px;
                 display: inline-block;
                 line-height: 22px;
                 .group {
@@ -32,6 +32,7 @@
                         margin-left:10px
                     }
                     .lap2 {
+                        display: none;
                         .functionName {
                             color:#999;
                             font-size:-2px;
@@ -39,20 +40,119 @@
                         }
                     }
                 }
+                a {
+                    text-decoration: none;
+                }
             }
             .rightSide {
                 margin-top:10px;
                 vertical-align: top;
-                width:calc(100% - 194px);
+                width:calc(100% - 204px);
                 box-sizing: border-box;
                 display: inline-block;
                 .head {
                     font-size:24px;
                     color:#666;
-                    border-bottom: 1px solid #eee;
+                    border-bottom: 1px solid #AAA;
                 }
                 .detail {
                     margin-top:10px;
+                }
+                .block {
+                    margin-top:20px;
+                    padding-top: 10px;
+                    border-top:1px solid #bbb;
+                    position: relative;;
+                    .left {
+                        padding-right:10px;
+                        vertical-align: top;
+                        width:calc(40% - 10px);
+                        display: inline-block;
+                        .function {
+                            color: #777;
+                            font-size:18px;
+                        }
+                        .info {
+                            text-indent: 20px;
+                            margin-top:5px;
+                            font-size:14px;
+                            color:#999;
+                        }
+                    }
+                    .right {
+                        width:calc(60% - 10px);
+                        display: inline-block;
+                        .parameter {
+                            font-size: 14px;
+                            border:1px solid #eee;
+                            padding:10px;
+                            margin-top:15px;
+                            position:relative;
+                            border-radius: 10px;
+                            color:#aaa;
+                            span {
+                                color:#666;
+                            }
+                        }
+                        .parameter::before{
+                            content: "Parameter";
+                            display:block;
+                            font-size: 14px;
+                            position:absolute;
+                            top: -12px;
+                            left:10px;
+                            background:#fff;
+                            padding:0px 10px;
+                            color:#ccc;
+                        }
+
+                        .return {
+                            font-size: 14px;
+                            border:1px solid #eee;
+                            padding:10px;
+                            margin-top:15px;
+                            position:relative;
+                            border-radius: 10px;
+                            color:#aaa;
+                            span {
+                                color:#666;
+                            }
+                        }
+                        .return::before{
+                            content: "Return";
+                            display:block;
+                            font-size: 14px;
+                            position:absolute;
+                            top: -12px;
+                            left:10px;
+                            background:#fff;
+                            padding:0px 10px;
+                            color:#ccc;
+                        }
+                        .example {
+                            font-size: 14px;
+                            border:1px solid #eee;
+                            padding:10px;
+                            margin-top:15px;
+                            position:relative;
+                            border-radius: 10px;
+                            color:#aaa;
+                            span {
+                                color:#666;
+                            }
+                        }
+                        .example::before{
+                            content: "Example";
+                            display:block;
+                            font-size: 14px;
+                            position:absolute;
+                            top: -12px;
+                            left:10px;
+                            background:#fff;
+                            padding:0px 10px;
+                            color:#ccc;
+                        }
+                    }
                 }
             }
         }

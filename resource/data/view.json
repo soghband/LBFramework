@@ -1,0 +1,189 @@
+[
+    {
+        "function_name" : "getPageView($route);",
+        "anchor_id":"getPageView",
+        "info" : "Main process.This function is autoload from index.",
+        "parameter" : "<span>$route</span>: Route array get from Route::getRoute();",
+        "return" : "Void"
+    },
+    {
+        "function_name" : "addView($htmlFilename);",
+        "anchor_id":"addView",
+        "info" : "Add html file for process page.",
+        "parameter" : "<span>$htmlFilename</span>: HTML file name in view folder.",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addView(\"someHtmlFile\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addData($key,$data);",
+        "anchor_id":"addData",
+        "info" : "Add data for tag <{}> in HTML file.",
+        "parameter" : "<span>$key</span>: Tag key Ex: <{example_key}>.<br><span>$data</span>: Any data.",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addData(\"example_key\",\"Hello World\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "setCachePage($bool);",
+        "anchor_id":"setCachePage",
+        "info" : "Enable or disable page cache<br>Default = true",
+        "parameter" : "<span>$bool</span>: true || false",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::setCachePage(false);"
+            }
+        ]
+    },
+    {
+        "function_name" : "getPageHash();",
+        "anchor_id":"getPageHash",
+        "info" : "Get page hash.",
+        "parameter" : "N/A",
+        "return" : "Page hash",
+        "example" :[
+            {
+                "data" : "View::getPageHash();"
+            }
+        ]
+    },
+    {
+        "function_name" : "setSessionProcess($bool);",
+        "anchor_id":"setSessionProcess",
+        "info" : "Enable or disable session process.<br>Default = false",
+        "parameter" : "<span>$bool</span>: true || false",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::setSessionProcess(true);"
+            }
+        ]
+    },
+    {
+        "function_name" : "clearView();",
+        "anchor_id":"clearView",
+        "info" : "Clear all loaded html.",
+        "parameter" : "N/A",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::clearView();"
+            }
+        ]
+    },
+    {
+        "function_name" : "setTemplate($templateDirName);",
+        "anchor_id":"setTemplate",
+        "info" : "Change template. Default = default",
+        "parameter" : "<span>$templateDirName:</span> Template directory name in view/template",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::setTemplate(\"template_dir\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addJS($jsStr);",
+        "anchor_id":"addJS",
+        "info" : "Add javascript to current page. All added JS file will be combine to one file and call after page loaded.",
+        "parameter" : "<span>$jsStr</span>: Javascript filename without extension",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addJS(\"exampleScript1,exampleScript2\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addCSS($cssStr);",
+        "anchor_id":"addCSS",
+        "info" : "Add stylesheet to current page. All added CSS file will be combine to one file and call after page loaded.",
+        "parameter" : "<span>$cssStr:</span> Stylesheet file name without extension",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addCSS(\"exampleCSS1,exampleCSS2\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addEmbedJS($jsStr);",
+        "anchor_id":"addEmbedJS",
+        "info" : "Add javascript to current page. This function 'll embed javascript to html",
+        "parameter" : "<span>$jsStr:</span> Javascript file name without extension",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addEmbedJS(\"exampleScript1,exampleScript1\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addFirstSignCSS($cssStr);",
+        "anchor_id":"addFirstSignCSS",
+        "info" : "Add stylesheet to current page. This function 'll embed stylesheet to html",
+        "parameter" : "<span>$cssStr:</span> Stylesheet file name without extension",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addFirstSignCSS(\"exampleCSS1,exampleCSS2\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "clearTemplate();",
+        "anchor_id":"clearTemplate",
+        "info" : "Clear assigned template.",
+        "parameter" : "N/A",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::clearTemplate();"
+            }
+        ]
+    },
+    {
+        "function_name" : "addHtmlData($htmlFileName);",
+        "anchor_id":"addHtmlData",
+        "info" : "Add data from html file.",
+        "parameter" : "<span>$htmlFileName:</span> HTML file name in view directory without extension.",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addHtmlData(\"exampleHtml\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addSessionData($key,$data);",
+        "anchor_id":"addSessionData",
+        "info" : "Add data for tag <$$> in HTML file.",
+        "parameter" : "<span>$key</span>: Tag key Ex: <$example_key$>.<br><span>$data</span>: Any data.",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "View::addSessionData(\"example_key\",\"Hello Session\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "getTemplateName();",
+        "anchor_id":"getTemplateName",
+        "info" : "Add assigned template name.",
+        "parameter" : "N/A",
+        "return" : "Current template name",
+        "example" :[
+            {
+                "data" : "View::getTemplateName();"
+            }
+        ]
+    }
+]

@@ -26,7 +26,7 @@ class Resource {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    PGNUtil::showMsg("CSS File not found: ".$val);
+                    LBUtil::showMsg("CSS File not found: ".$val);
                 }
             }
         }
@@ -42,7 +42,7 @@ class Resource {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    PGNUtil::showMsg("JS File not found: ".$val);
+                    LBUtil::showMsg("JS File not found: ".$val);
                 }
             }
         }
@@ -241,13 +241,7 @@ class Resource {
         }
         return $cssCombine;
     }
-
-    /**
-     * @param $cssCombine
-     * @return string
-     */
-    private static function compressCSSProcess($cssCombine)
-    {
+    private static function compressCSSProcess($cssCombine){
         if (CSS_COMPRESS) {
             $minifierCss = new Minify\CSS();
             $minifierCss->add($cssCombine);
@@ -256,5 +250,23 @@ class Resource {
             $css_data = $cssCombine;
         }
         return $css_data;
+    }
+    public static function resourceProcess(&$css_resource, &$js_resource, $cssFileList) {
+        $uxControlJs = "";
+        if (strlen($css_resource) > 0) {
+            if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
+                $uxControlJs = "<style class='devCss' fileList=" . $cssFileList . "></style>";
+                $uxControlJs .= " <script language=JavaScript>loadJs('/js/" . $js_resource . ".js');</script>";
+            } else {
+                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'/*callbackJs*/)</script>";
+                if (strlen($js_resource) > 0) {
+                    $callbackJsStr = ",loadJs('/js/" . $js_resource . ".js')";
+                } else {
+                    $callbackJsStr = "";
+                }
+                str_replace("/*callbackJs*/",$callbackJsStr,$uxControlJs);
+            }
+        }
+        return $uxControlJs;
     }
 }
