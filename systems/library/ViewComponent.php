@@ -1,7 +1,6 @@
 <?php
 
 use MatthiasMullie\Minify;
-
 class ViewComponent {
     public static function checkHtml($html_file) {
         $htmlFileCheck = false;
@@ -30,16 +29,7 @@ class ViewComponent {
             foreach ($registeredFirstSignCss as $firstSignVal) {
                 $fs_css_data .= file_get_contents(BASE_DIR . "/" . CSS_PATH . "/" . $firstSignVal . ".css") . "\r\n";
             }
-            if (strlen($fs_css_data) > 0) {
-                if (CSS_COMPRESS) {
-                    $minifierCss = new Minify();
-                    $minifierCss->add($fs_css_data);
-                    $css_printout = $minifierCss->minify();
-                } else {
-                    $css_printout = $fs_css_data;
-                }
-                $fs_css_data = "<style " . (ENV_MODE == "dev" ? " class='devCss' fileList='" . implode(",", $registeredFirstSignCss) . "'" : "") . ">" . (ENABLE_DEV_IO  && ENV_MODE == "dev" ? "":$css_printout) . "</style>";
-            }
+            $fs_css_data = self::processDisplayCss($registeredFirstSignCss, $fs_css_data);
         }
         return $fs_css_data;
     }
@@ -47,7 +37,7 @@ class ViewComponent {
         $core_js = file_get_contents(BASE_DIR . "/systems/js/cssPreload.js");
         $core_js .= "\n" . file_get_contents(BASE_DIR . "/systems/js/jsPreload.js");
         if (JS_COMPRESS) {
-            $minifierCoreJs = new Minify();
+            $minifierCoreJs = new  Minify\JS();
             $minifierCoreJs->add($core_js);
             $em_js_data_all = $minifierCoreJs->minify();
         } else {
@@ -57,7 +47,7 @@ class ViewComponent {
             foreach ($registeredEmbedJS as $val) {
                 $em_js_data = file_get_contents(BASE_DIR . "/" . JS_PATH . "/" . $val . ".js");
                 if (!preg_match("/\.min\./", $val)) {
-                    $minifierJs = new Minify();
+                    $minifierJs = new Minify\JS();
                     $minifierJs->add($em_js_data);
                     $em_js_data_all .= $minifierJs->minify();
                 }
@@ -76,15 +66,28 @@ class ViewComponent {
                 $devToolContent .= "\n" . file_get_contents(BASE_DIR . "/systems/js/dev_io.js");
                 file_put_contents(BASE_DIR . "/" . JS_PATH . "/dev-tool.js", $devToolContent);
             }
-            View::addJavascript("dev-tool");
+            View::addJS("dev-tool");
         }
     }
-    public static function controllerProcess($controllerFileCheck, $htmlFileCheck, $controller_file) {
+    public static function controllerProcess($controllerFileCheck, $controller_file) {
         if ($controllerFileCheck) {
             if (file_exists(BASE_DIR . "/controller/globalController.php")) {
                 include_once BASE_DIR . "/controller/globalController.php";
             }
             include_once $controller_file;
         }
+    }
+    private static function processDisplayCss($registeredFirstSignCss, $fs_css_data) {
+        if (strlen($fs_css_data) > 0) {
+            if (CSS_COMPRESS) {
+                $minifierCss = new Minify\CSS();
+                $minifierCss->add($fs_css_data);
+                $css_printout = $minifierCss->minify();
+            } else {
+                $css_printout = $fs_css_data;
+            }
+            $fs_css_data = "<style " . (ENV_MODE == "dev" ? " class='devCss' fileList='" . implode(",", $registeredFirstSignCss) . "'" : "") . ">" . (ENABLE_DEV_IO && ENV_MODE == "dev" ? "" : $css_printout) . "</style>";
+        }
+        return $fs_css_data;
     }
 }

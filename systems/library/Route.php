@@ -4,35 +4,35 @@ define("CONTROLLER_ARRAY_STR","_controller");
 define("PARAM_ARRAY_STR","_param");
 define("ROUTE_CONTROLLER_STR","controller");
 class Route {
-    private static $route_index;
-    private static $param;
-    static function register($route_file){
-        self::$route_index = Cache::getShareCache("route");
-        if (self::$route_index == "") {
-            $route_data = file_get_contents($route_file);
-            $route = PGNUtil::jsonDecode($route_data);
+    private static $_routeIndex;
+    private static $_param;
+    static function register($routeFile){
+        self::$_routeIndex = Cache::getShareCache("route");
+        if (self::$_routeIndex == "") {
+            $route_data = file_get_contents($routeFile);
+            $route = LBUtil::jsonDecode($route_data);
             foreach ($route as $key => $value ) {
                 self::processRouteRegister($key, $value);
             }
         }
-        Cache::setShareCache("route",self::$route_index);
+        Cache::setShareCache("route",self::$_routeIndex);
     }
-    static function show_index() {
+    static function showIndex() {
         echo "<pre>";
-        var_dump(self::$route_index);
+        var_dump(self::$_routeIndex);
         echo "</pre>";
     }
-    static function make_index($parent,$key_array,$file,$pattern,$param_refine) {
+    private static function makeIndex($parent, $key_array, $file, $pattern, $param_refine) {
         $current_key_shift = array_shift($key_array);
         if (count($key_array) > 0) {
             if (empty($parent[$current_key_shift])) {
                 $parent_s = array();
-                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
+                $parent[$current_key_shift] = self::makeIndex($parent_s,$key_array,$file,$pattern,$param_refine);
             } else {
                 $parent_s = $parent[$current_key_shift];
-                $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
+                $parent[$current_key_shift] = self::makeIndex($parent_s,$key_array,$file,$pattern,$param_refine);
             }
-            $parent[$current_key_shift] = self::make_index($parent_s,$key_array,$file,$pattern,$param_refine);
+            $parent[$current_key_shift] = self::makeIndex($parent_s,$key_array,$file,$pattern,$param_refine);
             if (isset($pattern[$current_key_shift])) {
                 $parent[PATTERN_ARRAY_STR][$pattern[$current_key_shift]] = $current_key_shift;
             }
@@ -47,14 +47,6 @@ class Route {
         }
         return $parent;
     }
-    static function refine_pattern($data) {
-        $refine_data = array();
-        foreach ($data as $val) {
-            $data_split = explode('=', $val, 2);
-            $refine_data["{".$data_split[0]."}"] = $data_split[1];
-        }
-        return $refine_data;
-    }
     static function getRoute($path) {
         if (preg_match("/\?/",$path)) {
             list($url_split) = explode("?",$path);
@@ -66,7 +58,7 @@ class Route {
         if (preg_match("/^\/public.*/",$url_split)) {
             array_shift($path_array);
         }
-        $route_index = self::$route_index;
+        $route_index = self::$_routeIndex;
         $parameter = array();
         $route = array();
         if (count($path_array) == 0) {
@@ -77,31 +69,19 @@ class Route {
         list($route_index, $parameter) = self::processRequestParameter($route_index, $parameter);
         $route = self::assignController($route_index, $route);
         $route["param"] = $parameter;
-        self::$param = $parameter;
+        self::$_param = $parameter;
         return $route;
     }
     static function getParam($name="") {
         if ($name == "") {
-            return self::$param;
+            return self::$_param;
         } else {
-            if (isset(self::$param[$name])) {
-                return self::$param[$name];
+            if (isset(self::$_param[$name])) {
+                return self::$_param[$name];
             } else {
                 return "";
             }
         }
-    }
-    static  function createCSRF() {
-        $csrf = Session::get("csrf");
-        if ($csrf == "") {
-            $csrf_time = microtime(true);
-            $csrf = md5($csrf_time.Session::id());
-            Session::set("csrf",$csrf);
-        }
-        return $csrf;
-    }
-    static function getCSRF() {
-        return Session::get("csrf");
     }
 
     /**
@@ -205,26 +185,26 @@ class Route {
             $param_refine = $value["param_filter"];
         }
         if (count($key_split) > 0) {
-            if (empty(self::$route_index[$current_level_shift])) {
+            if (empty(self::$_routeIndex[$current_level_shift])) {
                 $parent = array();
-                self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine, $param_refine);
+                self::$_routeIndex[$current_level_shift] = self::makeIndex($parent, $key_split, $file, $pattern_refine, $param_refine);
             } else {
-                $parent = self::$route_index[$current_level_shift];
-                self::$route_index[$current_level_shift] = self::make_index($parent, $key_split, $file, $pattern_refine, $param_refine);
+                $parent = self::$_routeIndex[$current_level_shift];
+                self::$_routeIndex[$current_level_shift] = self::makeIndex($parent, $key_split, $file, $pattern_refine, $param_refine);
             }
             if (isset($pattern_refine[$current_level_shift])) {
-                self::$route_index[PATTERN_ARRAY_STR][$pattern_refine[$current_level_shift]] = $current_level_shift;
+                self::$_routeIndex[PATTERN_ARRAY_STR][$pattern_refine[$current_level_shift]] = $current_level_shift;
             }
         } else {
-            if (!is_array(self::$route_index)) {
-                self::$route_index = array();
+            if (!is_array(self::$_routeIndex)) {
+                self::$_routeIndex = array();
             }
-            self::$route_index[$current_level_shift][CONTROLLER_ARRAY_STR] = $file;
+            self::$_routeIndex[$current_level_shift][CONTROLLER_ARRAY_STR] = $file;
             if (isset($param_refine)) {
-                self::$route_index[$current_level_shift][PARAM_ARRAY_STR] = $param_refine;
+                self::$_routeIndex[$current_level_shift][PARAM_ARRAY_STR] = $param_refine;
             }
             if (isset($pattern_refine[$current_level_shift])) {
-                self::$route_index[PATTERN_ARRAY_STR][$pattern_refine[$current_level_shift]] = $current_level_shift;
+                self::$_routeIndex[PATTERN_ARRAY_STR][$pattern_refine[$current_level_shift]] = $current_level_shift;
             }
         }
     }

@@ -4,7 +4,8 @@
     "Config" : "systems/library/Config.php",
     "View" : "systems/library/View.php",
     "ViewComponent" : "systems/library/ViewComponent.php",
-    "PGNUtil" : "systems/library/PGNUtil.php",
+    "LBUtil" : "systems/library/LBUtil.php",
     "Resource" : "systems/library/Resource.php",
-    "Session" : "systems/library/Session.php"
+    "Session" : "systems/library/Session.php",
+    "Model" : "systems/library/Model.php"
 }

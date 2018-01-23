@@ -2,7 +2,7 @@
 /** Include Every Page **/
 
 /**header and footer style sheet must move to it's controller if have multi-template in one site*/
-View::addFirstSignStyleSheet("main,header");
-View::addStyleSheet("footer");
+View::addFirstSignCSS("main,header");
+View::addCSS("footer");
 
-View::addJavascript("jquery-3.0.0.min");
+View::addJS("jquery-3.0.0.min");

@@ -63,4 +63,20 @@
         static function id() {
             return session_id();
         }
+
+        public static function createCSRF()
+        {
+            $csrf = self::get("csrf");
+            if ($csrf == "") {
+                $csrf_time = microtime(true);
+                $csrf = md5($csrf_time . self::id());
+                self::set("csrf", $csrf);
+            }
+            return $csrf;
+        }
+
+        public static function getCSRF()
+        {
+            return self::get("csrf");
+        }
     }

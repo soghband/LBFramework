@@ -5,7 +5,7 @@ class Config {
         $config = Cache::getShareCache("config");
         if ($config == "") {
             $config_data = file_get_contents($config_file);
-            $config = PGNUtil::jsonDecode($config_data);
+            $config = LBUtil::jsonDecode($config_data);
             Cache::setShareCache("config",$config);
         }
         self::$config = $config;

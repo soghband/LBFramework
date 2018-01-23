@@ -4,5 +4,5 @@ header("Cache-Control: post-check=0, pre-check=0", false);
 header("Pragma: no-cache");
 View::setCachePage(false);
 echo microtime(true);
-Time::set_type("html");
-Time::setShowTimeProcess(true);
+Time::setType("html");
+Time::setDisplay(true);

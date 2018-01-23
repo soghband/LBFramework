@@ -1,2 +1,2 @@
 <?php
-View::sessionDataRegister("csrf",Route::createCSRF());
+View::addSessionData("csrf", Session::createCSRF());

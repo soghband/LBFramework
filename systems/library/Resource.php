@@ -26,7 +26,7 @@ class Resource {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    PGNUtil::showMsg("CSS File not found: ".$val);
+                    LBUtil::showMsg("CSS File not found: ".$val);
                 }
             }
         }
@@ -42,7 +42,7 @@ class Resource {
                         $lastMod = $mod_time;
                     }
                 } else {
-                    PGNUtil::showMsg("JS File not found: ".$val);
+                    LBUtil::showMsg("JS File not found: ".$val);
                 }
             }
         }
@@ -74,24 +74,6 @@ class Resource {
         }
         header(HTTP_404_STR);
         exit();
-    }
-    static function genCssFs($resource) {
-        $cssData = explode(",",$resource);
-        if (is_array($cssData) && count($cssData) > 0) {
-            $cssCombine = "";
-            $cssCombine = self::combineCSS($cssData, $cssCombine);
-            if (strlen($cssCombine) > 0) {
-                $css_data = self::compressCSSProcess($cssCombine);
-                header("Content-type: text/css");
-                echo $css_data;
-            } else {
-                header(HTTP_404_STR);
-                exit();
-            }
-        } else {
-            header(HTTP_404_STR);
-            exit();
-        }
     }
     static function genJs($hash) {
         $jsData = Cache::getResourceCache($hash);
@@ -241,13 +223,7 @@ class Resource {
         }
         return $cssCombine;
     }
-
-    /**
-     * @param $cssCombine
-     * @return string
-     */
-    private static function compressCSSProcess($cssCombine)
-    {
+    private static function compressCSSProcess($cssCombine){
         if (CSS_COMPRESS) {
             $minifierCss = new Minify\CSS();
             $minifierCss->add($cssCombine);
@@ -256,5 +232,21 @@ class Resource {
             $css_data = $cssCombine;
         }
         return $css_data;
+    }
+    public static function resourceProcess(&$css_resource, &$js_resource, $cssFileList) {
+        $uxControlJs = "";
+        if (strlen($css_resource) > 0) {
+            if (ENV_MODE == "dev" && ENABLE_DEV_IO) {
+                $uxControlJs = "<style class='devCss' fileList=" . $cssFileList . "></style>";
+                $uxControlJs .= " <script language=JavaScript>loadJs('/js/" . $js_resource . ".js');</script>";
+            } else {
+                $uxControlJs = " <script language=JavaScript>loadCss('/css/" . $css_resource . ".css'";
+                if (strlen($js_resource) > 0) {
+                    $uxControlJs .= ",loadJs('/js/" . $js_resource . ".js')";
+                }
+                $uxControlJs .= ")</script>";
+            }
+        }
+        return $uxControlJs;
     }
 }
