@@ -25,12 +25,30 @@
             {
                 "className" : "Workflow",
                 "linkClassName" : "workflow"
+            },
+            {
+                "className" : "Tips",
+                "linkClassName" : "Tips"
             }
         ]
     },
     {
         "group" : "Component",
         "class" : [
+            {
+                "className" : "Model",
+                "linkClassName" : "model",
+                "function" :[
+                    {
+                        "functionName":[
+                            "mapData",
+                            "mapAssoc",
+                            "addData",
+                            "processModel"
+                        ]
+                    }
+                ]
+            },
             {
                 "className" : "View",
                 "linkClassName" : "view",
@@ -53,6 +71,53 @@
                             "addHtmlData",
                             "addSessionData",
                             "getTemplateName"
+                        ]
+                    }
+                ]
+            },
+            {
+                "className" : "Route",
+                "linkClassName" : "route",
+                "function" :[
+                    {
+                        "functionName":[
+                            "register",
+                            "showIndex",
+                            "getRoute",
+                            "getParam"
+                        ]
+                    }
+                ]
+            },
+            {
+                "className" : "Session",
+                "linkClassName" : "session",
+                "function" :[
+                    {
+                        "functionName":[
+                            "start",
+                            "get",
+                            "set",
+                            "getByPage",
+                            "setByPage",
+                            "id",
+                            "createCSRF",
+                            "getCSRF"
+                        ]
+                    }
+                ]
+            },
+            {
+                "className" : "Time",
+                "linkClassName" : "time",
+                "function" :[
+                    {
+                        "functionName":[
+                            "setType",
+                            "setDisplay",
+                            "start",
+                            "phase",
+                            "showTime"
                         ]
                     }
                 ]

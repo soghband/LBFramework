@@ -5,8 +5,8 @@ if (!Route::getParam("class")) {
     View::addHtmlData("doc_page","document/home");
 } else {
     View::addHtmlData("doc_page","document/".Route::getParam("class"));
+    $dataJson = file_get_contents(BASE_DIR."/resource/data/".Route::getParam("class").".json");
+    Model::addData("function_data", LBUtil::jsonDecode($dataJson));
 }
-$dataJson = file_get_contents(BASE_DIR."/resource/data/view.json");
-Model::dataRegister("view_function_data", LBUtil::jsonDecode($dataJson));
 $dataJsonMenu = file_get_contents(BASE_DIR."/resource/data/doc_menu.json");
-Model::dataRegister("menu_data", LBUtil::jsonDecode($dataJsonMenu));
+Model::addData("menu_data", LBUtil::jsonDecode($dataJsonMenu));

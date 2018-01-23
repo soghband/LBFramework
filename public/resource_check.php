@@ -17,9 +17,6 @@ switch ($type) {
     case "css" :
         Resource::genCss($resource);
         break;
-    case "cssfs" :
-        Resource::genCssFs($resource);
-        break;
     case "js" :
         Resource::genJs($resource);
         break;

@@ -17,6 +17,7 @@ $(document).ready(function () {
             var url = "document/"+className;
             if ( window.location.href.indexOf(url) > 0) {
                 if ($(this).next().attr("class") === "lap2" && $(this).next().css("display") === "none") {
+                    $(".lap2").slideUp();
                     $(this).next().slideDown();
                 } else {
                     $(this).next().slideUp();
@@ -24,6 +25,7 @@ $(document).ready(function () {
                 return false;
             } else {
                 if ($(this).next().attr("class") === "lap2" && $(this).next().css("display") === "none") {
+                    $(".lap2").slideUp();
                     $(this).next().slideDown();
                     return false;
                 } else {
@@ -39,7 +41,6 @@ $(document).ready(function () {
                 gotoElement(targetId);
             }
             $(".classLink").each(function() {
-                console.log($(this).attr("linkclass"));
                 var checkUrl = "document/"+$(this).attr("linkclass");
                 if (currentUrl.indexOf(checkUrl) > 0) {
                     $(this).next().slideDown();

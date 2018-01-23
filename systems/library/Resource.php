@@ -75,24 +75,6 @@ class Resource {
         header(HTTP_404_STR);
         exit();
     }
-    static function genCssFs($resource) {
-        $cssData = explode(",",$resource);
-        if (is_array($cssData) && count($cssData) > 0) {
-            $cssCombine = "";
-            $cssCombine = self::combineCSS($cssData, $cssCombine);
-            if (strlen($cssCombine) > 0) {
-                $css_data = self::compressCSSProcess($cssCombine);
-                header("Content-type: text/css");
-                echo $css_data;
-            } else {
-                header(HTTP_404_STR);
-                exit();
-            }
-        } else {
-            header(HTTP_404_STR);
-            exit();
-        }
-    }
     static function genJs($hash) {
         $jsData = Cache::getResourceCache($hash);
         if (is_array($jsData) && count($jsData) > 0) {

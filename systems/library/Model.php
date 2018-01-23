@@ -28,7 +28,7 @@ class Model {
         }
         return $returnHtml;
     }
-    public static function registeredDataMap($modelFile,$dataName) {
+    private static function registeredDataMap($modelFile,$dataName) {
         if (isset(self::$_data[$dataName])) {
             return self::mapData($modelFile,self::$_data[$dataName]);
         } else {
@@ -38,7 +38,7 @@ class Model {
             return "";
         }
     }
-    public static function parserModelCommand($match) {
+    private static function parserModelCmd($match) {
         $cleanSearch = array("<!","!>");
         $cleanReplace = array("","");
         $cleanModelCommand = str_replace($cleanSearch,$cleanReplace,$match);
@@ -79,7 +79,7 @@ class Model {
         $searchSub = array();
         $replaceSub = array();
         foreach ($match as $matchVal) {
-            list($subModelFile, $dataRef, $assoc) = self::parserModelCommand($matchVal);
+            list($subModelFile, $dataRef, $assoc) = self::parserModelCmd($matchVal);
             if (isset($dataVal[$dataRef])) {
                 $searchSub = $matchVal;
                 if (empty($assoc)) {
@@ -98,14 +98,17 @@ class Model {
         }
         return str_replace($searchSub, $replaceSub, $htmlReplaceData);
     }
-    public static function dataRegister($key,$data) {
-        if (!is_array(self::$_data)) {
-            self::$_data = array();
+    public static function addData($key, $data) {
+        if (is_array($data)) {
+            if (!is_array(self::$_data)) {
+                self::$_data = array();
+            }
+            self::$_data[$key] = $data;
+        } else {
+            LBUtil::showMsg("Model data must be array.");
         }
-        self::$_data[$key] = $data;
     }
-    private static function showAssocError($arrayCheck)
-    {
+    private static function showAssocError($arrayCheck) {
         if ($arrayCheck > 1) {
             LBUtil::showMsg("Assoc data not equal.");
         }
@@ -133,16 +136,14 @@ class Model {
             $returnHtml .= $htmlSet;
         }
     }
-
-    public static function processModel(&$rawView)
-    {
+    public static function processModel(&$rawView) {
         $matchCount = preg_match_all("/<![a-zA-Z_,]*!>/m", $rawView, $match);
         $match = $match[0];
         if ($matchCount > 0) {
             $modelSearch = array();
             $modelReplace = array();
             foreach ($match as $matchStr) {
-                list($modelFile, $dataName) = self::parserModelCommand($matchStr);
+                list($modelFile, $dataName) = self::parserModelCmd($matchStr);
                 $modelSearch[] = $matchStr;
                 $modelReplace[] = self::registeredDataMap($modelFile, $dataName);
             }

@@ -6,14 +6,14 @@ class Time {
     public static $time = 0;
     public static $static = array();
     private static $show_process = false;
-    static function set_type($type) {
+    static function setType($type) {
         if (preg_match("/^(js|html)$/",$type)) {
             self::$type = $type;
         } else {
             self::$type = "js";
         }
     }
-    static function setShowTimeProcess($bool) {
+    static function setDisplay($bool) {
         self::$show_process = $bool;
     }
     static function start($msg,$first_init) {
@@ -37,7 +37,7 @@ class Time {
         $display = self::$time." - Diff::[".number_format($diff,5)."] - Total::[".number_format(self::$last_call-self::$start,5)."] - ".$msg;
         self::$static[] =$display;
     }
-    static function showProcessTime() {
+    static function showTime() {
         if (self::$show_process) {
             $return_data = "";
             if (self::$type == "js") {

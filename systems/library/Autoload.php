@@ -14,12 +14,12 @@ class Autoload {
         foreach (self::$_list as $val) {
             if (file_exists(BASE_DIR . "/" . $val)) {
                 spl_autoload_register(function ($key) {
-                    Autoload::load_file($key);
+                    Autoload::loadFile($key);
                 });
             }
         }
     }
-    static function load_file($class) {
+    static function loadFile($class) {
         $file = self::$_list[$class];
         include BASE_DIR."/".$file;
     }

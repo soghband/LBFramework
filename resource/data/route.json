@@ -1,0 +1,45 @@
+[
+    {
+        "function_name" : "register($routeFile);",
+        "anchor_id":"register",
+        "info" : "Register route data to system. Function was autoload in index.",
+        "parameter" : "<span>$routeFile</span>: Json route file.",
+        "return" : "Void"
+    },
+    {
+        "function_name" : "showIndex();",
+        "anchor_id":"showIndex",
+        "info" : "Show route index. Using for manual check route array index",
+        "parameter" : "N/A",
+        "return" : "Display route index array",
+        "example" :[
+            {
+                "data" : "Route::showIndex();"
+            }
+        ]
+    },
+    {
+        "function_name" : "getRoute();",
+        "anchor_id":"getRoute",
+        "info" : "Get controller/HTML file that system have to process.",
+        "parameter" : "N/A",
+        "return" : "Name of controller/HTML file.",
+        "example" :[
+            {
+                "data" : "Route::getRoute();"
+            }
+        ]
+    },
+    {
+        "function_name" : "getParam($paramName);",
+        "anchor_id":"getParam",
+        "info" : "Get URL/POST/GET parameter.",
+        "parameter" : "<span>$paramName:</span> Parameter name or <br><span>BLANK</span> to get all",
+        "return" : "URL/POST/GET parameter.",
+        "example" :[
+            {
+                "data" : "Route::getParam(\"exampleParam\");"
+            }
+        ]
+    }
+]

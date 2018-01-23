@@ -85,7 +85,7 @@ class View {
             $currentViewData.= file_get_contents(VIEW_FOLDER.$fileName.HTML_EXTENSION);
             self::addData("view",$currentViewData);
         } else {
-            LBUtil::showMsg("File Missing: view/".$fileName.HTML_EXTENSION);
+            LBUtil::showMsg("File Missing: view/html/".$fileName.HTML_EXTENSION);
         }
     }
 
@@ -181,7 +181,7 @@ class View {
             $htmlData = file_get_contents(VIEW_FOLDER.$htmlFileName.HTML_EXTENSION);
             self::addData($key,$htmlData);
         } else {
-            LBUtil::showMsg("File Missing: view/".$htmlFileName.HTML_EXTENSION);
+            LBUtil::showMsg("File Missing: view/html/".$htmlFileName.HTML_EXTENSION);
         }
     }
 

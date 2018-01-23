@@ -1,0 +1,50 @@
+[
+    {
+        "function_name" : "mapData($modelFile, $data);",
+        "anchor_id":"mapData",
+        "info" : "Mapping named array data or resource data with HTML model. ",
+        "parameter" : "<span>$modelFile</span>: HTML model file in view/model<br><span>$data</span>: Registered data name",
+        "return" : "HTML String",
+        "example" :[
+            {
+                "data" : "Model::mapData(\"exModel\",\"exData\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "mapAssoc($modelFile, $data);",
+        "anchor_id":"mapAssoc",
+        "info" : "Mapping assoc data with HTML model. ",
+        "parameter" : "<span>$modelFile</span>: HTML model file in view/model<br><span>$data</span>: Registered data name",
+        "return" : "HTML String",
+        "example" :[
+            {
+                "data" : "Model::mapAssoc(\"exModel\",\"exData\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "addData($key,$data);",
+        "anchor_id":"addData",
+        "info" : "Add data for tag model process.",
+        "parameter" : "<span>$key</span>: Any string.<br><span>$data</span>: Any data.",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "Model::addData(\"example_key\",$exampleData);"
+            }
+        ]
+    },
+    {
+        "function_name" : "processModel($html);",
+        "anchor_id":"processModel",
+        "info" : "Finding tag &lt!!&gt for process mapping model",
+        "parameter" : "<span>$html:</span> HTML data.",
+        "return" : "N/A ** References variables.",
+        "example" :[
+            {
+                "data" : "Model::processModel($html);"
+            }
+        ]
+    }
+]

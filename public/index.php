@@ -26,5 +26,5 @@ if (ENV_MODE != "dev") {
     Cache::saveShareCache();
 }
 Time::phase("Stop");
-Time::showProcessTime();
+Time::showTime();
 

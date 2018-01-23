@@ -51,7 +51,7 @@
     "document/{class}":{
         "controller":"document",
         "url_filter":{
-            "{class}":"^(view|route)*$"
+            "{class}":"^(view|route|session|resource|installation|model|configuration|workflow|tips|time)$"
         }
     }
 }
