@@ -1,0 +1,61 @@
+[
+    {
+        "function_name" : "setType($string);",
+        "anchor_id":"setType",
+        "info" : "Set time display type.",
+        "parameter" : "<span>$string</span>: js || html.",
+        "example" :[
+            {
+                "data" : "Time::setType(\"html\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "setDisplay($bool);",
+        "anchor_id":"setDisplay",
+        "info" : "Enable or disable time display.",
+        "parameter" : "<span>$bool</span>: true || false",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "Time::setDisplay(false);"
+            }
+        ]
+    },
+    {
+        "function_name" : "start($msg,$first_init);",
+        "anchor_id":"start",
+        "info" : "Initial time record. This function has autoload in index",
+        "parameter" : "<span>$msg</span>: Any string,<br><span>$first_init</span>: microtime() as long",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "Time::start(\"Start\",$microtime);"
+            }
+        ]
+    },
+    {
+        "function_name" : "phase($msg);",
+        "anchor_id":"phase",
+        "info" : "Record time phase.",
+        "parameter" : "<span>$msg:</span> Any string",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "Time::phase(\"query\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "showTime();",
+        "anchor_id":"showTime",
+        "info" : "Display all recorded time.",
+        "parameter" : "N/A",
+        "return" : "Void **Print out to html or javascript",
+        "example" :[
+            {
+                "data" : "Time::showTime();"
+            }
+        ]
+    }
+]
