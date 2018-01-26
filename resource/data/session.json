@@ -1,44 +1,97 @@
 [
     {
-        "function_name" : "mapData($routeFile);",
-        "anchor_id":"register",
-        "info" : "Register route data to system. Function was autoload in index.",
-        "parameter" : "<span>$routeFile</span>: Json route file.",
-        "return" : "Void"
-    },
-    {
-        "function_name" : "showIndex();",
-        "anchor_id":"showIndex",
-        "info" : "Show route index. Using for manual check route array index",
+        "function_name" : "start();",
+        "anchor_id":"start",
+        "info" : "Start session.",
         "parameter" : "N/A",
-        "return" : "Display route index array",
+        "return" : "Void",
         "example" :[
             {
-                "data" : "Route::showIndex();"
+                "data" : "Session::start();"
             }
         ]
     },
     {
-        "function_name" : "getRoute();",
-        "anchor_id":"getRoute",
-        "info" : "Get controller/HTML file that system have to process.",
-        "parameter" : "N/A",
-        "return" : "Name of controller/HTML file.",
+        "function_name" : "get($key);",
+        "anchor_id":"get",
+        "info" : "Get session data",
+        "parameter" : "<span>$key</span>: Key name",
+        "return" : "Mixed saved session data",
         "example" :[
             {
-                "data" : "Route::getRoute();"
+                "data" : "Session::get(\"keyname\");"
             }
         ]
     },
     {
-        "function_name" : "getParam($paramName);",
-        "anchor_id":"getParam",
-        "info" : "Get URL/POST/GET parameter.",
-        "parameter" : "<span>$paramName:</span> Parameter name or <br><span>BLANK</span> to get all",
-        "return" : "URL/POST/GET parameter.",
+        "function_name" : "set($key,$data);",
+        "anchor_id":"get",
+        "info" : "Set session data",
+        "parameter" : "<span>$key</span>: Key name<br><span>$data</span>: Any data",
+        "return" : "Void",
         "example" :[
             {
-                "data" : "Route::getParam(\"exampleParam\");"
+                "data" : "Session::set(\"anyKeyname\",$anyData);"
+            }
+        ]
+    },
+    {
+        "function_name" : "getByPage($key);",
+        "anchor_id":"getByPage",
+        "info" : "Get session data of current page",
+        "parameter" : "<span>$key</span>: Key name",
+        "return" : "Mixed saved session data",
+        "example" :[
+            {
+                "data" : "Session::getByPage(\"anyDataKeyname\");"
+            }
+        ]
+    },
+    {
+        "function_name" : "setByPage($key,$data);",
+        "anchor_id":"get",
+        "info" : "Set session data of current page",
+        "parameter" : "<span>$key</span>: Key name<br><span>$data</span>: Any data",
+        "return" : "Void",
+        "example" :[
+            {
+                "data" : "Session::setByPage(\"anyKeyname\",$anyData);"
+            }
+        ]
+    },
+    {
+        "function_name" : "id();",
+        "anchor_id":"id",
+        "info" : "Get session id.",
+        "parameter" : "N/A",
+        "return" : "Session ID",
+        "example" :[
+            {
+                "data" : "$sess_id = Session::id();"
+            }
+        ]
+    },
+    {
+        "function_name" : "createCSRF();",
+        "anchor_id":"createCSRF",
+        "info" : "Create CSRF string",
+        "parameter" : "N/A",
+        "return" : "Random CSRF string",
+        "example" :[
+            {
+                "data" : "$csrf = Session::createCSRF();"
+            }
+        ]
+    },
+    {
+        "function_name" : "getCSRF();",
+        "anchor_id":"getCSRF",
+        "info" : "Get created CSRF string",
+        "parameter" : "N/A",
+        "return" : "Created CSRF string",
+        "example" :[
+            {
+                "data" : "$last_csrf = Session::getCSRF();"
             }
         ]
     }
