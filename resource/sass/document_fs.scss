@@ -56,7 +56,27 @@
                     border-bottom: 1px solid #AAA;
                 }
                 .detail {
+                    color:#999;
                     margin-top:10px;
+                    font-size: 14px;
+                    line-height: 20px;
+                    .head2 {
+                        font-size:18px;
+                        color:#666;
+                    }
+                    ol {
+                        margin-top: 5px;
+                    }
+                    .detail2 {
+                        margin:5px 0px 20px 20px;
+                        .command {
+                            border: 1px solid #AAA;
+                            background: #EEE;
+                            padding: 5px 10px;
+                            border-radius: 10px;
+                            margin: 5px 0px;
+                        }
+                    }
                 }
                 .block {
                     margin-top:20px;

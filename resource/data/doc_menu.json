@@ -4,14 +4,7 @@
         "class" : [
             {
                 "className" : "Installation",
-                "linkClassName" : "installation",
-                "function" : [
-                    {
-                        "functionName" : ["test",
-                            "test2",
-                            "test3"]
-                    }
-                ]
+                "linkClassName" : "installation"
             },
             {
                 "className" : "Configuration",

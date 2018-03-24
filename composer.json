@@ -1,8 +1,11 @@
 {
-    "repositories": [
+    "name": "projectgn/lightbreak-framwork",
+    "description": "PHP MVC Framework",
+    "type": "project",
+    "authors": [
         {
-            "url": "https://github.com/soghband/LBFramework.git",
-            "type": "git"
+            "name": "Bonlawit Butsabong",
+            "email": "soghband@gmail.com"
         }
     ],
     "require": {

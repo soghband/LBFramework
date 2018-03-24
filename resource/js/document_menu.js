@@ -16,7 +16,7 @@ $(document).ready(function () {
             var className = $(this).attr("linkClass");
             var url = "document/"+className;
             if ( window.location.href.indexOf(url) > 0) {
-                if ($(this).next().attr("class") === "lap2" && $(this).next().css("display") === "none") {
+                if ($(this).next().attr("class") === "lap2" && $(this).next().children().length > 0 && $(this).next().css("display") === "none") {
                     $(".lap2").slideUp();
                     $(this).next().slideDown();
                 } else {
@@ -24,7 +24,7 @@ $(document).ready(function () {
                 }
                 return false;
             } else {
-                if ($(this).next().attr("class") === "lap2" && $(this).next().css("display") === "none") {
+                if ($(this).next().attr("class") === "lap2" && $(this).next().children().length > 0 && $(this).next().css("display") === "none") {
                     $(".lap2").slideUp();
                     $(this).next().slideDown();
                     return false;
