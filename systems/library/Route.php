@@ -109,15 +109,7 @@ class Route {
         if (isset($_REQUEST)) {
             $get_check = true;
             foreach ($_REQUEST as $key => $value) {
-                if (isset($route_index[PARAM_ARRAY_STR][$key])) {
-                    if (preg_match("/" . $route_index[PARAM_ARRAY_STR][$key] . "/", $value)) {
-                        $parameter[$key] = $value;
-                    } else {
-                        $get_check = false;
-                    }
-                } else {
-                    $get_check = false;
-                }
+                list($route_index, $parameter, $get_check) = self::processParameter($route_index, $parameter, $key, $value,$get_check);
             }
             if (!$get_check) {
                 $route_index = 404;
@@ -207,5 +199,27 @@ class Route {
                 self::$_routeIndex[PATTERN_ARRAY_STR][$pattern_refine[$current_level_shift]] = $current_level_shift;
             }
         }
+    }
+
+    /**
+     * @param $route_index
+     * @param $parameter
+     * @param $key
+     * @param $value
+     * @return array
+     */
+    private static function processParameter($route_index, $parameter, $key, $value, $get_check){
+        if (isset($route_index[PARAM_ARRAY_STR][$key])) {
+            if (preg_match("/" . $route_index[PARAM_ARRAY_STR][$key] . "/", $value)) {
+                $parameter[$key] = $value;
+            } else {
+                $get_check = false;
+            }
+        } else {
+            if (!BY_PASS_UNSPECIFIED_PARAMETER) {
+                $get_check = false;
+            }
+        }
+        return array($route_index, $parameter, $get_check);
     }
 }

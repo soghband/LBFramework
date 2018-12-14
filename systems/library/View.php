@@ -119,7 +119,8 @@ class View {
             ViewComponent::devIOProcess();
             $js_resource = Resource::registerResourceHash(self::$_js, "js");
             Cache::saveResourceCache();
-            $uxControlJs = Resource::resourceProcess($css_resource, $js_resource, implode(",", self::$_css));
+            $cssFileList = (self::$_css != null ? implode(",", self::$_css) : "");
+            $uxControlJs = Resource::resourceProcess($css_resource, $js_resource, $cssFileList);
             self::addData("systemUXControl", $uxControlJs);
             self::dataReplace();
             Model::processModel(self::$_rawView);

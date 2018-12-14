@@ -16,6 +16,7 @@ Autoload::register();
 Config::define(BASE_DIR."/resource/config.json");
 Time::start("Start",$first_init);
 Time::phase("Config Register");
+date_default_timezone_set(TIME_ZONE);
 Session::start();
 Route::register(BASE_DIR."/resource/route.json");
 Time::phase("Route Register");

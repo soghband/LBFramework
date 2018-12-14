@@ -3,23 +3,83 @@
 </div>
 <div class="detail">
     <div class="head2">
-        System configuration
-    </div>
-    <ol>
-        <li>Apache >= 2.2</li>
-        <li>PHP >= 5.6.0</li>
-        <li>OpenSSL PHP Extension</li>
-    </ol>
-    <div class="head2">
-        Route configuration
+        ENV_MODE
     </div>
     <div class="detail2">
-        Framework sourcecode is free in <a href="https://github.com/soghband/LBFramework" target="_blank">GitHub</a> you can clone by <a href="https://git-scm.com/" target="_blank">git</a> or <a href="https://github.com/soghband/LBFramework/archive/master.zip">download</a> to your computer.
-    </div>
-    <div class="head2">
-        Autoload
+        dev: Development mode disable caching and not write resource file (image, JS, CSS)<br>
+        any: Enable caching and write resource file (image, JS, CSS)
     </div>
     <div class="detail2">
-        Root document can set to framework public or root of framework folder. I using .htaccess to managing url.
+    </div>
+    <div class="head2">
+        TIME_CHECK
+    </div>
+    <div class="detail2">
+        true: Enable time check work with Environment Development mode<br>
+        false: Disable time check;
+    </div>
+    <div class="head2">
+        JS_PATH
+    </div>
+    <div class="detail2">
+        any: Javascript path location
+    </div>
+    <div class="head2">
+        JS_COMPRESS
+    </div>
+    <div class="detail2">
+        true: Enable Minify and Combine Javascript<br>
+        false: Disable Minify and Combine Javascript
+    </div>
+    <div class="head2">
+        CSS_PATH
+    </div>
+    <div class="detail2">
+        any: Style Sheet path location
+    </div>
+    <div class="head2">
+        CSS_COMPRESS
+    </div>
+    <div class="detail2">
+        true: Enable Minify and Combine Style Sheet<br>
+        false: Disable Minify and Combine Style Sheet
+    </div>
+    <div class="head2">
+        DEFAULT_TITLE
+    </div>
+    <div class="detail2">
+        any: Set default for website's title.
+    </div>
+    <div class="head2">
+        RAW_IMAGE_PATH
+    </div>
+    <div class="detail2">
+        any: Image path location
+    </div>
+    <div class="head2">
+        ENABLE_DEV_IO
+    </div>
+    <div class="detail2">
+        true: Enable DEV_IO working with Environment Development mode<br>
+        false: Disable DEV_IO
+    </div>
+    <div class="head2">
+        JPG_QUALITY
+    </div>
+    <div class="detail2">
+        0 to 100: Quality of JPG image optimization.
+    </div>
+    <div class="head2">
+        PNG_COMPRESS_LEVEL
+    </div>
+    <div class="detail2">
+        0 to 9: PNG Compression level
+    </div>
+    <div class="head2">
+        SESSION_SECURE
+    </div>
+    <div class="detail2">
+        true: Enable Session secure<br>
+        false: Disable  Session secure
     </div>
 </div>

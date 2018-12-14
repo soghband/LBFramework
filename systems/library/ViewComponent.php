@@ -72,6 +72,7 @@ class ViewComponent {
     public static function controllerProcess($controllerFileCheck, $controller_file) {
         if ($controllerFileCheck) {
             if (file_exists(BASE_DIR . "/controller/globalController.php")) {
+                ob_start();
                 include_once BASE_DIR . "/controller/globalController.php";
             }
             include_once $controller_file;

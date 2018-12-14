@@ -42,14 +42,14 @@ class Time {
             $return_data = "";
             if (self::$type == "js") {
                 $return_data .= "<script language='JavaScript'>\n";
-                foreach (self::$static as $key => $val) {
+                foreach (self::$static as  $val) {
                     $return_data .= "console.log('".$val."');\n";
                 }
                 $return_data .= "</script>";
             } elseif (self::$type == "json") {
                 $return_data = json_encode(self::$static );
             } else {
-                foreach (self::$static as $key => $val) {
+                foreach (self::$static as  $val) {
                     $return_data .= "<div>".$val."</div>";
                 }
             }

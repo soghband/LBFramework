@@ -9,10 +9,11 @@ socket.on('link', function (data) {
         if (cssList != "undefined") {
             var fileList = cssList.split(",");
             for (var j in fileList) {
-                if ($('#cssDev_'+fileList[j]).length == 0) {
+                var filename = fileList[j].replace(/\./,"_dot_");
+                if ($('#cssDev_'+filename).length == 0) {
                     var styleTag = document.createElement('style');
-                    styleTag.id = 'cssDev_'+fileList[j];
-                    styleTag.setAttribute("fileList",fileList[j]);
+                    styleTag.id = 'cssDev_'+filename;
+                    styleTag.setAttribute("fileList",filename);
                     var headerTagDev = document.getElementsByTagName('head')[0];
                     headerTagDev.appendChild(styleTag);
                 }
@@ -23,5 +24,6 @@ socket.on('link', function (data) {
     cssElement.html("");
 });
 socket.on("CssChange",function(data) {
-    $("#cssDev_"+data.fileName).html(data.data);
+    var filename = data.fileName.replace(/\./,"_dot_");
+    $("#cssDev_"+filename).html(data.data);
 });
