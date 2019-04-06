@@ -1,5 +1,5 @@
 {
-    "ENV_MODE":"production",
+    "ENV_MODE":"dev",
     "TIME_CHECK":true,
     "JS_PATH":"resource/js",
     "JS_COMPRESS":true,
@@ -7,7 +7,7 @@
     "CSS_COMPRESS":true,
     "DEFAULT_TITLE":"LightBreak Framework",
     "RAW_IMAGE_PATH":"resource/images",
-    "ENABLE_DEV_IO":true,
+    "ENABLE_DEV_IO":false,
     "JPG_QUALITY":85,
     "PNG_COMPRESS_LEVEL":6,
     "SESSION_SECURE":false,

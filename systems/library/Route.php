@@ -6,7 +6,7 @@ define("ROUTE_CONTROLLER_STR","controller");
 class Route {
     private static $_routeIndex;
     private static $_param;
-    static function register($routeFile){
+    static function loadConfig($routeFile){
         self::$_routeIndex = Cache::getShareCache("route");
         if (self::$_routeIndex == "") {
             $route_data = file_get_contents($routeFile);

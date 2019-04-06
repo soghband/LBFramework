@@ -7,7 +7,7 @@ class Cache {
     private static $_resourceCache;
     private static $_pageHash;
     private static $_pageCache;
-    private static $_loaded = false;
+    private static $_loadFromCache = false;
 
     static function setCache($key, $data) {
         if (!is_array(self::$_pageCache)) {
@@ -49,14 +49,14 @@ class Cache {
         return "";
     }
     static function saveShareCache() {
-        if (self::$_loaded && ENV_MODE != "dev") {
+        if (!self::$_loadFromCache || ENV_MODE != "dev") {
             self::saveCache("share",self::$_shareCache);
         }
     }
     static function loadShareCache() {
         $_shareCache = self::loadCache("share");
         if ($_shareCache != "") {
-            self::$_loaded = true;
+            self::$_loadFromCache = true;
         }
         self::$_shareCache = $_shareCache;
     }

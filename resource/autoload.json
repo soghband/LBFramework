@@ -7,5 +7,6 @@
     "LBUtil" : "systems/library/LBUtil.php",
     "Resource" : "systems/library/Resource.php",
     "Session" : "systems/library/Session.php",
-    "Model" : "systems/library/Model.php"
+    "Model" : "systems/library/Model.php",
+    "Database" : "systems/library/Database.php"
 }

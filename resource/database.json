@@ -1,0 +1,37 @@
+[
+    {
+        "databaseName": "mysql1",
+        "connectionString": "mysql:host=127.0.0.1;dbname=test;charset=utf8",
+        "username":"root",
+        "password":"1234",
+        "queryList" : [
+            {
+                "type":"select",
+                "queryName": "getUser",
+                "queryStatement":"SELECT * FROM tbl_user WHERE #usr AND #pwd",
+                "param" : {
+                    "usr": {
+                        "field": "username",
+                        "require" : true
+                    },
+                    "pwd" :{
+                        "field": "password",
+                        "require" : false
+                    }
+                },
+                "response" : {
+                    "userName":"username",
+                    "name": "first_name",
+                    "lastName" : "last_name"
+                }
+            }
+        ]
+    },
+    {
+        "databaseName": "mysql2",
+        "connectionString": "",
+        "queryList" : [],
+        "username":"root",
+        "password":"1234"
+    }
+]

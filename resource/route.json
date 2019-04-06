@@ -53,5 +53,12 @@
         "url_filter":{
             "{class}":"^(view|route|session|resource|installation|model|configuration|workflow|tips|time)$"
         }
+    },
+    "testDB":{
+        "controller":"testDB",
+        "param_filter":{
+            "usr":"^[a-z]*$",
+            "pwd":"^\\w*$"
+        }
     }
 }
