@@ -54,11 +54,16 @@
             "{class}":"^(view|route|session|resource|installation|model|configuration|workflow|tips|time)$"
         }
     },
-    "testDB":{
+    "testDB/{type}":{
         "controller":"testDB",
         "param_filter":{
-            "usr":"^[a-z]*$",
-            "pwd":"^\\w*$"
+            "usr":"^[a-z0-9]*$",
+            "pwd":"^\\w*$",
+            "name":"^\\w*$",
+            "l_name":"^\\w*$"
+        },
+        "url_filter":{
+            "{type}":"^(select|update|insert|delete)$"
         }
     }
 }
