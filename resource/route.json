@@ -63,7 +63,10 @@
             "l_name":"^\\w*$"
         },
         "url_filter":{
-            "{type}":"^(select|update|insert|delete)$"
+            "{type}":"^(select|update|insert|delete|testTransaction)$"
         }
+    },
+    "testJsonBodyRequest":{
+        "controller":"testJSON"
     }
 }

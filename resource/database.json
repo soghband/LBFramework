@@ -4,6 +4,7 @@
         "connectionString": "mysql:host=127.0.0.1;dbname=test;charset=utf8",
         "username":"root",
         "password":"1234",
+        "option":["PDO::MYSQL_ATTR_USE_BUFFERED_QUERY"],
         "queryList" : [
             {
                 "queryName": "getUser",
@@ -69,6 +70,16 @@
                         "require" : true
                     }
                 }
+            },
+            {
+                "queryName": "deleteUserFail",
+                "queryStatement":"DELETE FROM tbl_user WHERE #usr",
+                "param" : {
+                    "usr": {
+                        "field": "username",
+                        "require" : true
+                    }
+                }
             }
         ]
     },
@@ -77,6 +88,7 @@
         "connectionString": "",
         "queryList" : [],
         "username":"root",
-        "password":"1234"
+        "password":"1234",
+        "option":[]
     }
 ]

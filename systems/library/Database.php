@@ -3,6 +3,8 @@
 class Database {
     private static $_db = [];
     private static $_db_config;
+    private static $_auto_commit = true;
+    private static $_allError = [];
     public static function loadConfig($configFile) {
         self::$_db_config = Cache::getShareCache("database");
         if (self::$_db_config == "") {
@@ -19,11 +21,27 @@ class Database {
                 self::$_db_config [$dbName]["connectionString"] = $value["connectionString"];
                 self::$_db_config [$dbName]["username"] = $value["username"];
                 self::$_db_config [$dbName]["password"] = $value["password"];
+                self::$_db_config [$dbName]["option"] = $value["option"];
             }
         }
         Cache::setShareCache("database",self::$_db_config);
     }
-
+    public static function setAutoCommit($autocommit) {
+        self::$_auto_commit = $autocommit;
+    }
+    public static function commit() {
+        if (count(self::$_allError) == 0) {
+            foreach (self::$_db as $conn) {
+                $conn->commit();
+            }
+            return array("status"=>"success");
+        } else {
+            foreach (self::$_db as $conn) {
+                $conn->rollback();
+            }
+            return array("status"=>"error","error"=>self::$_allError);
+        }
+    }
     private static function processFetchMapData($statement,$response) {
         $responseArray = [];
         if ($statement != null) {
@@ -42,36 +60,56 @@ class Database {
         return $responseArray;
     }
 
-
-    public function query($query_string) {
-        return $this->_db->query($query_string);
+    private static function convertOption($option) {
+        $returnOption = [];
+        $error = [];
+        foreach ($option as $value) {
+            if (strlen($value) > 0) {
+                $valueConst = @constant($value);
+                if ($valueConst != null) {
+                    $returnOption[] = $valueConst;
+                } else {
+                    $error[] = "Could not find constant ".$value;
+                }
+            }
+        }
+        return array($error,$returnOption);
     }
 
-    public function fetch() {
-
-    }
-    public static function excuteDb($dbName, $queryName, $param) {
+    public static function executeDb($dbName, $queryName, $param) {
         $dbData = self::$_db_config[$dbName];
         $conn = null;
+        $error = [];
         if (array_key_exists($dbName,self::$_db)) {
             $conn = self::$_db[$dbName];
         } else {
-            $conn =  new PDO($dbData["connectionString"],$dbData["username"],$dbData["password"]);
+            list($error,$option) = self::convertOption($dbData["option"]);
+            $conn =  new PDO($dbData["connectionString"],$dbData["username"],$dbData["password"],$option);
             self::$_db[$dbName] =$conn;
+        }
+        if (!self::$_auto_commit && !$conn->inTransaction()) {
+            $conn->beginTransaction();
         }
         $queryData = $dbData["query"][$queryName];
         $resp = null;
         $queryCheck = explode(" ",$queryData["queryStatement"]);
         $queryType = strtolower($queryCheck[0]);
+        $errorQuery = [];
         switch ($queryType) {
             case "select":
-                $resp = self::processSelect($conn,$queryData,$queryType,$param);
+                list($errorQuery,$resp) = self::processSelect($conn,$queryData,$queryType,$param);
                 break;
             case ("insert" || "update" || "delete") :
-                $resp = self::processExecute($conn,$queryData,$queryType,$param);
+                list($errorQuery,$resp)= self::processExecute($conn,$queryData,$queryType,$param);
                 break;
             default :
                 $resp = "";
+        }
+        $error = array_merge($error,$errorQuery);
+        if (count($error) > 0) {
+            self::$_allError[] = $error;
+            $errorResp["error"] = $error;
+            return $errorResp;
         }
         return $resp;
     }
@@ -95,11 +133,7 @@ class Database {
                 $error[] = "Param:".json_encode($param);
             }
         }
-        if (count($error) > 0) {
-            $errorResp["error"] = $error;
-            return $errorResp;
-        }
-        return $responseArray;
+        return array($error,$responseArray);
     }
     private static function processSelect($conn,$queryData,$queryType,$param) {
         $queryStr = self::processMakeQueryStr($queryData["queryStatement"],$queryData["param"],$param,$queryType);
@@ -116,11 +150,8 @@ class Database {
             $statement->execute($param);
             $responseArray = self::processFetchMapData($statement,$queryData["response"]);
         }
-        if (count($error) > 0) {
-            $errorResp["error"] = $error;
-            return $errorResp;
-        }
-        return $responseArray;
+
+        return array($error,$responseArray);
     }
     private static function processMakeQueryStr($rawQuery,$queryParam,$param,$queryType) {
         $error = [];
@@ -161,5 +192,4 @@ class Database {
         }
         return $queryStr;
     }
-
 }

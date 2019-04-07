@@ -50,6 +50,9 @@ class View {
         } else {
             self::$_view = $page_cache;
         }
+        if (preg_match("/^({|\[).*(\]|})$/",self::$_view)) {
+            header('Content-Type: application/json');
+        }
         echo  self::$_view;
     }
 

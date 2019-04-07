@@ -6,6 +6,8 @@ define("ROUTE_CONTROLLER_STR","controller");
 class Route {
     private static $_routeIndex;
     private static $_param;
+    private static $_reqBody;
+
     static function loadConfig($routeFile){
         self::$_routeIndex = Cache::getShareCache("route");
         if (self::$_routeIndex == "") {
@@ -70,7 +72,11 @@ class Route {
         $route = self::assignController($route_index, $route);
         $route["param"] = $parameter;
         self::$_param = $parameter;
+        self::setReqBody();
         return $route;
+    }
+    public  static  function  getReqBody() {
+        return self::$_reqBody;
     }
     static function getParam($name="") {
         if ($name == "") {
@@ -221,5 +227,17 @@ class Route {
             }
         }
         return array($route_index, $parameter, $get_check);
+    }
+
+    private static function setReqBody() {
+        $reqBody = file_get_contents('php://input');
+        $search = ["\n","\t"];
+        $replace = ["",""];
+        $reqBody = str_replace($search,$replace,$reqBody);
+        if (preg_match("/^({|\[).*(\]|})$/", trim($reqBody))) {
+            self::$_reqBody = LBUtil::jsonDecode($reqBody);
+        } else {
+            self::$_reqBody = $reqBody;
+        }
     }
 }
