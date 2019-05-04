@@ -1,6 +1,7 @@
 {
     "": {
-        "controller":"home"
+        "controller":"home",
+        "method": "get"
     },
     "json_example": {
         "controller": "jsonExample"
