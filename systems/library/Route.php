@@ -179,8 +179,8 @@ class Route {
         if (isset($value["url_filter"])) {
             $pattern_refine = $value["url_filter"];
         }
-        if (isset($value["param_filter"])) {
-            $param_refine = $value["param_filter"];
+        if (isset($value["paramFilter"])) {
+            $param_refine = $value["paramFilter"];
         }
         if (count($key_split) > 0) {
             if (empty(self::$_routeIndex[$current_level_shift])) {

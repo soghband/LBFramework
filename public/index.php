@@ -20,6 +20,7 @@ date_default_timezone_set(TIME_ZONE);
 Session::start();
 Database::loadConfig(BASE_DIR."/resource/database.json");
 Route::loadConfig(BASE_DIR."/resource/route.json");
+Route::showIndex();
 Time::phase("Route Register");
 $route = Route::getRoute($_SERVER["REQUEST_URI"]);
 Time::phase("Route Calculate");

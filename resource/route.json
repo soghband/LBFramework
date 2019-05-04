@@ -23,14 +23,14 @@
     },
     "filterExample1": {
         "controller": "filterExample1",
-        "param_filter":{
+        "paramFilter":{
             "aaa":"^a.*b$",
             "bbb":"^c.*d$"
         }
     },
     "filterExample2": {
         "controller":"filterExample2",
-        "param_filter":{
+        "paramFilter":{
             "aaa":"^[a-z]*$",
             "bbb":"^[0-9]*$",
             "csrf":"^[a-z0-9]{32}$"
@@ -56,7 +56,7 @@
     },
     "testDB/{type}":{
         "controller":"testDB",
-        "param_filter":{
+        "paramFilter":{
             "usr":"^[a-z0-9]*$",
             "pwd":"^\\w*$",
             "name":"^\\w*$",
